@@ -18,14 +18,13 @@
 #include "LogManager.h"
 #include "Item.h"
 
-using std::vector;
 
 namespace Adventure{
     //! Gerencia todos os itens.
     class ItemManager{
     private:
         //! Contem lista dos itens carregados.
-        static vector<Item*>* itemList;
+        static std::vector<Item*>* itemList;
         //! Verifica se já existe um item com a id informada.
         static bool checkIfExists(int id);
     public:
@@ -41,7 +40,7 @@ namespace Adventure{
         static void render(int id, Point2i position);
         
         //! Retorna o objeto com a id informada.
-        static Item* getItem(int id);
+        static Item* getItem(int id) const;
         //! Carrega Sprite do objeto com a id informada.
         static bool loadSprite(int id);
         //! Carrega objetos a partir do arquivo passado por parametro.
@@ -62,7 +61,7 @@ namespace Adventure{
          \return Retorna se foi possivel abrir o arquivo.
          */
 
-        static bool loadFromFile(string path);
+        static bool loadFromFile(std::string&& path);
         //! Descarrega todos os objetos carregados.
         /*! Descarrega todos os objetos carregados tornando os ponteiros retornados invalidos. */
         static void unloadData();
@@ -78,14 +77,13 @@ namespace Adventure{
          \param name Nome do objeto.
          \param tileSize Largura e altura do tile do objeto.
          */
-        static bool addItem(int id, string path, string name, Vector2i tileSize);
+        static bool addItem(int id, std::string&& path, std::string&& name, Vector2i tileSize);
         //! Remove objeto com a id informada.
         /*!
          \param id ID do objeto que se deseja remover.
          \return Retorna se foi possivel remover o objeto. Caso a id informada não exista é retornado (false).
          */
         static bool removeItem(int id);
-        
     };
 }
 

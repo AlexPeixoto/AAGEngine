@@ -10,7 +10,7 @@
 
 using namespace Adventure;
 
-Character::Character(string idleSheet, int tileWidth, int tileHeight){
+Character::Character(const std::string& idleSheet, int tileWidth, int tileHeight){
     idle=true;
     movement=false;
     index=0;
@@ -27,7 +27,7 @@ Character::Character(string idleSheet, int tileWidth, int tileHeight){
     
     autoMovement=false;
 }
-Character::Character(string idleSheet, Vector2i tileSize){
+Character::Character(const std::string& idleSheet, Vector2i tileSize){
     Character(idleSheet, tileSize.x, tileSize.y);
 }
 Character::~Character(){
@@ -36,7 +36,7 @@ Character::~Character(){
         properties=nullptr;
     }
     if(spriteList!=nullptr){
-#ifndef _WIN32
+#ifndef _WIN3
         for_each(spriteList->begin(), spriteList->end(), default_delete<Sprite>());
 #else
 for_each(spriteList->begin(), spriteList->end(),
@@ -52,7 +52,7 @@ Character::Directions Character::getFacing(){
     return this->facing;
 }
 
-bool Character::loadMovementSheet(string path, int tileWidth, int tileHeight){
+bool Character::loadMovementSheet(const string& path, int tileWidth, int tileHeight){
     if(!this->movement){
         this->spriteList->push_back(new Sprite(path, tileWidth, tileHeight));
         this->movement=true;
@@ -60,7 +60,7 @@ bool Character::loadMovementSheet(string path, int tileWidth, int tileHeight){
     }
     return false;
 }
-bool Character::loadMovementSheet(string path, Vector2i tileSize){
+bool Character::loadMovementSheet(const string& path, Vector2i tileSize){
     if(!this->movement){
         this->spriteList->push_back(new Sprite(path, tileSize.x, tileSize.y));
         this->movement=true;
@@ -71,7 +71,7 @@ bool Character::loadMovementSheet(string path, Vector2i tileSize){
 void Character::render(){
     if(this->spriteList->at(index)!=nullptr)this->spriteList->at(index)->render();
 }
-void Character::render(Vector2i movement){
+void Character::render(const Vector2i& movement){
     if(autoMovement){
         render();
         return;
@@ -144,14 +144,14 @@ void Character::updateDirection(Character::Directions direction, bool updateY){
         
     }
 }
-int Character::addSprite(string path, int tileWidth, int tileHeight){
+int Character::addSprite(const string& path, int tileWidth, int tileHeight){
     int size=(int)this->spriteList->size();
     
     this->spriteList->push_back(new Sprite(path, tileWidth, tileHeight));
     
     return this->spriteList->size() > size ? ((int)this->spriteList->size()-1) : -1;
 }
-int Character::addSprite(string path, Vector2i tileSize){
+int Character::addSprite(const string& path, Vector2i tileSize){
     int size=(int)this->spriteList->size();
     
     this->spriteList->push_back(new Sprite(path, tileSize.x, tileSize.y));
@@ -161,7 +161,7 @@ int Character::addSprite(string path, Vector2i tileSize){
 Point2f Character::getPosition(){
     return this->position;
 }
-void Character::addToPosition(Vector2i addPosition){
+void Character::addToPosition(const Vector2i& addPosition){
     if(++this->callsOnFrame>=this->changeOnCall){
          this->next();
          this->callsOnFrame=0;
@@ -180,20 +180,20 @@ void Character::call(){
         this->callsOnFrame=0;
     }
 }
-void Character::setPosition(Point2f newPosition){
+void Character::setPosition(const Point2f& newPosition){
     this->position=newPosition;
     Point2i position;
     position.x = this->position.x;
     position.y = this->position.y;
     this->spriteList->at(index)->setPosition(position);
 }
-bool Character::isAdjacent(Point2i p1, Point2i p2){
+bool Character::isAdjacent(const Point2i& p1, const Point2i& p2) const{
     return (p1.x+1 == p2.x && p1.y == p2.y) ||
            (p1.x == p2.x && p1.y+1 == p2.y) ||
            (p1.x-1 == p2.x && p1.y == p2.y) ||
            (p1.x == p2.x && p1.y-1 == p2.y);
 }
-Adventure::Character::Directions Character::getDirectionFromMovement(Vector2f movement){
+Adventure::Character::Directions Character::getDirectionFromMovement(const Vector2f& movement){
     if(movement.x > 0)return Directions::RIGHT;
     if(movement.x < 0)return Directions::LEFT;
     if(movement.y > 0)return Directions::DOWN;
@@ -201,7 +201,7 @@ Adventure::Character::Directions Character::getDirectionFromMovement(Vector2f mo
 
     return Directions::NONE;
 }
-void Character::moveWithNodes(Node* nodes, Vector2f* cameraMovement, Vector2i addMovimentPerSecond, Vector2i tileSize, float frameRate){
+void Character::moveWithNodes(Node* nodes, Vector2f* cameraMovement, const Vector2i& addMovimentPerSecond, const Vector2i& tileSize, float frameRate){
     thread th([=](){
         Directions oldDirection, newDirection;
         oldDirection=newDirection=Directions::NONE;
@@ -279,28 +279,28 @@ Sprite* Character::getSprite() const{
     return this->spriteList->at(index);
 }
 
-map<string, string>::const_iterator Character::findProperty(string key){
+map<string, string>::const_iterator Character::findProperty(const std::string& key){
     return properties->find(key);
 }
-void Character::addProperty(string key, string value){
+void Character::addProperty(const std::string& key, const std::string& value){
     if(properties==nullptr)
-        properties=new map<string, string>();
+        properties=new map<std::string, std::string>();
     properties->insert(make_pair(key, value));
     
 }
-void Character::updateProperty(string key, string value){
-    map<string, string>::iterator it = properties->find(key);
+void Character::updateProperty(const std::string& key, const std::string& value){
+    std::map<std::string, std::string>::iterator it = properties->find(key);
     if(it == this->properties->end())
         this->properties->insert(make_pair(key, value));
     it->second=value;
 }
-string Character::getProperty(string key){
+string Character::getProperty(const std::string& key) const{
     map<string, string>::const_iterator it = findProperty(key);
     if(it==properties->end())
         throw runtime_error("[Prototype] Cannot find the property with the specified key");
     return it->second;
 }
-bool Character::removeProperty(string key){
+bool Character::removeProperty(const std::string& key){
     map<string, string>::const_iterator it = findProperty(key);
     if(it == properties->end())
         return false;
@@ -323,7 +323,7 @@ bool Character::updateItem(int id, int quantity){
         return false;
     }
 }
-int Character::getItemQuantity(int id){
+int Character::getItemQuantity(int id) const{
     if(items->find(id)==items->end())
         throw  runtime_error("[Prototype] Cannot find the item with the specified id");
     return items->at(id);
@@ -339,6 +339,6 @@ bool Character::removeItem(int id){
         }
     return false;
 }
-bool Character::getAutoMovement(){
+bool Character::getAutoMovement() const{
     return autoMovement;
 }

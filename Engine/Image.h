@@ -15,7 +15,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Vector2.hpp>
 
-using namespace std;
 using sf::Vector2;
 using sf::Vector2i;
 using sf::Vector2f;
@@ -23,6 +22,7 @@ using sf::Point2i;
 using sf::Point2f;
 using Debug::LogLevel;
 using Debug::LogManager;
+
 namespace Core{
     class Image{
     private:
@@ -37,20 +37,20 @@ namespace Core{
         //! Tamanho da escala do sprite
         Vector2f frameSize;
         //! Define caminho da textura
-        string path;
-        //! Tamanho o frame que deve ser renderizado dentro do sprite
+        std::string path;
+        //! Set position of the frame on the screen
         Point2i framePos;
         
-        //! Rotação da imagem
+        //! Image Rotation
         float rotation;
     
-        //! Ponto de origem da imagem
+        //! Center of the image
         Point2i origin;
         
-        //! Tamanho da textura
+        //! Texture Size
         Vector2<unsigned> textureSize;
     
-        //! Variável que sinaliza se a imagem esta sendo recarregada
+        //! Specifies if the image is being reloaded
         bool reloading;
  
     public:
@@ -67,8 +67,8 @@ namespace Core{
         //! Altera imagem chamando o construtor Image().
         virtual void changeImage(string path);
     
-        //! Renderiza imagem na posição especificada.
-        /*! Renderiza imagem na posição especificada pelo metodo <i>setPosition</i>.*/
+        //! Render the image on the specified position
+        /*! Render the image ont he position specified by the methid <i>setPosition</i>*/
         virtual void render();
         
         //! Define internamente a fonte.

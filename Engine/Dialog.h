@@ -16,10 +16,9 @@
 
 using Core::TextControl;
 using Core::BackgroundShape;
-using std::vector;
-using std::function;
 using sf::Color;
 using sf::Uint8;
+
 namespace Adventure{
     /*Was choosen as an design pattern to not have pointers, all the variables are initialized because it is expected that the Dialog class was instanciated to create an dialog with options, if not that could be archived using only the TextControl*/
     /*The option and text font size are the same */

@@ -90,9 +90,6 @@ void Game::run(){
         this->renderFunc();
         this->processFunc();
         window->display();
-        
-        
+   
     }
-
-    
 }

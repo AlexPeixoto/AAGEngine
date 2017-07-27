@@ -13,8 +13,8 @@
 #include "Point.h"
 
 namespace Core{
-    //! Implementa classe Point2<Template>
-    /*! Classe utilizada para representar objeto em um ponto da tela assim como seu tamanho*/
+    //! Implements the class Point2<T>
+    /*! Class utilized to represent an object inside the window, as its size*/
     template<typename T> class Location{
     public:
         //! Posição do objeto.
@@ -38,14 +38,14 @@ namespace Core{
             this->position=sf::Point2<T>(x, y);
         }
         //! Retorna valor da posição do objeto no eixo x.
-        T getX();
+        T getX() const;
         //! Retorna valor da posição do objeto no eixo y.
-        T getY();
+        T getY() const;
         //! Retorna posição do objeto.
         /*!
          \return Retorna Point2 do tipo expecificado no template contendo a posição do objeto na tela.
          */
-        sf::Point2<T> getPosition();
+        sf::Point2<T> getPosition() const;
         
         //! Define largura do objeto.
         void setWidth(T width);
@@ -62,56 +62,56 @@ namespace Core{
             this->size=sf::Vector2<T>(width, height);
         }
         //! Retorna valor da largura.
-        T getWidth();
+        T getWidth() const;
         //! Retorna valor da altura.
-        T getHeight();
+        T getHeight() const;
         //! Retorna tamanho do objeto.
         /*!
          \return Retorna Vector2 do tipo expecificado no template contendo o tamanho do objeto.
          */
-        sf::Vector2<T> getSize();
+        sf::Vector2<T> getSize() const;
     };
     
     template<typename T>
-    void Location<T>::setX(T x){
+    inline void Location<T>::setX(T x){
         this->position.x=x;
     }
     template<typename T>
-    void Location<T>::setY(T y){
+    inline void Location<T>::setY(T y){
         this->position.y=y;
     }
     
     template<typename T>
-    T Location<T>::getX(){
+    inline T Location<T>::getX() const{
         return position.x;
     }
     template<typename T>
-    T Location<T>::getY(){
+    inline T Location<T>::getY() const{
         return position.y;
     }
     template<typename T>
-    sf::Point2<T> Location<T>::getPosition(){
+    inline sf::Point2<T> Location<T>::getPosition() const{
         return position;
     }
     
     template<typename T>
-    void Location<T>::setWidth(T width){
+    inline void Location<T>::setWidth(T width){
         this->size.x=width;
     }
     template<typename T>
-    void Location<T>::setHeight(T height){
+    inline void Location<T>::setHeight(T height){
         this->size.y=height;
     }
     template<typename T>
-    T Location<T>::getWidth(){
+    inline T Location<T>::getWidth() const{
         return size.x;
     }
     template<typename T>
-    T Location<T>::getHeight(){
+    inline T Location<T>::getHeight() const{
         return size.y;
     }
     template<typename T>
-    sf::Vector2<T> Location<T>::getSize(){
+    inline sf::Vector2<T> Location<T>::getSize() const{
         return size;
     }
     

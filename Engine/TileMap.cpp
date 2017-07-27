@@ -49,7 +49,7 @@ void TileMap::initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, stri
     tileHeader=new TileStructure;
     tileHeader->tileBlock=tileBlock;
     tileHeader->tileSize=tileSize;
-    strcpy(tileHeader->filename, path.c_str());
+    strcpy_s(tileHeader->filename, path.c_str());
     if(tileData!=nullptr)
         delete tileData;
     tileData=(int16_t*)malloc(sizeof(int16_t)*tileHeader->tileBlock.x*tileHeader->tileBlock.y);
@@ -140,7 +140,8 @@ void TileMap::render(int x, int y, int width, int height)
             if(imageValue!=-1){
                 tileImage->setX(blockPosition.x*tileHeader->tileSize.x);
                 tileImage->setY(blockPosition.y*tileHeader->tileSize.y);
-                tileImage->renderSub(imageValue%(imageSize.x/tileHeader->tileSize.x)*tileHeader->tileSize.x, imageValue/(imageSize.x/tileHeader->tileSize.x)*tileHeader->tileSize.y, tileHeader->tileSize.x, tileHeader->tileSize.y);
+                tileImage->renderSub(static_cast<float>(imageValue%(imageSize.x/tileHeader->tileSize.x)*tileHeader->tileSize.x),
+					static_cast<float>(imageValue/(imageSize.x/tileHeader->tileSize.x)*tileHeader->tileSize.y, tileHeader->tileSize.x, tileHeader->tileSize.y));
             }
         }
     }

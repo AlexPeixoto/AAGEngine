@@ -15,7 +15,6 @@
 #include <SFML/Audio/Music.hpp>
 
 using namespace sf;
-using namespace std;
 
 namespace Adventure{
     class BackgroundMusic{
@@ -37,13 +36,13 @@ namespace Adventure{
         };
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de musica será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         
         //! Remove todas as musicas da memoria.
         ~BackgroundMusic();
         //! Carrega musica que será tocada, não deve ser utilizado para fazer intersecção entre musicas.
-        static void loadSong(string path);
+        static void loadSong(const std::string& path);
         //! Inicia a musica.
         /*!
          \return Retorna se foi possivel iniciar a musica.
@@ -105,7 +104,7 @@ namespace Adventure{
          \param timeToEnd Tempo de duração da intersecção.
          \throw std::runtime_exception.
          */
-        static void intersectWith(string path, IntersectMode im, long long timeToEnd);
+        static void intersectWith(const std::string& path, IntersectMode im, long long timeToEnd);
         //! Interrompe intersecção que esta ocorrendo.
         /*! Interrompe intersecção que esta ocorrendo. <br />
             Deve ocorrer somente quando se deseja recarregar todas as estruturas, como em uma troca de nivel.

@@ -20,10 +20,11 @@
 #include "Collision.h"
 #include "Node.h"
 
-#define MOVEMENTSHEET 0
-#define IDLESHEET 1
+namespace {
+	const char MOVEMENTSHEET = 0;
+	const char IDLESHEET = 1;
+}
 
-using namespace std;
 using sf::Point2f;
 using sf::Point2i;
 using Adventure::Sprite;
@@ -53,7 +54,7 @@ namespace Adventure{
                 //! Define se existe um Sprite-Sheet de movimento.
                 bool movement;
                 //! Lista de Sprite-Sheets carregados.
-                vector<Sprite*> *spriteList;
+                std::vector<Sprite*> *spriteList;
                 //! Posição do personagem no mapa.
                 Point2f position;
                 //! Direção para a qual o personagem está "olhando".
@@ -70,23 +71,23 @@ namespace Adventure{
                 bool autoMovement;
             protected:
                 //! Iterator que representa propriedade associada a chave.
-                map<string, string>::const_iterator findProperty(string key);
+				std::map<std::string, std::string>::const_iterator findProperty(const std::string& key);
                 //! Mapa de propriedades do personagem.
-                map<string, string>* properties;
-                //! Retorna iterator que representa item com a id associada assim como sua quantidade no personagem.
-                map<int, int>::const_iterator findItemQuantity(int id);
-                //! Mapa que associa itens contidos no personagem com sua quantidade.
-                map<int, int>* items;
-                //! Qual Sprite-Sheet está sendo renderizado.
+				std::map<std::string, std::string>* properties;
+                //! Returns the iterator that represents the item id and the quantity of that item
+				std::map<int, int>::const_iterator findItemQuantity(int id);
+                //! Map that associates the items on the character and its quantoty.
+				std::map<int, int>* items;
+                //! Which sprite is being rendered.
                 int index;
-                //! Quantos pixels devem ser adicionado no movimento a cada chamada do método call.
+                //! How many pixels are being added on the sprite position of each call's method (call).
                 int pixelsPerCall;
                 
                 //! Retorna se os dois pontos são adjacentes
-                virtual bool isAdjacent(Point2i p1, Point2i p2);
+                virtual bool isAdjacent(const Point2i& p1, const Point2i& p2);
                 
                 //! Retorna a direção com base no movimento
-                virtual Directions getDirectionFromMovement(Vector2f movement);
+                virtual Directions getDirectionFromMovement(const Vector2f& movement);
             public:
                 //! Inicializa um personagem.
                 /*! Inicializa um personagem com seu Sprite-Sheet que representa uma ação de espera.
@@ -94,13 +95,13 @@ namespace Adventure{
                  \param tileWidth Largura do tile.
                  \param tileHeight Altura do tile.
                  */
-                Character(string idleSheet, int tileWidth, int tileHeight);
+                Character(const std::string& idleSheet, int tileWidth, int tileHeight);
                 //! Inicializa um personagem.
                 /*! Inicializa um personagem com seu Sprite-Sheet que representa uma ação de espera.
                  \param idleSheet Sprite-Sheet que representa uma ação de espera.
                  \param tileSize Alture e Largura do tile.
                  */
-                Character(string idleSheet, Vector2i tileSize);
+                Character(const std::string& idleSheet, Vector2i tileSize);
                 //! Remove a lista de propriedades e sprites do personage,
                 ~Character();
         
@@ -112,7 +113,7 @@ namespace Adventure{
                  \param tileHeight Altura do tile.
                  \return Retorna se foi possivel carregar o Sprite-Sheet.
                  */
-                virtual bool loadMovementSheet(string path, int tileWidth, int tileHeight);
+                virtual bool loadMovementSheet(const std::string& path, int tileWidth, int tileHeight);
                 //! Carrega Sprite-Sheet de movimento.
                 /*! Carrega o Sprite-Sheet de movimento que será utilizado ao se mover o personagem. <br />
                  Este método somente pode ser chamado uma vez.
@@ -120,7 +121,7 @@ namespace Adventure{
                  \param tileSize Alture e Largura do tile.
                  \return Retorna se foi possivel carregar o Sprite-Sheet.
                  */
-                virtual bool loadMovementSheet(string path, Vector2i tileSize);
+                virtual bool loadMovementSheet(const std::string& path, Vector2i tileSize);
                 //! Retorna direção que o personagem esta "olhando".
                 virtual Directions getFacing();
         
@@ -168,7 +169,7 @@ namespace Adventure{
                 //! Renderiza personagem.
                 virtual void render();
                 //! Renderiza personagem atualizando sua posição.
-                virtual void render(Vector2i movement);
+                virtual void render(const Vector2i& movement);
                 //! Altera qual Sprite-Sheet deve ser renderizado.
                 virtual void changeSprite(int index);
         
@@ -176,9 +177,9 @@ namespace Adventure{
                 //! Retorna a posição do personagem no mapa.
                 virtual Point2f getPosition();
                 //! Adiciona valores a posição atual, util para movimentação com teclado/joystick.
-                virtual void addToPosition(Vector2i addPosition);
+                virtual void addToPosition(const Vector2i& addPosition);
                 //! Altera a posição do personagem/
-                virtual void setPosition(Point2f newPosition);
+                virtual void setPosition(const Point2f& newPosition);
                 //! Movimenta personagem de acordo com grafo.
                 /*! Movimenta personagem de acordo com o grafo. É importante que o grafo esteja iniciando no ponto que o personagem se encontra e que o nó pai seja adjacente, caso o mesmo não ocorra a animação é interrompida.
                  \param nodes Nós que representam o caminho pelo qual o personagem deve se mover.
@@ -188,7 +189,7 @@ namespace Adventure{
                  \param frameRate Numero de frames por segundo para executar o calculo de movimento por segundo.
                  
                  */
-                virtual void moveWithNodes(Node* nodes, Vector2f* cameraMovement, Vector2i addMovimentPerSecond, Vector2i tileSize, float frameRate);
+                virtual void moveWithNodes(Node* nodes, Vector2f* cameraMovement, const Vector2i& addMovimentPerSecond, const Vector2i& tileSize, float frameRate);
         
                 //Returns the new sprite
                 //! Adiciona novo Sprite.
@@ -198,14 +199,14 @@ namespace Adventure{
                  \param tileHeight Altura do tile do sprite.
                  \return Retorna indice do sprite ou -1 caso o sprite não tenha sido adicionado
                  */
-                virtual int addSprite(string path, int tileWidth, int tileHeight);
+                virtual int addSprite(const string& path, int tileWidth, int tileHeight);
                 //! Adiciona novo Sprite.
                 /*! Adiciona novo sprite a lista de sprites.
                  \param path Caminho do sprite a ser adicionado.
                  \param tileSize Altura e Largura do tile do sprite.
                  \return Retorna indice do sprite ou -1 caso o sprite não tenha sido adicionado
                  */
-                virtual int addSprite(string path, Vector2i tileSize);
+                virtual int addSprite(const string& path, Vector2i tileSize);
                 //Just disables the sprite, i need to maintain the index if not i mess with it
                 //! Remove Sprite-Sheet no indice informado populando o indice com nullptr.
                 virtual void disableSprite(int index);
@@ -218,24 +219,24 @@ namespace Adventure{
                 /*!
                  \throw std::runtime_exception.
                  */
-                virtual void addProperty(string key, string value);
+                virtual void addProperty(const std::string& key, const std::string& value);
                 //! Atualiza uma propriedade existente.
                 /*!
                  \return Retorna se a propriedade foi atualizada. Caso a propriedade não exista é retornado false.
                  \throw std::runtime_error/
                  */
-                virtual void updateProperty(string key, string value);
+                virtual void updateProperty(const std::string& key, const::string& value);
                 //! Retorna propriedade associada a chave.
                 /*!
                  \return Retorna propriedade associada a chave.
                  \throw std::runtime_exception
                  */
-                virtual string getProperty(string key);
+                virtual string getProperty(const std::string& key) const;
                 //! Remove propriedade.
                 /*!
                  \return Retorna se a chave foi removida com sucesso. Caso a chave não exista é retornado (false).
                  */
-                virtual bool removeProperty(string key);
+                virtual bool removeProperty(const std::string& key);
                 
                 //! Adiciona novo item no personage, com a quantidade especificada.
                 /*!
@@ -251,7 +252,7 @@ namespace Adventure{
                 /*! Retorna a quantidade de itens dentro do personagem com a id associada.
                  \throw std::exception
                  */
-                virtual int getItemQuantity(int id);
+                virtual int getItemQuantity(int id) const;
                 //! Remove o item.
                 /*!
                  \return Retorna se o item foi removido com sucesso. Caso o item não exista é retornado (false).
@@ -259,7 +260,7 @@ namespace Adventure{
                 virtual bool removeItem(int id);
                 
                 //! retorna se esta ocorrendo uma animação automatica.
-                virtual bool getAutoMovement();
+                virtual bool getAutoMovement() const;
                 
             };
 }

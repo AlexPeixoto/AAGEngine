@@ -24,9 +24,9 @@ namespace Adventure{
         //! Sprite que representa o item.
         Sprite* itemSprite;
         //! Caminho da imagem do objeto.
-        string path;
+        std::string path;
         //! Nome do item.
-        string name;
+        std::string name;
         //! Id do item.
         int id;
         //! Tamanho do tile do item.
@@ -36,9 +36,9 @@ namespace Adventure{
         //! Indice do tile do item.
         Point2i tileIndex;
         //! Iterator que representa propriedade associada a chave.
-        map<string, string>::const_iterator findProperty(string key);
+        std::map<std::string, std::string>::const_iterator findProperty(const std::string& key) const;
         //! Mapa de propriedades do item.
-        map<string, string>* properties;
+        std::map<std::string, std::string>* properties;
     public:
         //! Construtor utilizado pelo ItemManager.
         Item();
@@ -51,7 +51,7 @@ namespace Adventure{
          \param tileHeight Altura do tile do item.
          \param load Se é necessario carregar a imagem no construtor. Caso seja definido como (false) a imagem será carregada na primeira chamada de render.
          */
-        Item(int id, string path, string name, int tileWidth, int tileHeight, bool load=false);
+        Item(int id, std::string&& path, std::string&& name, int tileWidth, int tileHeight, bool load=false);
         //! Inicializa item.
         /*!
          \param id ID unica do item.
@@ -60,7 +60,7 @@ namespace Adventure{
          \param tileSize Largura e altura do tile do item.
          \param load Se é necessario carregar a imagem no construtor. Caso seja definido como (false) a imagem será carregada na primeira chamada de render.
          */
-        Item(int id, string path, string name, Vector2i tileSize, bool load=false);
+        Item(int id, std::string&& path, std::string&& name, Vector2i tileSize, bool load=false);
         //! Remove Sprite do item e apaga sua lista de propriedades.
         ~Item();
         

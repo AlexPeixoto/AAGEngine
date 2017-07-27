@@ -12,7 +12,7 @@
 
 using namespace Adventure;
 
-string WarpMap::relativePath="";
+std::string WarpMap::relativePath="";
 
 WarpMap::WarpMap(){
     warpList=new vector<WarpFake*>();
@@ -20,7 +20,7 @@ WarpMap::WarpMap(){
 WarpMap::WarpMap(string path){
     warpList=new vector<WarpFake*>();
     int size;
-    string loadPath;
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
         if(lastIndex!=string::npos)
@@ -62,21 +62,21 @@ void WarpMap::addWarp(int id, Point2i position, bool enabled){
     w->enabled=enabled;
     warpList->push_back(w);
 }
-void WarpMap::removeWarp(int index){
+void WarpMap::removeWarp(size_t index){
     if(index < warpList->size()){
         delete warpList->at(index);
         warpList->at(index)=nullptr;
     }
 }
 
-vector<WarpMap::WarpFake*>* WarpMap::getWarpList() const{
+std::vector<WarpMap::WarpFake*>* WarpMap::getWarpList() const{
     return warpList;
 }
 
 Core::Collision::BoundingBox WarpMap::getBoundingBox(WarpFake* w){
     Core::Collision::BoundingBox b;
     Warp* _w= WarpManager::getWarp(w->id);
-    b.position=Point2f(w->position.x, w->position.y);
+    b.position=Point2f(static_cast<int>(w->position.x), static_cast<int>(w->position.y));
     b.size=(Vector2f)_w->getSize();
     return b;
 }

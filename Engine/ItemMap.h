@@ -83,21 +83,21 @@ namespace Adventure{
          \return Indice do sprite.
          \throw std::runtime_exception
          */
-        virtual Point2i getSpriteIndex(int index);
+        virtual Point2i getSpriteIndex(int index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo x.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexX(int index);
+        virtual int getSpriteIndexX(int index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo y.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexY(int index);
+        virtual int getSpriteIndexY(int index) const;
 
         //! Renderiza item no mapa.
         /*! Renderiza item no mapa, na posição especificada com o tamanho delimitado.
@@ -135,10 +135,10 @@ namespace Adventure{
         virtual void renderPerfect(int x, int y, int width, int height, int moveX, int moveY);
         
         //! Retorna lista com todos os itens.
-        virtual vector<ItemFake*>* getItemList() const;
+        virtual std::vector<ItemFake*>* getItemList() const;
         
         //! Retorna BoundingBox do item passado por parametro.
-        virtual Core::Collision::BoundingBox getBoundingBox(ItemFake* i);
+        virtual Core::Collision::BoundingBox getBoundingBox(ItemFake* i) const;
     };
 }
 #endif /* defined(__Action_Adventure_Game_Engine__ItemMap__) */

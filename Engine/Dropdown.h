@@ -13,8 +13,10 @@
 #include "TextControl.h"
 #include "BackgroundShape.h"
 #include "Location.h"
+
 using namespace Core;
 using sf::Color;
+
 namespace Adventure{
     //! Define um dropdown list.
     /*! O tamanho do shape da imagem é definido pelo tamanho do texto. */

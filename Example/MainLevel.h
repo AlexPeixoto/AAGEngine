@@ -62,7 +62,7 @@ private:
     
     float deltaTime;
     
-    string message;
+	std::string message;
     bool messagePending;
     bool renderText;
     
@@ -70,7 +70,7 @@ private:
 public:
     //Test propouses just initialize files
     MainLevel();
-    MainLevel(map<string, string> params);
+    MainLevel(std::map<std::string, std::string> params);
     void initData();
     
     void generatePathForPlayer();

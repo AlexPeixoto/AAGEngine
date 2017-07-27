@@ -17,7 +17,6 @@
 #include <thread>
 #include "ScreenLog.h"
 
-using namespace std;
 namespace Debug {
     //! Enumerador que define niveis para mensagens.
     /*! A utilização dos niveis é de responsabilidade do desenvolvedor.
@@ -163,7 +162,7 @@ namespace Debug {
          \param args Outros valores a serem passados pelo variadic template, podendo ser 0 ou mais.
          */
         template<typename T, typename... Args>
-        static void log(LogLevel logLevel, const char *string, T value="", Args... args=""){
+        static void log(LogLevel logLevel, const char *string, T value, Args... args){
 		
             #ifdef NODEBUG
                 return;
@@ -260,7 +259,6 @@ namespace Debug {
 							}
 						}
 					}
-
         }
     };
 }

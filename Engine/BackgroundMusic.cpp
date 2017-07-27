@@ -17,7 +17,7 @@ Music* BackgroundMusic::intersect = nullptr;
 bool BackgroundMusic::onIntersection=false;
 bool BackgroundMusic::breakIntersection=false;
 
-string BackgroundMusic::relativePath="";
+std::string BackgroundMusic::relativePath="";
 
 BackgroundMusic::~BackgroundMusic(){
     if(playing!=nullptr){
@@ -29,17 +29,17 @@ BackgroundMusic::~BackgroundMusic(){
         intersect=nullptr;
     }
 }
-void BackgroundMusic::loadSong(string path){
+void BackgroundMusic::loadSong(const std::string& path){
     if(playing!=nullptr)
         throw std::runtime_error("There is a song playing already, please use close() method first, then load another song.");
     
     if(BackgroundMusic::onIntersection)
         throw std::runtime_error("Every action is blocked until the intersection ends.");
     playing = new Music();
-    string loadPath;
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -150,7 +150,7 @@ void BackgroundMusic::doBreakIntersection(){
         breakIntersection=true;
 }
 //The moment the intersectWith is called the intersect will run until the music ends
-void BackgroundMusic::intersectWith(string path, IntersectMode im, long long timeToEnd){
+void BackgroundMusic::intersectWith(const std::string& path, IntersectMode im, long long timeToEnd){
     if(BackgroundMusic::onIntersection==true){
         throw std::runtime_error("[Background Music] Cannot call intersectWith method more then one time.");
     }
@@ -159,7 +159,7 @@ void BackgroundMusic::intersectWith(string path, IntersectMode im, long long tim
     }
     
     intersect = new Music();
-    string loadPath;
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
         if(lastIndex!=string::npos)
@@ -177,7 +177,7 @@ void BackgroundMusic::intersectWith(string path, IntersectMode im, long long tim
     if(!intersect->openFromFile(loadPath))
        throw std::runtime_error("[Background Music] Unable to open the file:" + loadPath + ".");
     
-    thread th([=](){
+	std::thread th([=](){
         BackgroundMusic::onIntersection=true;
         std::chrono::time_point<std::chrono::system_clock> start, end;
         long long elapsedMilliseconds;
@@ -223,7 +223,7 @@ void BackgroundMusic::intersectWith(string path, IntersectMode im, long long tim
                 BackgroundMusic::intersect=nullptr;
                 break;
             }
-            this_thread::sleep_for(chrono::milliseconds(100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
         BackgroundMusic::onIntersection=false;
         

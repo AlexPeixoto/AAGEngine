@@ -18,10 +18,11 @@
 using namespace Adventure;
 using namespace Core;
 using namespace Debug;
+
 class ClosedMap : public Level{
     
 private:
-    string mapLevel, collisionLevel, itemLevel, soundLevel, objectLevel, warpLevel;
+    std::string mapLevel, collisionLevel, itemLevel, soundLevel, objectLevel, warpLevel;
     
     Player* p;
     MapManager mapManager;
@@ -31,7 +32,7 @@ private:
 public:
     
     //Test propouses just initialize files
-    ClosedMap(map<string, string> params);
+    ClosedMap(map<std::string, std::string> params);
     ~ClosedMap();
     void initData();
     

@@ -13,9 +13,10 @@
 #include "Location.h"
 #include "Image.h"
 #include "TextControl.h"
+
 using Core::Image;
 using Core::Location;
-using namespace std;
+
 namespace Adventure{
     class Checkbox : public Location<int> {
     private:

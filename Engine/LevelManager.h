@@ -14,6 +14,7 @@
 #include "Level.h"
 #include "BackgroundMusic.h"
 #include "Game.h"
+
 namespace Adventure{
     //! Classe que gerência niveis e mudança de niveis.
     class LevelManager{
@@ -58,7 +59,7 @@ namespace Adventure{
             th.detach();
 
         }
-        //! Verifica se está ocorrendo uma troca de niveis.
+        //! Check if another level is being loaded.
         static bool isLoading();
         
         //! Executa o metodo render.

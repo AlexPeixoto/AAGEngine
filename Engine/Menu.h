@@ -121,25 +121,25 @@ namespace Adventure{
         virtual bool removeElement(int index, bool deletePointer=true);
         
         //! Retorna todas as associações elementos->tipo
-        virtual vector<Element*> getElements() const;
+        virtual std::vector<Element*> getElements() const;
         
         //! Retorna todos os checkboxes.
-        virtual vector<Checkbox*> getCheckboxes() const;
+        virtual std::vector<Checkbox*> getCheckboxes() const;
         
         //! Retorna todas as informações.
-        virtual vector<Information*> getInformations() const;
+        virtual std::vector<Information*> getInformations() const;
         
         //! Retorna todas as imagens com informações.
-        virtual vector<InformationImage*> getInformationImages() const;
+        virtual std::vector<InformationImage*> getInformationImages() const;
         
         //! Retorna todas as slidebars.
-        virtual vector<Slidebar*> getSlidebars() const;
+        virtual std::vector<Slidebar*> getSlidebars() const;
         
         //! Retorna todos os dropdowns.
-        virtual vector<Dropdown*> getDropdowns() const;
+        virtual std::vector<Dropdown*> getDropdowns() const;
         
         //! Retorna todos os itens selecionaveis.
-        virtual vector<Selectable*> getSelectables() const;
+        virtual std::vector<Selectable*> getSelectables() const;
         
     };
 }

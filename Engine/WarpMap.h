@@ -36,10 +36,10 @@ namespace Adventure{
         
     protected:
         //! Lista de warps carregados.
-        vector<WarpFake*>* warpList;
+        std::vector<WarpFake*>* warpList;
     public:
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de warp dentro do mapa será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         //! Inicializa vetor de warps.
         WarpMap();
         //! Inicializa vetor de warps.
@@ -50,7 +50,7 @@ namespace Adventure{
          4. Inteiro contendo o eixo y da posição do objeto no mapa.<br />
          O objeto é definido por padrão como habilitado.
          */
-        WarpMap(string path);
+        explicit WarpMap(std::string path);
         //! Remove os objetos carregados no mapa.
         ~WarpMap();
         
@@ -70,10 +70,10 @@ namespace Adventure{
          */
         virtual void addWarp(int id, Point2i position, bool enabled);
         //! Remove warp do indice.
-        virtual void removeWarp(int index);
+        virtual void removeWarp(size_t index);
         
         //! Retorna lista com todos os warps.
-        virtual vector<WarpFake*>* getWarpList() const;
+        virtual std::vector<WarpFake*>* getWarpList() const;
         //! Retorna BoundingBox do warp passado por parametro.
         Core::Collision::BoundingBox getBoundingBox(WarpFake* w);
         

@@ -16,7 +16,7 @@ using namespace std;
 Sprite::Sprite(string path, int tileWidth, int tileHeight) : Image(path){
     tileSize.x=tileWidth;
     tileSize.y=tileHeight;
-    setTileSize(tileWidth, tileHeight);
+    setTileSize((float)tileWidth, (float)tileHeight);
     index.x=index.y=1;
     reloading=false;
 }

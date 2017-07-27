@@ -38,26 +38,26 @@ namespace Adventure{
         
     public:
         InformationImage() = delete;
-        InformationImage(TextControl* textControl, string path, string text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
+        InformationImage(TextControl* textControl, std::string path, std::string text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
         
         virtual void render();
         
-        virtual void setImagePath(string path);
-        virtual void setText(string text);
-        virtual void setImagePosition(Point2i imagePosition);
-        virtual void setTextPosition(Point2i textPosition);
-        virtual void setImageScale(Vector2f imageScale);
-        virtual void setTextScale(Vector2f textScale);
-        virtual void setTextColor(Color textColor);
+        virtual void setImagePath(std::string&& path);
+        virtual void setText(std::string&& text);
+        virtual void setImagePosition(const Point2i& imagePosition);
+        virtual void setTextPosition(const Point2i& textPosition);
+        virtual void setImageScale(const Vector2f& imageScale);
+        virtual void setTextScale(const Vector2f& textScale);
+        virtual void setTextColor(const Color& textColor);
         
         virtual string getImagePath() const;
-        virtual Core::Image* getImage();
-        virtual string getText();
-        virtual Point2i getImagePosition();
-        virtual Point2i getTextPosition();
-        virtual Color getTextColor();
-        virtual Vector2f getTextScale();
-        virtual Vector2f getImageScale();
+        virtual Core::Image* getImage() const;
+        virtual std::string getText() const;
+        virtual Point2i getImagePosition() const;
+        virtual Point2i getTextPosition() const;
+        virtual Color getTextColor() const;
+        virtual Vector2f getTextScale() const;
+        virtual Vector2f getImageScale() const;
         
         
     };

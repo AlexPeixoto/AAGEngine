@@ -38,7 +38,7 @@ namespace Core{
         Color insideColor, outlineColor;
     public:
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de textura será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         //! Inicializa estruturas internas.
         BackgroundShape();
@@ -67,7 +67,7 @@ namespace Core{
          \param path Define camiho onde se encontra a textura que deve ser carregada.
          \throw std::runtime_error.
          */
-        virtual void loadTexture(string path);
+        virtual void loadTexture(const std::string& path);
         //! Remove textura da memoria
         virtual void unloadTexture();
         

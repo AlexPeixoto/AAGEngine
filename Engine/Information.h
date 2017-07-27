@@ -13,7 +13,6 @@
 #include "Point.h"
 #include "TextControl.h"
 
-using namespace std;
 using namespace Core;
 
 namespace Adventure{
@@ -66,6 +65,5 @@ namespace Adventure{
         
     };
 }
-
 
 #endif

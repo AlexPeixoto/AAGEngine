@@ -153,14 +153,14 @@ int TextControl::getWidth(string text){
     sf::Text cs;
     cs.setFont(*font);
     cs.setString(text);
-    return cs.getLocalBounds().width * fontScale.x;
+    return (int)(cs.getLocalBounds().width * fontScale.x);
     
 }
 int TextControl::getHeight(string text){
     sf::Text cs;
     cs.setFont(*this->font);
     cs.setString(text);
-    return cs.getLocalBounds().height * fontScale.y;
+    return (int)(cs.getLocalBounds().height * fontScale.y);
     
 }
 void TextControl::splitInWords()
@@ -288,7 +288,7 @@ void TextControl::renderScreen(int x, int y, int screen)
             sf::Utf8::toUtf32(utf8str.begin(), utf8str.end(), std::back_inserter(utf32str));
             sf::String sfstr = utf32str;
             textRender->setString(sfstr);
-            textRender->setPosition(x, _y);
+            textRender->setPosition((float)x, (float)_y);
 			_y+=getHeight(this->line.at(line)) + textSpacing;
             line++;
             if(TextControl::window!=nullptr)
@@ -306,7 +306,7 @@ void TextControl::renderSimpleText(int x, int y, string text)
     sf::Utf8::toUtf32(utf8str.begin(), utf8str.end(), std::back_inserter(utf32str));
     sf::String sfstr = utf32str;
     textRender->setString(sfstr);
-    textRender->setPosition(x, y);
+    textRender->setPosition((float)x, (float)y);
     if(TextControl::window!=nullptr)
         TextControl::window->draw(*textRender);
 }

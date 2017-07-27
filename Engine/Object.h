@@ -29,9 +29,9 @@ namespace Adventure{
         //! Sprite que representa objeto no mapa.
         Sprite* objectSprite;
         //! Caminho da imagem do objeto.
-        string path;
+        std::string path;
         //! Nome do objeto.
-        string name;
+        std::string name;
         //! Id do objeto.
         int id;
         //! Tamanho do tile do objeto.
@@ -44,14 +44,14 @@ namespace Adventure{
         Point2i tileIndex;
         
         //! Iterator que representa propriedade associada a chave.
-        map<string, string>::const_iterator findProperty(string key);
+        std::map<std::string, std::string>::const_iterator findProperty(const std::string& key) const;
         //! Mapa de propriedades do objeto.
-        map<string, string>* properties;
+        std::map<std::string, std::string>* properties;
         
         //! Retorna iterator que representa item com a id associada assim como sua quantidade no objeto.
-        map<int, int>::const_iterator findItem(int id);
+        std::map<int, int>::const_iterator findItem(int id);
         //! Mapa que associa itens contidos no objeto com sua quantidade.
-        map<int, int>* items;
+        std::map<int, int>* items;
     public:
         //! Construtor utilizado pelo ObjectManager.
         Object();

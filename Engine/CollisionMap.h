@@ -15,7 +15,7 @@
 #include "Character.h"
 #include "Collision.h"
 #include <cmath>
-using namespace std;
+
 using sf::Vector2f;
 
 namespace Adventure{

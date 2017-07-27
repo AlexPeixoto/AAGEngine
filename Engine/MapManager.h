@@ -17,7 +17,9 @@
 #include "ObjectMap.h"
 #include "WarpMap.h"
 #include "LevelManager.h"
+
 using sf::Vector2f;
+
 namespace Adventure{
     //! Classe que gerencia o mapa e todos os seus componentes.
     /*! Classe que implementa movimento de camera e utiliza deste movimento para renderizar/processar corretamente as classes de mapa.*/
@@ -45,17 +47,17 @@ namespace Adventure{
         ~MapManager();
         
         //! Carrega arquivo com definições de um mapa de tile.
-        virtual bool loadTileLayer(string mapFile);
+        virtual bool loadTileLayer(std::string&& mapFile);
         //! Carrega arquivo com definições de um mapa de colisão.
-        virtual bool loadCollisionMap(string collisionFile);
+        virtual bool loadCollisionMap(std::string&& collisionFile);
         //! Carrega arquivo com definições de um mapa de itens.
-        virtual bool loadItemMap(string itemFile);
+        virtual bool loadItemMap(std::string&& itemFile);
         //! Carrega arquivo com definições de um mapa de sons.
-        virtual bool loadSoundMap(string soundFile);
+        virtual bool loadSoundMap(std::string&& soundFile);
         //! Carrega arquivo com definições de um mapa de objetos.
-        virtual bool loadObjectMap(string objectFile);
+        virtual bool loadObjectMap(std::string&& objectFile);
         //! Carrega arquivo com definições de um mapa de warp.
-        virtual bool loadWarpMap(string warpFile);
+        virtual bool loadWarpMap(std::string&& warpFile);
         
         //! Define TileLayer.
         virtual void setTileLayer(TileLayer* tl);
@@ -117,23 +119,23 @@ namespace Adventure{
         virtual bool collided(Core::Collision::BoundingBox b);
         
         //! Retorna o movimento da câmera.
-        virtual Vector2f getMovement();
+        virtual Vector2f getMovement() const;
         
         //! Retorna o movimento da câmera.
-        virtual Vector2f* getMovementPointer();
+        virtual Vector2f* getMovementPointer() const;
         
         //! Retorna ponteiro para o gerenciador de camadas de tiles no mapa.
-        virtual TileLayer* getTileLayer();
+        virtual TileLayer* getTileLayer() const;
         //! Retorna ponteiro para o gerenciado de colisão no mapa.
-        virtual CollisionMap* getCollisionMap();
+        virtual CollisionMap* getCollisionMap() const;
         //! Retorna ponteiro para o gerenciador de itens no mapa.
-        virtual ItemMap* getItemMap();
+        virtual ItemMap* getItemMap() const;
         //! Retorna ponteiro para o gerenciador de sons no mapa.
-        virtual SoundMap* getSoundMap();
+        virtual SoundMap* getSoundMap() const;
         //! Retorna o ponteiro para o gerenciador de objetos no mapa.
-        virtual ObjectMap* getObjectMap();
+        virtual ObjectMap* getObjectMap() const;
         //! Retorna o ponteiro para o gerenciador de warp no mapa.
-        virtual WarpMap* getWarptMap();
+        virtual WarpMap* getWarptMap() const;
     };
 }
 

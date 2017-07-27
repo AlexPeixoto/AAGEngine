@@ -59,7 +59,7 @@ bool WarpManager::loadFromFile(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
+    FILE* f = fopen_s(loadPath.c_str(), "rb");
     if(!f){
         throw runtime_error("[Warp Manager] Could not open: " + loadPath);
         return false;

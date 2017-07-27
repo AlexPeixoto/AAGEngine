@@ -15,12 +15,10 @@
 #include "Point.h"
 #include "Image.h"
 
-using std::pair;
 using sf::Point2i;
 using sf::Point2f;
 using sf::Vector2i;
 using sf::Vector2f;
-using std::vector;
 
 namespace Core{
     class Collision{

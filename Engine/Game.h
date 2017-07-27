@@ -15,10 +15,11 @@
 #include <SFML/System/Vector2.hpp>
 #include "InputControl.h"
 #include <SFML/Graphics.hpp>
+
 using sf::Vector2;
 using sf::Vector2i;
 using sf::View;
-using namespace std;
+
 namespace Core{
     class Game{
     protected:
@@ -64,13 +65,13 @@ namespace Core{
             3. Chama método getParams.<br />
          Se o framerate for definido como -1 é utilizado o vsync.
          */
-        Game(int width, int height, int framerate, string title, int argc, char** argv);
+        Game(int width, int height, int framerate, const std::string& title, int argc, char** argv);
         ~Game();
     
         //! Define functor processFunc.
-        virtual void setProcess(function<void()> processFunc);
+        virtual void setProcess(std::function<void()> processFunc);
         //! Define functor renderFunc
-        virtual void setRender(function<void()> renderFunc);
+        virtual void setRender(std::function<void()> renderFunc);
         //! Processamento de eventos no jogo.
         /*! Processamento de eventos no jogo.
             O mesmo deve ser sobrecarregado ou deve-se definir um functor com setProcess.
@@ -94,7 +95,7 @@ namespace Core{
         
         //! Atualiza tempo entre frames.
         static void setDeltaTime();
-        //! Retorna tempo entre frames.
+        //! Return the time between frames.
         static float getDeltaTimef();
     
     };

@@ -13,10 +13,11 @@
 #include <vector>
 #include "Point.h"
 
-#define MAX_COST 2147483640
+namespace {
+	const uint32_t MAX_COST = 2147483640;
+};
 
 using sf::Point2i;
-using namespace std;
 
 namespace Core{
     //! Define o nó para ser utilizado no <i> Pathfind </i>
@@ -96,7 +97,7 @@ namespace Core{
         Node* getParent();
         
         //! Retorna todos os filhos do nó
-        vector<Node*> getNodes() const;
+        std::vector<Node*> getNodes() const;
         
         //! Define o nivel de clearance do nó
         void setClearance(int clearance);
