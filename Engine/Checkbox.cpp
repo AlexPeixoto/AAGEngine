@@ -10,7 +10,7 @@
 
 using namespace Adventure;
 
-Checkbox::Checkbox(TextControl* textControl,  string text, string backgroundPath, string selectionPath, Point2i textPosition, Color color, function<void (bool, Checkbox*)> callback){
+Checkbox::Checkbox(TextControl* textControl, const std::string& text, const std::string& backgroundPath, const std::string& selectionPath, Point2i textPosition, Color color, std::function<void (bool, Checkbox*)> callback){
     this->textControl=textControl;
     this->callback=callback;
     this->background=new Image(backgroundPath);
@@ -42,10 +42,8 @@ void Checkbox::render(){
 
 bool Checkbox::loadBackground(string path){
     try{
-        if(background!=nullptr){
-            delete background;
-            background=nullptr;
-        }
+        delete background;
+        background=nullptr;
         background=new Image("path");
     }
     catch(...){
@@ -55,10 +53,8 @@ bool Checkbox::loadBackground(string path){
 }
 bool Checkbox::loadSelection(string path){
     try{
-        if(selection!=nullptr){
-            delete selection;
-            selection=nullptr;
-        }
+        delete selection;
+        selection=nullptr;
         selection=new Image("path");
     }
     catch(...){
@@ -84,21 +80,21 @@ void Checkbox::setTextColor(Color color){
 void Checkbox::setTextPosition(int x, int y){
     setTextPosition(Point2i(x, y));
 }
-Point2i Checkbox::getCheckboxPosition(){
+Point2i Checkbox::getCheckboxPosition() const{
     return background->getPosition();
 }
-Point2i Checkbox::getTextPosition(){
+Point2i Checkbox::getTextPosition() const{
     return textPosition;
 }
-Vector2i Checkbox::getSize(){
+Vector2i Checkbox::getSize() const{
     return background!=nullptr ? (Vector2i)background->getSize() : Vector2i(0, 0);
 }
 string Checkbox::getText() const{
     return text;
 }
-Color Checkbox::getTextColor(){
+Color Checkbox::getTextColor() const{
     return color;
 }
-bool Checkbox::getStatus(){
+bool Checkbox::getStatus() const{
     return selected;
 }

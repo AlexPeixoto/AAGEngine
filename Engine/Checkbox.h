@@ -41,7 +41,7 @@ namespace Adventure{
         Color color;
         
         //! Callback executado quando se alterar o status do checkbox.
-        function<void (bool, Checkbox*)> callback;
+        std::function<void (bool, Checkbox*)> callback;
         
     public:
         Checkbox() = delete;
@@ -54,11 +54,11 @@ namespace Adventure{
          \param color Cor do texto.
          \param callback Função que será executada quando o checkbox for marcado ou desmarcado.
          */
-        Checkbox(TextControl* textControl, string text, string backgroundPath, string selectionPath, Point2i textPosition, Color color, function<void (bool, Checkbox*)> callback);
+        Checkbox(TextControl* textControl, const std::string& text, const std::string& backgroundPath, const std::string& selectionPath, Point2i textPosition, Color color, std::function<void (bool, Checkbox*)> callback);
         ~Checkbox();
         
         //! Define método de callback para quando o checkbox for selecionado
-        virtual void setCheckedCallback(function<void (bool, Checkbox*)> callback);
+        virtual void setCheckedCallback(std::function<void (bool, Checkbox*)> callback);
         //! Altera status do checkbox
         virtual void changeStatus(bool selected);
         //! Renderiza o checkbox
@@ -83,16 +83,16 @@ namespace Adventure{
         virtual void setTextColor(Color color);
         
         //! Retorna a posição do checkbox.
-        virtual Point2i getCheckboxPosition();
+        virtual Point2i getCheckboxPosition() const;
         //! Retorna a posição do texto.
-        virtual Point2i getTextPosition();
+        virtual Point2i getTextPosition() const;
         //! Retorna a cor do texto.
-        virtual Color getTextColor();
+        virtual Color getTextColor() const;
         //! Retorna status.
-        virtual bool getStatus();
+        virtual bool getStatus() const;
         
         //! Retorna o tamanho do checkbox, sendo o mesmo o tamanho da imagem.
-        virtual Vector2i getSize();
+        virtual Vector2i getSize() const;
         
         //! Retorna texto.
         virtual string getText() const;
