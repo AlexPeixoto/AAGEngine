@@ -10,7 +10,7 @@
 
 using namespace Adventure;
 
-Slidebar::Slidebar(string slideBarPath, string slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback){
+Slidebar::Slidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback){
     
     this->position=position;
     this->valuePerPixel=valuePerPixel;
@@ -25,7 +25,7 @@ Slidebar::Slidebar(string slideBarPath, string slideElementPath, int minValue, i
     if(setValues(minValue, maxValue, increaseValue)==false){
         delete slideBarImage;
         delete slideElementImage;
-        throw runtime_error("[Slidebar] Invalid values for minValue or/and maxValue or/and increaseValue. minValue and maxValue should be multiple of increasceValue");
+        throw std::runtime_error("[Slidebar] Invalid values for minValue or/and maxValue or/and increaseValue. minValue and maxValue should be multiple of increasceValue");
     }
 }
 
@@ -100,24 +100,22 @@ bool Slidebar::setValues(int minValue, int maxValue, int increaseValue){
     return false;
 }
 
-int Slidebar::getMinValue(){
+int Slidebar::getMinValue() const{
     return minValue;
 }
-int Slidebar::getMaxValue(){
+int Slidebar::getMaxValue() const{
     return maxValue;
 }
-int Slidebar::getIncreseValue(){
+int Slidebar::getIncreseValue() const{
     return increaseValue;
 }
 
-void Slidebar::setSlideBarImage(string path){
+void Slidebar::setSlideBarImage(const std::string& path){
     delete slideBarImage;
-    slideBarImage=nullptr;
     slideBarImage=new Image(path);
 }
-void Slidebar::setSlideElementImage(string path){
+void Slidebar::setSlideElementImage(const std::string& path){
     delete slideElementImage;
-    slideElementImage=nullptr;
     slideElementImage=new Image(path);
 }
 

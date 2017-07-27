@@ -15,30 +15,28 @@
 #include "LogManager.h"
 #include "Object.h"
 
-using std::vector;
-
 namespace Adventure{
     class ObjectManager{
     private:
         //! Contem lista dos objetos carregados.
-        static vector<Object*>* objectList;
+        static std::vector<Object*>* objectList;
         //! Verifica se já existe um objeto com a id informada.
-        static bool checkIfExists(int id);
+        static bool checkIfExists(size_t id);
     public:
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de objects serão o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         //! Remove os objetos carregados quando o programa terminar.
         ~ObjectManager();
         
         //! Renderiza objeto na posição especificada.
-        static void render(int id, Point2i position);
+        static void render(size_t id, Point2i position);
         
         //! Retorna o objeto com a id informada.
-        static Object* getObject(int id);
+        static Object* getObject(size_t id);
         //! Carrega Sprite do objeto com a id informada.
-        static bool loadSprite(int id);
+        static bool loadSprite(size_t id);
         //! Carrega objetos a partir do arquivo passado por parametro.
         /*! Carrega objeto contendo a seguinte estrutura.
          Inteiro com a quantidade de objetos. <br />
@@ -60,7 +58,7 @@ namespace Adventure{
          Nota: Caso o objeto já tenha sido carregado a id é ignorada.
          \return Retorna se foi possivel abrir o arquivo.
          */
-        static bool loadFromFile(string path);
+        static bool loadFromFile(const std::string& path);
         //! Descarrega todos os objetos carregados.
         /*! Descarrega todos os objetos carregados tornando os ponteiros retornados invalidos. */
         static void unloadData();
@@ -77,16 +75,16 @@ namespace Adventure{
          \param tileSize Largura e altura do tile do objeto.
          \param randomize Se o item a ser retornado deve ser randomizado.
          */
-        static bool addObject(int id, string path, string name, Vector2i tileSize, bool randomize);
+        static bool addObject(size_t id, const std::string& path, const std::string& name, Vector2i tileSize, bool randomize);
         //! Remove objeto com a id informada.
         /*!
          \param id ID do objeto que se deseja remover.
          \return Retorna se foi possivel remover o objeto. Caso a id informada não exista é retornado (false).
          */
-        static bool removeObject(int id);
+        static bool removeObject(size_t id);
         
         //! Retorna randomicamente um item do objeto correspondente a id informada.
-        static int getRandomItem(int id);
+        static size_t getRandomItem(size_t id);
         
     };
 }

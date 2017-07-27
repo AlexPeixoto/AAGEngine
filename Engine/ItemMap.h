@@ -49,7 +49,7 @@ namespace Adventure{
             3. Inteiro contendo o eixo x da posição do item no mapa.
             4. Inteiro contendo o eixo y da posição do item no mapa.
          */
-        ItemMap(string path);
+        ItemMap(const std::string& path);
         //! Remove estruturas do item.
         ~ItemMap();
         //! Adiciona um item.

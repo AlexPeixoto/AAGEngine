@@ -43,7 +43,7 @@ namespace Adventure{
         Color selectedOptionColor;
         
         //! Opções adicionadas.
-        vector<string> options;
+        std::vector<std::string> options;
         //! define o nímero maximo de opções por tela
         int optionsPerScreen;
         //! Tamanho maximo do texto.
@@ -60,13 +60,13 @@ namespace Adventure{
         int selectedOptionIndex;
         
         //! Função chamada quando uma opção é selecionada.
-        function<void (int, Dropdown*)> callback;
+		std::function<void (int, Dropdown*)> callback;
         
     public:
         //! Costrutor padrão deletado.
         Dropdown() = delete;
         //! Construtor que recebe o ponteiro do TextControl do Menu.
-        Dropdown(TextControl* textControl, int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, function<void (int, Dropdown*)> callback);
+        Dropdown(TextControl* textControl, int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (int, Dropdown*)> callback);
         //! Remove os shapes
         ~Dropdown();
         
@@ -88,13 +88,13 @@ namespace Adventure{
 
         
         //! Define o callback para quando uma opção for selecionada.
-        virtual void setSelectedCallback(function<void (int, Dropdown*)> callback);
+        virtual void setSelectedCallback(std::function<void (int, Dropdown*)> callback);
         
         //! Retorna o tamanho do dropdown, sem o tamanho do texto.
         virtual Vector2i getSize();
         
         //! Retorna lista de opções.
-        virtual vector<string> getOptions() const;
+        virtual std::vector<std::string> getOptions() const;
         
         //! Retorna se omenu está aberto.
         virtual bool getOpenMenu();
@@ -112,22 +112,22 @@ namespace Adventure{
         //! Define o espaçamento entre as opções.
         virtual void setOptionSpacing(int optionSpacing);
         //! Adiciona uma nova opção.
-        virtual void addOption(string option);
+        virtual void addOption(const std::string& option);
         
         //! Reetorna o fundo da caixa de opções.
-        virtual BackgroundShape* returnBoxShape();
+        virtual BackgroundShape* getBoxShape() const;
         //! Retorna o fundo da caixa de opções.
-        virtual BackgroundShape* returnOptionShape();
+        virtual BackgroundShape* getOptionShape() const;
         //! Retorna o fundo da opção na tela.
-        virtual BackgroundShape* returnMenuShape();
+        virtual BackgroundShape* getMenuShape() const;
         //! Retorna cor da opção;
-        virtual Color getMenuOptionColor();
+        virtual Color getMenuOptionColor() const;
         //! Retorna cor da opção selecionada.
-        virtual Color getSelectedOptionColor();
+        virtual Color getSelectedOptionColor() const;
         //! Retorna a opção no indice especificado.
-        virtual string getOption(int index);
+        virtual std::string getOption(int index) const;
         //! Retorna o espaçamento entre as opções.
-        virtual int getOptionSpacing();
+        virtual int getOptionSpacing() const;
         
         //! Remove a opção no indice especificado, atualiza os indices.
         virtual bool removeOption(int index);

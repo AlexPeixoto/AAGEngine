@@ -13,14 +13,14 @@
 #include "TileMap.h"
 using namespace Adventure;
 
-string TileMap::relativePath="";
+std::string TileMap::relativePath="";
 
 TileMap::TileMap(){
     tileData=nullptr;
     tileHeader=nullptr;
     tileImage=nullptr;
 }
-TileMap::TileMap(string path)
+TileMap::TileMap(const std::string& path)
 {
     loadLevel(path);
     loadTiles();
@@ -42,7 +42,7 @@ void TileMap::loadTiles()
 	tileImage=new Core::Image(tileHeader->filename);
 }
 
-void TileMap::initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, string path){
+void TileMap::initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, const std::string& path){
 
     if(this->tileHeader!=nullptr)
         delete tileHeader;
@@ -58,7 +58,7 @@ void TileMap::initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, stri
         delete tileImage;
     tileImage=new Core::Image(path);
 }
-void TileMap::initializeData(int tileBlockX, int tileBlockY, int tileSizeX, int tileSizeY, string path){
+void TileMap::initializeData(int tileBlockX, int tileBlockY, int tileSizeX, int tileSizeY, const std::string& path){
     Vector2i tileBlock, tileSize;
     tileBlock.x=tileBlockX;
     tileBlock.y=tileBlockY;
@@ -79,12 +79,12 @@ void TileMap::clear(){
     clearData();
     clearDataStructure();
 }
-void TileMap::loadLevel(string path)
+void TileMap::loadLevel(const std::string& path)
 {
-    string loadPath;
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -96,8 +96,8 @@ void TileMap::loadLevel(string path)
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f)
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb"))
         throw std::runtime_error("[Tile Map] Impossible to load file: " + loadPath);
     tileHeader=new TileStructure;
     fread(&(tileHeader->tileBlock), sizeof(int), 2, f);
@@ -165,8 +165,8 @@ void TileMap::renderPerfect(int x, int y, int width, int height, int moveX, int 
      * ceil((float)height/tileHeader->tileSize.y) <= the height of the view area
      */
     Point2i limit;
-    limit.y=(ceil(-(float)moveY/tileHeader->tileSize.y)+y+ceil((float)height/tileHeader->tileSize.y));
-    limit.x=(ceil(-(float)moveX/tileHeader->tileSize.y)+x+ceil(width/tileHeader->tileSize.x));
+    limit.y=static_cast<int>(ceil(-(float)moveY/tileHeader->tileSize.y)+y+ceil((float)height/tileHeader->tileSize.y));
+    limit.x= static_cast<int>(ceil(-(float)moveX/tileHeader->tileSize.y)+x+ceil(width/tileHeader->tileSize.x));
     for(blockPosition.y=y/imageSize.y; blockPosition.y<limit.y && blockPosition.y < tileHeader->tileBlock.y; blockPosition.y++){
         for(blockPosition.x=x/imageSize.x; blockPosition.x<limit.x && blockPosition.x < tileHeader->tileBlock.x; blockPosition.x++){
             imageValue = tileData[(blockPosition.y*tileHeader->tileBlock.x)+blockPosition.x];

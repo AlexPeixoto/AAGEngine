@@ -34,8 +34,8 @@ ItemMap::ItemMap(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f)
+	FILE* f;
+    if(!fopen_s(f, loadPath.c_str(), "rb"))
         throw std::runtime_error("[Item Map] Impossible to load file: " + loadPath);
     fread(&size, sizeof(int), 1, f);
     for(int x=0; x<size; x++){

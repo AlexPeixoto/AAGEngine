@@ -12,41 +12,32 @@
 
 using Core::Pathfind;
 using Core::Node;
-using namespace std;
-using namespace std::placeholders;
 
 
-Pathfind::Pathfind(){
-    moveMap=nullptr;
-    clearanceMap=nullptr;
-    beginNode=nullptr;
-    firstNode=nullptr;
-    
-    this->heuristicFunc=std::bind(&Pathfind::hMethod, this, _1, _2);
-    
+Pathfind::Pathfind() : moveMap(nullptr),
+clearanceMap(nullptr),
+beginNode(nullptr),
+firstNode(nullptr)
+{
+    this->heuristicFunc=std::bind(&Pathfind::hMethod, this, std::placeholders::_1, std::placeholders::_2);   
     size=Vector2i(0, 0);
 }
 Pathfind::~Pathfind(){
     //Map and MoveMap is from parameter, i do not delete it
-    if(clearanceMap!=nullptr){
-        delete clearanceMap;
-        clearanceMap=nullptr;
-    }
-    if(firstNode!=nullptr){
-        deleteNodeContent();
-        firstNode=nullptr;
-    }
-    //Do not delete beginNode because it just references a node from firstNode.
-    
+    delete clearanceMap;
+    deleteNodeContent();
+
+	clearanceMap = nullptr;
+	firstNode = nullptr;
 }
-void Pathfind::setHeuristicFunction(function<int (Point2i origin, Point2i destiny)> heuristicFunc){
+void Pathfind::setHeuristicFunction(std::function<int (Point2i origin, Point2i destiny)> heuristicFunc){
     this->heuristicFunc=heuristicFunc;
 }
 int Pathfind::analyzeNode(int* map, Point2i origin, Vector2i size){
     Vector2i position=origin;
     int clearance=0;
     int minSize=size.x<size.y?size.x:size.y;
-    for(; clearance<minSize;clearance++){
+    for(; clearance<minSize;++clearance){
 
         if(position.x+clearance>=size.x || position.y+clearance>=size.y)return clearance;
         if(map[(position.y*size.x) + position.x+clearance] < 0)return clearance;
@@ -56,51 +47,55 @@ int Pathfind::analyzeNode(int* map, Point2i origin, Vector2i size){
 }
 int* Pathfind::returnWithClearance(int* map, Vector2i size){
     int* _map = new int[size.x*size.y];
-    int position=0;
-    for(position=0;position<size.x*size.y;position++)
+    for(int position=0; position<size.x*size.y; ++position)
+		//This will create a map with the clearances
         _map[position]=analyzeNode(map, Point2i(position%size.y, position/size.y), size);
     return _map;
 }
 bool Pathfind::isValid(Vector2i size, Point2i position){
     return size.x>position.x && size.y>position.y && position.x>=0 && position.y>=0;
 }
-void Pathfind::addNodeAndCheck(int* clearanceMap, int* movementMap, Vector2i size, Point2i origin, Node* node, vector<Node*>* ol, vector<Node*> cl, vector<int>* iol){
-    Node* tmpNode;
+void Pathfind::addNodeAndCheck(int* clearanceMap, int* movementMap, Vector2i size, Point2i origin, Node* node, std::vector<Node*>& ol, std::vector<Node*> cl, std::vector<int>& iol){
+    //Here I will add a node, but I also need to check if I am not adding an node that already exists.
+	//If I am I just get that node, from the closed list and add as a reference to another node.
+	
+	//This is the node that I am creating
+	Node* tmpNode;
     
     if(isValid(size, Point2i(origin.x, origin.y))){
-        
         //Cannot walk throught this node
-        if(movementMap[origin.y*size.x+origin.x]<0)return;
+        if(movementMap[origin.y*size.x+origin.x]<0)
+			return;
         
-        //If node was already analyzed i get the existing one
+        //If node was already analyzed I get the existing one
         tmpNode=cl.at(origin.y*size.x+origin.x);
-        //if node is on the closed list i just get it
+        //if node is on the closed list I just get it
         if(tmpNode!=nullptr){
             node->addNode(tmpNode);
             return;
         }
-        
+        //If the node exists
         if(tmpNode==nullptr){
-            for(auto& _ol : *ol){
-                //If the node i am searching for is on the openList i get it and proceed with the calculation
+            for(auto& _ol : ol){
+                //If the node I am searching for is on the openList I get it and proceed with the calculation
                 if(_ol->getID() == Point2i(origin.x, origin.y)){
                     node->addNode(_ol);
                     return;
                 }
             }
         }
-        //if not
+        //If the node does not exists and is not on the open List I will create it, set the clearance, cost movement and add to the other lists
         if(tmpNode==nullptr)
             tmpNode=new Node(origin.x, origin.y);
         
         tmpNode->setClearance(clearanceMap[origin.y*size.x+origin.x]);
-        tmpNode->setCostMovement(movementMap[origin.y*size.x+origin.x]);
+        tmpNode->setMovemenetCost(movementMap[origin.y*size.x+origin.x]);
         //Add as child, even if i already checked it
         node->addNode(tmpNode);
 
-        if(cl.at(origin.y*size.x+origin.x)==nullptr && iol->at(origin.y*size.x+origin.x)==0){
-            ol->push_back(tmpNode);
-            iol->at(origin.y*size.x+origin.x)=1;
+        if(cl.at(origin.y*size.x+origin.x)==nullptr && iol.at(origin.y*size.x+origin.x)==0){
+            ol.push_back(tmpNode);
+            iol.at(origin.y*size.x+origin.x)=1;
         }
     }
 }
@@ -108,65 +103,71 @@ Node* Pathfind::generateNodes(int* clearanceMap, int* moveMap, Vector2i size){
     Node *node=new Node(0, 0);
     //! the openlist i check if it is empty, the iol i check if the element exists using the index.
     //open list
-    vector<Node*> ol;
+    std::vector<Node*> ol;
     //closed list
-    vector<Node*> cl;
+    std::vector<Node*> cl;
     
     //Fast access
-    /*Just open list because on the open list i use the position (index) as a the index position to stop or continue to generate the nodes*/
-    vector<int> iol;
+    /*Just open list because on the open list I use the position (index) as a the index position to stop or continue to generate the nodes*/
+    std::vector<int> iol;
     try{
         iol.reserve(size.x*size.y+1);
         cl.reserve(size.x*size.y+1);
         ol.reserve(size.x*size.y+1);
     }
     catch(...){
-        cout << "Could not allocate enough memory" << endl;
+        std::cout << "Could not allocate enough memory" << std::endl;
         exit(1);
     }
+
     for(int x=0;x<=size.x*size.y;x++){
         iol.push_back(0);
         cl.push_back(nullptr);
     }
+
     ol.push_back(node);
     iol.at(0)=1;
-   // int pos=0;
     while(!ol.empty()){
-     //   pos++;
         Node* current=ol.back();
         ol.pop_back();
-        
+
+		//Closed list, this contains all the nodes already analysed. If I already analysed this node, just skup
         if(cl.at(current->getID().y*size.x + current->getID().x)!=nullptr)
             continue;
+
         cl.at(current->getID().y*size.x + current->getID().x)=current;
         
         Point2i origin=current->getID();
+		//Lets set the clearance for this node
         current->setClearance(clearanceMap[origin.y*size.x + origin.x]);
         
-        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x+1, origin.y), current, &ol, cl, &iol);
-        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x, origin.y+1), current, &ol, cl, &iol);
+		//Here I will add the 4 positions, those 4 positions are the origins that will lead to this node.
+        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x+1, origin.y), current, ol, cl, iol);
+        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x, origin.y+1), current, ol, cl, iol);
     
-        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x-1, origin.y), current, &ol, cl, &iol);
-        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x, origin.y-1), current, &ol, cl, &iol);
+        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x-1, origin.y), current, ol, cl, iol);
+        addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x, origin.y-1), current, ol, cl, iol);
         
+		//If I have a diagonal I will create the nodes that represent the diagonal
         if(diagonal){
-            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x+1, origin.y-1), current, &ol, cl, &iol);
-            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x+1, origin.y+1), current, &ol, cl, &iol);
+            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x+1, origin.y-1), current, ol, cl, iol);
+            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x+1, origin.y+1), current, ol, cl, iol);
         
-            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x-1, origin.y+1), current, &ol, cl, &iol);
-            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x-1, origin.y-1), current, &ol, cl, &iol);
+            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x-1, origin.y+1), current, ol, cl, iol);
+            addNodeAndCheck(clearanceMap, moveMap, size, Point2i(origin.x-1, origin.y-1), current, ol, cl, iol);
         }
         
     }
     return node;
 }
-Node* Pathfind::getBestOnList(vector<Node*>* openList, bool remove){
-    if(openList->size()==0)return nullptr;
+Node* Pathfind::getBestOnList(std::vector<Node*>* openList, bool remove){
+    if(openList->size()==0)
+		return nullptr;
     
-    vector<Node*>::iterator bIt=openList->begin(); //best node
+    std::vector<Node*>::iterator bIt=openList->begin(); //best node
     Node* bestNode=openList->at(0);
     for(auto it=openList->begin(); it!=openList->end(); it++){
-        if((*it)->getCostF() < bestNode->getCostF()){
+        if((*it)->getFCost() < bestNode->getFCost()){
             bIt=it;
             bestNode=(*it);
         }
@@ -185,25 +186,27 @@ void Pathfind::initMatrix(Vector2i size,  int* moveMap, bool diagonal){
     this->moveMap=moveMap;
     this->size=size;
     
+	//From the movementMap that the developer provides I will calculate the clearance
     clearanceMap=returnWithClearance(moveMap, Vector2i(size.x, size.y));
+	//After that, I will create a graph from the movementMap
     firstNode=generateNodes(clearanceMap, moveMap, size);
     beginNode=firstNode;
 }
 void Pathfind::initMatrix(Vector2i size,  int** moveMap, bool diagonal){
     int* tmpMoveMap=new int[size.x*size.y];
-    for(int index=0; index<size.x*size.y; index++){
+    for(int index=0; index<size.x*size.y; ++index){
         tmpMoveMap[index]=moveMap[index%size.x][index/size.y];
     }
     initMatrix(size, tmpMoveMap, diagonal);
 }
 void Pathfind::setOrigin(Point2i origin){
-    vector<Node*> nodeList;
+    std::vector<Node*> nodeList;
     Node* current;
     nodeList.reserve(size.x*size.y);
-    for(int x=0;x<size.x*size.y;x++)
+    for(int x=0;x<size.x*size.y;++x)
         nodeList.push_back(nullptr);
     
-    vector<Node*> ol;
+    std::vector<Node*> ol;
     ol.push_back(beginNode);
     while(!ol.empty()){
         current=ol.back();
@@ -228,9 +231,8 @@ Node* Pathfind::getFirstNode(){
     return this->firstNode;
 }
 Node* Pathfind::generatePathfind(Point2i origin, Point2i destiny, int clearance){
-        //Load collision map on a separate function to generate the graphs
-        //Create a weight map so the F cost is real
-    //int* map=Pathfind::map;
+    //Load collision map on a separate function to generate the graphs
+    //Create a weight map so the F cost is real
     if(Pathfind::moveMap==nullptr || Pathfind::size!=size)
         return nullptr;
     
@@ -238,18 +240,17 @@ Node* Pathfind::generatePathfind(Point2i origin, Point2i destiny, int clearance)
         setOrigin(destiny);
     
     int tmpCost=-1;
-    vector<Node*> cl, ol;
-    vector<int> icl, iol;
+    std::vector<Node*> cl, ol;
+    std::vector<int> icl, iol;
     for(int x=0;x<size.x*size.y;x++){
         icl.push_back(0);
         iol.push_back(0);
     }
     Node* current;
-    beginNode->setCostF(beginNode->getCostG()+heuristicFunc(destiny, origin));
-    beginNode->setCostG(0);
+    beginNode->setFCost(beginNode->getGCost()+heuristicFunc(destiny, origin));
+    beginNode->setGCost(0);
     ol.push_back(beginNode);
     while(!ol.empty()){
-
         //Here i remove the node and then return it (bool remove = true)
         current=getBestOnList(&ol);
         if(current->getID().x==origin.x && current->getID().y==origin.y)
@@ -263,27 +264,26 @@ Node* Pathfind::generatePathfind(Point2i origin, Point2i destiny, int clearance)
         for(int x=0;x<current->getNodes().size();x++){
             Node* openNode=current->getNodes().at(x);
             
-            tmpCost=openNode->getCostMovement()+current->getCostG()+heuristicFunc(current->getID(), openNode->getID());
+            tmpCost=openNode->getMovementCost()+current->getGCost()+heuristicFunc(current->getID(), openNode->getID());
             
             if(icl.at(openNode->getID().y*size.x+openNode->getID().x)==1 || openNode->getClearance()<clearance)
                 continue;
 
-            if(iol.at(openNode->getID().y*size.x+openNode->getID().x)==0 || tmpCost < openNode->getCostG()){
+            if(iol.at(openNode->getID().y*size.x+openNode->getID().x)==0 || tmpCost < openNode->getGCost()){
                 openNode->setParent(current);
-                openNode->setCostG(tmpCost);
-                openNode->setCostF(openNode->getCostG()+heuristicFunc(openNode->getID(), origin));
+                openNode->setGCost(tmpCost);
+                openNode->setFCost(openNode->getGCost()+heuristicFunc(openNode->getID(), origin));
                 if(iol.at(openNode->getID().y*size.x+openNode->getID().x)==1)
                     continue;
                 iol.at(openNode->getID().y*size.x+openNode->getID().x)=1;
                 ol.push_back(openNode);
-            
             }
         }
     }
     return nullptr;
 }
 void Pathfind::deleteNodeContent(){
-    vector<Node*> nodeList;
+    std::vector<Node*> nodeList;
     if(this->beginNode==nullptr)
         return;
     Node* current;
@@ -291,7 +291,7 @@ void Pathfind::deleteNodeContent(){
     for(int x=0;x<size.x*size.y;x++)
         nodeList.push_back(nullptr);
     
-    vector<Node*> ol;
+    std::vector<Node*> ol;
     ol.push_back(this->firstNode);
     while(!ol.empty()){
         current=ol.back();
@@ -309,7 +309,6 @@ void Pathfind::deleteNodeContent(){
         }
     }
     for(const auto& _node : nodeList){
-        
         if(_node==nullptr){
             continue;
         }

@@ -21,29 +21,29 @@ namespace Adventure{
     private:
         //! Imagem que será mostrada
         Core::Image* image;
-        //! Texto que será renderizado junto com a informação
-        string text;
-        //! Posição do texto.
+        //! Text that will be rendered along the image
+        std::string text;
+        //! Text position.
         Point2i textPosition;
-        //! Posição da imagem.
+        //! Image position.
         Point2i imagePosition;
-        //! Cor do texto.
+        //! Text color.
         Color textColor;
-        //! Escala do texto.
+        //! Text scale.
         Vector2f textScale;
-        //! Escala da imagem
+        //! Image scale.
         Vector2f imageScale;
-        //! Objeto que renderiza o texto na tela.
+        //! Object responsible to render the text on the screen.
         TextControl* textControl;
         
     public:
         InformationImage() = delete;
-        InformationImage(TextControl* textControl, std::string path, std::string text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
+        InformationImage(TextControl* textControl, const std::string& path, const std::string& text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
         
         virtual void render();
         
-        virtual void setImagePath(std::string&& path);
-        virtual void setText(std::string&& text);
+        virtual void setImagePath(const std::string& path);
+        virtual void setText(const std::string& text);
         virtual void setImagePosition(const Point2i& imagePosition);
         virtual void setTextPosition(const Point2i& textPosition);
         virtual void setImageScale(const Vector2f& imageScale);

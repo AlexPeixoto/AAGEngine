@@ -22,14 +22,14 @@ namespace Debug{
     class ScreenLog : public TextControl, public Location<int>{
     protected:
         //! Contem toda a log
-        string contentLog;
+        std::string contentLog;
         //! Conversor de qualquer tipo para string
-        stringstream ss;
+        std::stringstream ss;
         //Representa o indice da tela que desejo renderizar, -1 significa a ultima
         int index;
     public:
         //! Construtor da classe, a mesma deve ser iniciada já com a fonte definida.
-        ScreenLog(string font="");
+        ScreenLog(const std::string& font="");
         //! Destrutor da classe.
         ~ScreenLog();
         

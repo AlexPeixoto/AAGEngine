@@ -22,9 +22,9 @@ namespace Adventure{
         friend class WarpManager;
     protected:
         //! Define o caminho do arquivo que deve ser carregado ao se colidir com o warp.
-        string path;
+        std::string path;
         //! Define o nome do warp.
-        string name;
+        std::string name;
         //! Define a id do warp.
         int id;
         //! Define o tamanho do warp.
@@ -45,7 +45,7 @@ namespace Adventure{
          \param destinyX Posição x onde o personagem deve aparecer no mapa carregado.
          \param destinyy Posição y onde o personagem deve aparecer no mapa carregado.
          */
-        Warp(int id, string path, string name, int width, int height, int destinyX, int destinyY);
+        Warp(int id, const std::string& path, const std::string& name, int width, int height, int destinyX, int destinyY);
         //! Inicializa warp
         /*
          \param id ID unica do warp.
@@ -54,13 +54,13 @@ namespace Adventure{
          \param size Altura e largura do warp.
          \param destiny Posição x e y onde o personagem deve aparecer no mapa carregado.
          */
-        Warp(int id, string path, string name, Vector2i size, Point2i destiny);
+        Warp(int id, const std::string& path, const std::string& name, Vector2i size, Point2i destiny);
         
         //! Destrutor do Warp.
         ~Warp();
         
         //! Define caminho do arquivo que deve ser carregado ao se colidir com o warp.
-        virtual void setPath(string path);
+        virtual void setPath(const std::string& path);
         //! Define tamanho do warp.
         virtual void setSize(int width, int height);
         //! Define tamanho do warp.
@@ -70,18 +70,18 @@ namespace Adventure{
         //! Define posição onde o personagem deve aparecer no mapa carregado.
         virtual void setDestiny(Point2i destiny);
         //! Define nome do warp.
-        virtual void setName(string name);
+        virtual void setName(const std::string& name);
         
         //! Retorna caminho do arquivo que deve ser carregado ao se colidir com o warp.
-        virtual string getPath() const;
+        virtual std::string getPath() const;
         //! Retorna nome do warp.
-        virtual string getName() const;
+        virtual std::string getName() const;
         //! Retorna tamanho do warp.
-        virtual Vector2i getSize();
+        virtual Vector2i getSize() const;
         //! Retorna Posição onde o personagem deve aparecer no mapa carregado.
-        virtual Point2i getDestiny();
+        virtual Point2i getDestiny() const;
         //! Retorna ID do warp.
-        virtual int getId();
+        virtual int getId() const;
     };
 }
 

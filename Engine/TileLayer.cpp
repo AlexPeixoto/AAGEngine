@@ -30,16 +30,16 @@ for_each(tileList->begin(), tileList->end(),
         tileList=nullptr;
     }
 }
-void TileLayer::loadTileMap(string path){
+void TileLayer::loadTileMap(const std::string& path){
     tileList->push_back(new TileMap(path));
 }
-bool TileLayer::isEnd(int x, int y, int width, int height){
+bool TileLayer::isEnd(int x, int y, int width, int height) const{
     for(const auto& tile : *tileList)
         if(tile->getSize().x > x + width && tile->getSize().y > y + height)
             return true;
     return false;
 }
-bool TileLayer::isEnd(Core::Collision::BoundingBox b){
+bool TileLayer::isEnd(Core::Collision::BoundingBox b) const{
     return isEnd(b.position.x, b.position.y, b.size.x, b.size.y);
     
 }
@@ -64,6 +64,6 @@ void TileLayer::renderPerfect(int x, int y, int width, int height, int moveX, in
     else
         tileList->at(index)->render(x, y, width, height);
 }
-TileMap* TileLayer::getTileMap(int index){
+TileMap* TileLayer::getTileMap(int index) const{
     return tileList->at(index);
 }

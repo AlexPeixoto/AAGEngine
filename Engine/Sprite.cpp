@@ -66,7 +66,7 @@ void Sprite::setRow(int row){
     }
 }
 
-void Sprite::changeSprite(string path, int tileWidth, int tileHeight){
+void Sprite::changeSprite(const std::string& path, int tileWidth, int tileHeight){
     this->tileSize.x=tileWidth;
     this->tileSize.y=tileHeight;
     setTileSize(tileWidth, tileHeight);
@@ -76,12 +76,12 @@ void Sprite::render(){
     if(reloading)return;
     this->renderSub((index.x-1)*tileSize.x, (index.y-1)*tileSize.y, tileSize.x, tileSize.y);
 }
-Point2i Sprite::getSpriteIndex(){
+Point2i Sprite::getSpriteIndex() const{
     Point2i position;
     position.x=index.x;
     position.y=index.y;
     return position;
 }
-Vector2i Sprite::getTileSize(){
+Vector2i Sprite::getTileSize() const{
     return tileSize;
 }

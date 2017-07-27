@@ -12,7 +12,7 @@ using namespace Adventure;
 
 sf::RenderWindow* Dialog::window=nullptr;
 
-Dialog::Dialog(string font){
+Dialog::Dialog(const std::string& font){
     textControl = new Core::TextControl(font);
     textHeight=textControl->getHeight("QWERTYUIOPASDFGHJKLZXCVBNM1234567890_+{}|-=[]:;<>?,./!@#$%ˆ&*()~");
 
@@ -30,17 +30,17 @@ Dialog::~Dialog(){
     textControl=nullptr;
 }
 
-std::vector<Dialog::Question>::iterator Dialog::getQuestion(int id){
+std::vector<Dialog::Question>::iterator Dialog::getQuestion(int id) const{
     vector<Question>::iterator i;
-    //If it founds an id it breaks the loop
-    for(i=questions.begin(); i!=questions.end() && (*i).id!=id ; i++){}
+    //If it finds an id it breaks the loop
+	for (i = questions.begin(); i != questions.end() && (*i).id != id; i++) {}
     
     return i;
 }
 
-bool Dialog::addQuestion(int id, string title, std::function<void (int, int, int, Dialog*)> func){
+bool Dialog::addQuestion(int id, const std::string& title, std::function<void (int, int, int, Dialog*)> func){
     if(getQuestion(id)!=questions.end())
-            return false;
+		return false;
     questions.push_back({id, title, func, {}, -1});
     return true;
 }
@@ -53,7 +53,7 @@ bool Dialog::removeQuestion(int id){
     return true;
     
 }
-bool Dialog::addOption(int questionId, int id, string option){
+bool Dialog::addOption(int questionId, int id, const std::string& option){
     
     vector<Question>::iterator i=getQuestion(questionId);
 
@@ -154,18 +154,20 @@ bool Dialog::gotoSpeech(int id){
     return false;
 }
 bool Dialog::nextSpeech(){
-    if(renderingQuestion)return false;
+    if(renderingQuestion)
+		return false;
     if(speechScreenIndex < textControl->numberOfScreens()-1){
         speechScreenIndex++;
         return true;
     }
     //If i need to finish the speech on that text
-    else if(speeches.at(speechIndex).isEnd==true)return false;
+    else if(speeches.at(speechIndex).isEnd==true)
+		return false;
     //If i need to change the speech i set the new text
     //Split it
     //Reset the index
     else if(speechIndex<speeches.size()-1){
-        speechIndex++;
+        ++speechIndex;
         textControl->clearScreens();
         textControl->setText(speeches.at(speechIndex).speech);
         textControl->splitInScreens(dialogBoxSize);
@@ -191,10 +193,8 @@ bool Dialog::prevSpeech(){
     
     return false;
 }
-int Dialog::getSpeechId(){
-    if(speechIndex >= speeches.size())
-        return -1;
-    return speeches.at(speechIndex).id;
+int Dialog::getSpeechId() const{
+    return speechIndex >= speeches.size() ? -1 : speeches.at(speechIndex).id;
 }
 bool Dialog::haveQuestion(){
     for(auto &dtq : dialogToQuestion)
@@ -202,10 +202,8 @@ bool Dialog::haveQuestion(){
             return true;
     return false;
 }
-int Dialog::getQuestionId(){
-    if(questionIndex >= questions.size())
-        return -1;
-    return questions.at(questionIndex).id;
+int Dialog::getQuestionId() const{
+    return questionIndex >= questions.size() ? -1 : questions.at(questionIndex).id;
 }
 void Dialog::renderQuestion() {
     vector<Option> options=questions.at(questionIndex).options;
@@ -269,7 +267,7 @@ void Dialog::selectOption(){
                                      questions.at(questionIndex).options.at(optionIndex).id
                                      , this);
 }
-int Dialog::getOptionId(){
+int Dialog::getOptionId() const{
     if(questionIndex >= questions.size() || optionIndex >= questions.at(questionIndex).options.size())
         return -1;
     return questions.at(questionIndex).options.at(optionIndex).id;
@@ -284,28 +282,28 @@ BackgroundShape* Dialog::getSpeechBoxShape(){
 void Dialog::setQuestionBoxShape(BackgroundShape* questionBoxShape){
     this->questionBoxShape=questionBoxShape;
 }
-BackgroundShape* Dialog::getQuestionBoxShape(){
+BackgroundShape* Dialog::getQuestionBoxShape() const{
     return questionBoxShape;
 }
 
 void Dialog::setOptionShape(BackgroundShape* optionShape){
     this->optionShape=optionShape;
 }
-BackgroundShape* Dialog::getOptionShape(){
+BackgroundShape* Dialog::getOptionShape() const{
     return optionShape;
 }
 
 void Dialog::setFontScale(float scale){
     textControl->setScale(scale);
 }
-float Dialog::getFontScale(){
+float Dialog::getFontScale() const{
     return textControl->getScalef();
 }
 
 void Dialog::setQuestionBoxByLargest(bool largest){
     optionBoxByLargest=largest;
 }
-bool Dialog::getQuestionBoxByLargest(){
+bool Dialog::getQuestionBoxByLargest() const{
     return optionBoxByLargest;
 }
 void Dialog::setWindow(sf::RenderWindow *window){
@@ -322,7 +320,7 @@ bool Dialog::addSpeech(Speech speech){
     textControl->splitInScreens(dialogBoxSize);
     return true;
 }
-bool Dialog::addSpeech(int id, string speech, bool isEnd){
+bool Dialog::addSpeech(int id, const std::string& speech, bool isEnd){
 	return addSpeech(Speech{ id, speech, isEnd });
 }
 bool Dialog::removeSpeech(int id){
@@ -333,7 +331,7 @@ bool Dialog::removeSpeech(int id){
         }
     return false;
 }
-Dialog::Speech Dialog::getSpeech(int id){
+Dialog::Speech Dialog::getSpeech(int id) const{
     for(auto s : speeches)
         if(s.id==id)
             return s;
@@ -347,13 +345,13 @@ void Dialog::setDialogBoxSize(int width, int height){
     dialogBoxSize=sf::Vector2i(width, height);
 }
 
-int Dialog::getDialogBoxWidth(){
+int Dialog::getDialogBoxWidth() const{
     return dialogBoxSize.x;
 }
-int Dialog::getDialogBoxHeight(){
+int Dialog::getDialogBoxHeight() const{
     return dialogBoxSize.y;
 }
-Vector2i Dialog::getDialogBoxSize(){
+Vector2i Dialog::getDialogBoxSize() const{
     return dialogBoxSize;
 }
 
@@ -364,13 +362,13 @@ void Dialog::setDialogBoxPositon(int x, int y){
     dialogBoxPosition=Point2i(x, y);
 }
 
-int Dialog::getDialogBoxX(){
+int Dialog::getDialogBoxX() const{
     return dialogBoxPosition.x;
 }
-int Dialog::getDialogBoxY(){
+int Dialog::getDialogBoxY() const{
     return dialogBoxPosition.y;
 }
-Point2i Dialog::getDialogBoxPosition(){
+Point2i Dialog::getDialogBoxPosition() const{
     return dialogBoxPosition;
 }
 
@@ -381,13 +379,13 @@ void Dialog::setQuestionBoxSize(int width, int height){
     questionBoxSize=sf::Vector2i(width, height);
 }
 
-int Dialog::getQuestionBoxWidth(){
+int Dialog::getQuestionBoxWidth() const{
     return questionBoxSize.x;
 }
-int Dialog::getQuestionBoxHeight(){
+int Dialog::getQuestionBoxHeight() const{
     return questionBoxSize.y;
 }
-Vector2i Dialog::getQuestionBoxSize(){
+Vector2i Dialog::getQuestionBoxSize() const{
     return questionBoxSize;
 }
 
@@ -398,25 +396,25 @@ void Dialog::setQuestionBoxPositon(int x, int y){
     questionBoxPosition=Point2i(x, y);
 }
 
-int Dialog::getQuestionBoxX(){
+int Dialog::getQuestionBoxX() const{
     return questionBoxPosition.x;
 }
-int Dialog::getQuestionBoxY(){
+int Dialog::getQuestionBoxY() const{
     return questionBoxPosition.y;
 }
-Point2i Dialog::getQuestionBoxPosition(){
+Point2i Dialog::getQuestionBoxPosition() const{
     return questionBoxPosition;
 }
 void Dialog::setSpeechInnerBorder(int speechInnerBorder){
     this->speechInnerBorder=speechInnerBorder;
 }
-int Dialog::getSpeechInnerBorder(){
+int Dialog::getSpeechInnerBorder() const{
     return speechInnerBorder;
 }
 void Dialog::setOptionInnerBorder(int optionInnerBorder){
     this->optionInnerBorder=optionInnerBorder;
 }
-int Dialog::getOptionInnerBorder(){
+int Dialog::getOptionInnerBorder() const{
     return optionInnerBorder;
 }
 
@@ -426,7 +424,7 @@ void Dialog::setSpeechColor(Color speechColor){
 void Dialog::setSpeechColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
     speechColor=Color(r, g, b, a);
 }
-Color Dialog::getSpeechColor(){
+Color Dialog::getSpeechColor() const{
     return speechColor;
 }
 void Dialog::setQuestionColor(Color questionColor){
@@ -435,7 +433,7 @@ void Dialog::setQuestionColor(Color questionColor){
 void Dialog::setQuestionColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
     questionColor=Color(r, g, b, a);
 }
-Color Dialog::getQuestionColor(){
+Color Dialog::getQuestionColor() const{
     return questionColor;
 }
 
@@ -445,10 +443,10 @@ void Dialog::setOptionColor(Color optionColor){
 void Dialog::setOptionColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
     optionColor=Color(r, g, b, a);
 }
-Color Dialog::getOptionColor(){
+Color Dialog::getOptionColor() const{
     return optionColor;
 }
-int Dialog::returnWidestOptionSize(vector<Option> options){
+int Dialog::returnWidestOptionSize(std::vector<Option> options){
     int widest=0;
     for(auto option : options){
         if(textControl->getWidth(option.text) > widest)
@@ -459,6 +457,6 @@ int Dialog::returnWidestOptionSize(vector<Option> options){
 void Dialog::setRenderingQuestion(bool renderingQuestion){
     this->renderingQuestion=renderingQuestion;
 }
-bool Dialog::getRenderingQuestion(){
+bool Dialog::getRenderingQuestion() const{
     return renderingQuestion;
 }

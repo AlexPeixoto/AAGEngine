@@ -14,7 +14,7 @@
 #include <map>
 #include "Character.h"
 #include "Game.h"
-using std::string;
+
 namespace Adventure{
         //! Define jogador.
         class Player : public Character{
@@ -30,13 +30,13 @@ namespace Adventure{
              \param tileWidth Largura do tile.
              \param tileHeight Altura do tile.
              */
-            Player(string idleSheet, int tileWidth, int tileHeight);
+            Player(const std::string& idleSheet, int tileWidth, int tileHeight);
             //! Inicializa do jogador.
             /*! Inicializa do jogador com seu Sprite-Sheet que representa uma ação de espera.
              \param idleSheet Sprite-Sheet que representa uma ação de espera.
              \param tileSize Alture e Largura do tile.
              */
-            Player(string idleSheet, Vector2i tileSize);
+            Player(const std::string&  idleSheet, Vector2i tileSize);
             ~Player();
             
             //! Renderiza personagem.

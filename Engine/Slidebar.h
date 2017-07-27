@@ -16,12 +16,10 @@
 using Core::Image;
 using Core::Location;
 using sf::Point2i;
-using namespace std;
 
 namespace Adventure{
     class Slidebar : public Location<int>{
     private:
-        
         //! Valor selecionado.
         int selectedValue;
         
@@ -51,7 +49,7 @@ namespace Adventure{
          Pode executar um throw caso o valor minimo e maximo não sejam multiplos do valor definido pelo increasce value
          \throw runtime_error
          */
-        Slidebar(string slideBarPath, string slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback);
+        Slidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback);
         
         //! Renderiza a barra com o elemento sobre ela.
         virtual void render();
@@ -69,16 +67,16 @@ namespace Adventure{
         virtual bool setValues(int minValue, int maxValue, int increaseValue);
         
         //! Retorna o valor minimo da barra.
-        virtual int getMinValue();
+        virtual int getMinValue() const;
         //! Retorna o valor maximo da barra.
-        virtual int getMaxValue();
+        virtual int getMaxValue() const;
         //! Retorna o quanto o valor pode diminuir e aumentar.
-        virtual int getIncreseValue();
+        virtual int getIncreseValue() const;
         
         //! Atualiza a imagem da barra de slide.
-        virtual void setSlideBarImage(string path);
+        virtual void setSlideBarImage(const std::string& path);
         //! Atualiza a imagem do elemento que fica sobre a barra de slide.
-        virtual void setSlideElementImage(string path);
+        virtual void setSlideElementImage(const std::string& path);
         
         //! Altera a largura da imagem fazendo stretch horizontal da imagem.
         virtual void setSlideBarWidth(int width);

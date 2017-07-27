@@ -41,7 +41,7 @@ namespace Adventure{
             \param params Lista de parametros passados para o novo nivel.
          */
         template<typename T>
-        static  void changeLevel(map<string, string> params){
+        static void changeLevel(std::map<std::string, std::string> params){
             if(loading)
                 throw std::runtime_error("[LevelManager] There is already a changeLevel call running");
             if(level==nullptr)
@@ -60,7 +60,7 @@ namespace Adventure{
 
         }
         //! Check if another level is being loaded.
-        static bool isLoading();
+        static bool getIsLoading();
         
         //! Executa o metodo render.
         /*! Renderiza executando o método render do nivel. <br />

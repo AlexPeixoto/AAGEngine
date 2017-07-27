@@ -80,10 +80,10 @@ bool ItemManager::loadFromFile(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
+	FILE* f;
 
-    if(!f){
-        throw runtime_error("[Item Manager] Could not open: " + loadPath);
+    if(!fopen_s(&f, loadPath.c_str(), "rb")){
+        throw std::runtime_error("[Item Manager] Could not open: " + loadPath);
         return false;
     }
     Item* i=nullptr;;
@@ -102,7 +102,8 @@ bool ItemManager::loadFromFile(string path){
         }
         ItemManager::itemList->push_back(new Item());
         i=ItemManager::itemList->at(ItemManager::itemList->size()-1);
-        if(i==nullptr||i==NULL)break;
+        if(i==nullptr||i==NULL)
+			break;
         i->id=id;
         fread(&i->tileSize.x, sizeof(int), 1, f);
         fread(&i->tileSize.y, sizeof(int), 1, f);
@@ -156,7 +157,7 @@ bool ItemManager::addItem(Item* item){
     ItemManager::itemList->push_back(item);
     return true;
 }
-bool ItemManager::addItem(int id, string path, string name, Vector2i tileSize){
+bool ItemManager::addItem(int id, const std::string& path, const std::string& name, Vector2i tileSize){
     if(ItemManager::getItem(id))return false;
     else{
         Item* i=new Item(id, path, name, tileSize);

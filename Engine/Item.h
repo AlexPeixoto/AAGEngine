@@ -51,7 +51,7 @@ namespace Adventure{
          \param tileHeight Altura do tile do item.
          \param load Se é necessario carregar a imagem no construtor. Caso seja definido como (false) a imagem será carregada na primeira chamada de render.
          */
-        Item(int id, std::string&& path, std::string&& name, int tileWidth, int tileHeight, bool load=false);
+        Item(int id, const std::string& path, const std::string& name, int tileWidth, int tileHeight, bool load=false);
         //! Inicializa item.
         /*!
          \param id ID unica do item.
@@ -60,12 +60,12 @@ namespace Adventure{
          \param tileSize Largura e altura do tile do item.
          \param load Se é necessario carregar a imagem no construtor. Caso seja definido como (false) a imagem será carregada na primeira chamada de render.
          */
-        Item(int id, std::string&& path, std::string&& name, Vector2i tileSize, bool load=false);
+        Item(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool load=false);
         //! Remove Sprite do item e apaga sua lista de propriedades.
         ~Item();
         
         //! Define caminho da imagem do Sprite e se o mesmo deve ser carregado no momento que a imagem é definida.
-        virtual void setPath(string path, bool load=false);
+        virtual void setPath(const std::string& path, bool load=false);
         //! Define posição do item.
         virtual void setPosition(int x, int y);
         //! Define posição do item.
@@ -75,7 +75,7 @@ namespace Adventure{
         //! Define tamanho do tile do item.
         virtual void setTileSize(Vector2i tileSize);
         //! Define nome do item.
-        virtual void setName(string name);
+        virtual void setName(const std::string& name);
         //! Define em qual linha do tile do item.
         /*! A linha será calculada por row * tileSize.y */
         virtual void setRow(int row);
@@ -89,21 +89,21 @@ namespace Adventure{
         virtual void setTileIndex(Point2i tileIndex);
         
         //! Retorna o caminho do Sprite do item.
-        virtual string getPath() const;
+        virtual std::string getPath() const;
         //! Retorna o nome do item.
-        virtual string getName() const;
+        virtual std::string getName() const;
         //! Retorna a posição do item.
         virtual Point2i getPosition();
         //! Retorna o tamanho do tile do item.
-        virtual Vector2i getTileSize();
+        virtual Vector2i getTileSize() const;
         //! Retorna a id do item.
-        virtual int getId();
+        virtual int getId() const;
         //! Retorna a linha do tile do item.
-        virtual int getRow();
+        virtual int getRow() const;
         //! Retorna a coluna do tile do item.
-        virtual int getColumn();
+        virtual int getColumn() const;
         //! Retorna a linha e a coluna do tile do item.
-        virtual Point2i getTileIndex();
+        virtual Point2i getTileIndex() const;
         
         //! Atualiza a posição no sprite.
         virtual void updateTileIndex();
@@ -111,7 +111,7 @@ namespace Adventure{
         virtual void render();
         
         //! Retorna sprite que representa este item.
-        virtual Sprite* returnSprite() const;
+        virtual Sprite* getSprite() const;
         //! Carrega sprite.
         virtual bool loadSprite();
         
@@ -119,24 +119,24 @@ namespace Adventure{
         /*!
          \throw std::runtime_exception.
          */
-        virtual void addProperty(string key, string value);
+        virtual void addProperty(const std::string& key, const std::string& value);
         //! Atualiza uma propriedade existente.
         /*!
          \return Retorna se a propriedade foi atualizada. Caso a propriedade não exista é retornado false.
          \throw std::runtime_error/
          */
-        virtual bool updateProperty(string key, string value);
+        virtual bool updateProperty(const std::string& key, const std::string& value);
         //! Retorna propriedade associada a chave.
         /*!
          \return Retorna propriedade associada a chave.
          \throw std::runtime_exception
          */
-        virtual string getProperty(string key);
+        virtual std::string getProperty(const std::string& key) const;
         //! Remove propriedade.
         /*!
          \return Retorna se a chave foi removida com sucesso. Caso a chave não exista é retornado (false).
          */
-        virtual bool removeProperty(string key);
+        virtual bool removeProperty(const std::string& key);
         
 
     };

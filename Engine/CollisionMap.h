@@ -33,7 +33,7 @@ namespace Adventure{
     public:
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de collision será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         
         //! Inicializa ponteiros de estrutura e dados como inválidos.
@@ -46,7 +46,7 @@ namespace Adventure{
             Inteiro contendo a altura do bloco.<br />
             Vetor de inteiros de 16 bits do tamanho numero_de_blocos_eixo_x*numero_de_blocos_eixo_y.
          */
-        CollisionMap(string path);
+        CollisionMap(std::string path);
         
         ~CollisionMap();
         

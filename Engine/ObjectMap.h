@@ -18,7 +18,6 @@
 #include "ObjectManager.h"
 #include "Collision.h"
 
-using namespace std;
 using sf::Point2i;
 using sf::Vector2i;
 using Core::Collision;
@@ -37,10 +36,10 @@ namespace Adventure{
         
     protected:
         //! Lista de objetos carregados.
-        vector<ObjectFake*>* objectList;
+        std::vector<ObjectFake*>* objectList;
     public:
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de objetos dentro do mapa será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         //! Inicializa vetor de objetos.
         ObjectMap();
         //! Inicializa vetor de objetos.
@@ -51,7 +50,7 @@ namespace Adventure{
          4. Inteiro contendo o eixo y da posição do objeto no mapa.<br />
          O objeto é definido por padrão como colisivel.
          */
-        ObjectMap(string path);
+        ObjectMap(const std::string& path);
         //! Remove os objetos carregados no mapa.
         ~ObjectMap();
         
@@ -103,21 +102,21 @@ namespace Adventure{
          \return Indice do sprite.
          \throw std::runtime_exception
          */
-        virtual Point2i getSpriteIndex(int index);
+        virtual Point2i getSpriteIndex(int index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo x.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexX(int index);
+        virtual int getSpriteIndexX(int index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo y.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexY(int index);
+        virtual int getSpriteIndexY(int index) const;
         
         //! Retorna se o objeto do indice informado é colissivel.
         /*! Retorna se o objeto do indice informado é colissivel.
@@ -125,7 +124,7 @@ namespace Adventure{
          \return Retorna se o objeto no indice informado é colissivel.
          \throw std::runtime_exception
          */
-        bool getCollidable(int index);
+        bool getIsCollidable(int index) const;
         
         //! Renderiza objeto no mapa.
         /*! Renderiza objeto no mapa, na posição especificada com o tamanho delimitado.
@@ -163,7 +162,7 @@ namespace Adventure{
         virtual void renderPerfect(int x, int y, int width, int height, int moveX, int moveY);
         
         //! Retorna lista com todos os objetos.
-        vector<ObjectFake*>* getObjectList() const;
+        std::vector<ObjectFake*>* getObjectList() const;
         
         //! Retorna BoundingBox do objeto passado por parametro.
         Core::Collision::BoundingBox getBoundingBox(ObjectFake* o);

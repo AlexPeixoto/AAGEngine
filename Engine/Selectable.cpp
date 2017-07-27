@@ -10,31 +10,30 @@
 
 using namespace Adventure;
 
-Selectable::Selectable(int numberOfItensPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, function<void (int, Selectable*)> callback) : numberOfItensPerScreen(numberOfItensPerScreen), spacing(spacing), selectedItem(selectedItem), itemSize(itemSize), callback(callback){
+Selectable::Selectable(int numberOfitemsPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Selectable*)> callback) : numberOfitemsPerScreen(numberOfitemsPerScreen), spacing(spacing), selectedItem(selectedItem), itemSize(itemSize), callback(callback){
     selectedItemIndex=0;
     this->position=position;
-    this->selectedItem->setSize(itemSize.x+spacing*2, itemSize.y+spacing*2);
-    
+    this->selectedItem->setSize(itemSize.x+spacing*2, itemSize.y+spacing*2);   
 }
 
 void Selectable::render(){
-    if(itens.size()==0)
+    if(items.size()==0)
         return;
     if(selectedItem!=nullptr)
         selectedItem->render();
     
-    int initItem=((selectedItemIndex/numberOfItensPerScreen)*numberOfItensPerScreen);
+    int initItem=((selectedItemIndex/numberOfItemsPerScreen)*numberOfItemsPerScreen);
     int x=position.x+spacing*2;
     
-    for(int item=initItem; item<initItem+numberOfItensPerScreen && item < itens.size(); item++){
+    for(int item=initItem; item<initItem+ numberOfItemsPerScreen && item < items.size(); ++item){
         if(selectedItemIndex==item)
             if(selectedItem!=nullptr){
                 //I already added the spacing to the i
                 selectedItem->setPosition(x, position.y);
                 selectedItem->render();
             }
-        itens.at(item)->setPosition(Point2i(x+spacing, position.y+spacing));
-        itens.at(item)->render();
+        items.at(item)->setPosition(Point2i(x+spacing, position.y+spacing));
+        items.at(item)->render();
         x+=selectedItem->getSize().x+itemSize.x;
     }
     
@@ -43,10 +42,10 @@ void Selectable::selectOption(){
     callback(selectedItemIndex, this);
 }
 void Selectable::selectByMouse(Point2i clickedPosition){
-    int initItem=((selectedItemIndex/numberOfItensPerScreen)*numberOfItensPerScreen);
+    int initItem=((selectedItemIndex/ numberOfItemsPerScreen)*numberOfItemsPerScreen);
     int x=position.x+spacing*2;
     
-    for(int item=initItem; item<initItem+numberOfItensPerScreen && item < itens.size(); item++){
+    for(int item=initItem; item<initItem+ numberOfItemsPerScreen && item < items.size(); item++){
         if(clickedPosition.x >= x && clickedPosition.x <= x+itemSize.x &&
            clickedPosition.y >= position.y && clickedPosition.y <= position.y+itemSize.y)
             selectedItemIndex=item;
@@ -54,7 +53,7 @@ void Selectable::selectByMouse(Point2i clickedPosition){
     }
 }
 void Selectable::nextItem(){
-    if(selectedItemIndex<itens.size()-1)
+    if(selectedItemIndex<items.size()-1)
         selectedItemIndex++;
 }
 void Selectable::prevItem(){
@@ -62,8 +61,8 @@ void Selectable::prevItem(){
         selectedItemIndex--;
 }
 
-void Selectable::setNumberOfItensPerScreen(int numberOfItensPerScreen){
-    this->numberOfItensPerScreen=numberOfItensPerScreen;
+void Selectable::setNumberOfItemsPerScreen(int numberOfitemsPerScreen){
+    this->numberOfItemsPerScreen=numberOfitemsPerScreen;
 }
 void Selectable::setSpacing(int spacing){
     this->spacing=spacing;
@@ -73,35 +72,35 @@ void Selectable::setSelectedShape(BackgroundShape* selectedItem){
     this->selectedItem=selectedItem;
     this->selectedItem->setSize(itemSize.x+spacing, itemSize.y+spacing);
 }
-void Selectable::addItem(string path){
-    itens.push_back(new Core::Image(path));
+void Selectable::addItem(const std::string& path){
+    items.push_back(new Core::Image(path));
 }
 
-int Selectable::getNumberOfItensPerScreen(){
-    return numberOfItensPerScreen;
+int Selectable::getNumberOfItemsPerScreen() const{
+    return numberOfItemsPerScreen;
 }
-int Selectable::getSpacing(){
+int Selectable::getSpacing() const{
     return spacing;
 }
-BackgroundShape* Selectable::getSelectedItemBackground(){
+BackgroundShape* Selectable::getSelectedItemBackground() const{
     return selectedItem;
 }
-Image* Selectable::getItem(int index){
-    if(index < itens.size())
-        return itens.at(index);
+Image* Selectable::getItem(size_t index) const{
+    if(index < items.size())
+        return items.at(index);
     return nullptr;
 }
-vector<Image*> Selectable::getItens() const{
-    return itens;
+vector<Image*> Selectable::getItems() const{
+    return items;
 }
 
-bool Selectable::removeItem(int index){
-    if(index < itens.size()){
-        itens.erase(itens.begin()+index);
+bool Selectable::removeItem(size_t index){
+    if(index < items.size()){
+        items.erase(items.begin()+index);
         if(index==selectedItemIndex){
             if(selectedItemIndex > 0)
                 selectedItemIndex--;
-            else if(selectedItemIndex==0 && itens.size()>0)
+            else if(selectedItemIndex==0 && items.size()>0)
                 selectedItemIndex++;
         }
         return true;

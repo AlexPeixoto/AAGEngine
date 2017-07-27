@@ -47,17 +47,17 @@ namespace Adventure{
         ~MapManager();
         
         //! Carrega arquivo com definições de um mapa de tile.
-        virtual bool loadTileLayer(std::string&& mapFile);
+        virtual bool loadTileLayer(const std::string& mapFile);
         //! Carrega arquivo com definições de um mapa de colisão.
-        virtual bool loadCollisionMap(std::string&& collisionFile);
+        virtual bool loadCollisionMap(const std::string& collisionFile);
         //! Carrega arquivo com definições de um mapa de itens.
-        virtual bool loadItemMap(std::string&& itemFile);
+        virtual bool loadItemMap(const std::string& itemFile);
         //! Carrega arquivo com definições de um mapa de sons.
-        virtual bool loadSoundMap(std::string&& soundFile);
+        virtual bool loadSoundMap(const std::string& soundFile);
         //! Carrega arquivo com definições de um mapa de objetos.
-        virtual bool loadObjectMap(std::string&& objectFile);
+        virtual bool loadObjectMap(const std::string& objectFile);
         //! Carrega arquivo com definições de um mapa de warp.
-        virtual bool loadWarpMap(std::string&& warpFile);
+        virtual bool loadWarpMap(const std::string& warpFile);
         
         //! Define TileLayer.
         virtual void setTileLayer(TileLayer* tl);
@@ -88,7 +88,7 @@ namespace Adventure{
          \param height Altura do personagem no mapa.
          \return Retorna se o personagem na posição especificada com o tamanho especificado está fora ou dentro do mapa.
          */
-        virtual bool isEnd(int x, int y, int width, int height);
+        virtual bool isEnd(int x, int y, int width, int height) const;
         
         //Check if each one of the maps are nullptr
         //! Renderiza mapa.

@@ -15,20 +15,18 @@
 #include "LogManager.h"
 #include "Warp.h"
 
-using std::vector;
-
 namespace Adventure{
     //! Gerencia todos os warps no mapa.
     class WarpManager{
     private:
         //! Contem lista dos warps carregados.
-        static vector<Warp*>* warpList;
+        static std::vector<Warp*>* warpList;
         //! Verifica se já existe um warp com a id informada.
         static bool checkIfExists(int id);
     public:
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de warp será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         //! Remove os warps carregados quando o programa fechar
         ~WarpManager();
@@ -48,7 +46,7 @@ namespace Adventure{
                 5. Inteiro com a posição X de destino do warp. <br />
                 6. Inteiro com a posição Y de destino do warp.
          */
-        static bool loadFromFile(string path);
+        static bool loadFromFile(const std::string& path);
         //! Descarrega todos os warps carregados.
         /*! Descarrega todos os warps carregados tornando os ponteiros retornados invalidos. */
         static void unloadData();
@@ -66,7 +64,7 @@ namespace Adventure{
          \param destiny Posição x e y onde o personagem deve aparecer no mapa carregado.
          \return Retorna se foi possivel adicionar o warp. Caso a id informada já exista é retornado (false).
          */
-        static bool addWarp(int id, string path, string name, Point2i size, Point2i destiny);
+        static bool addWarp(int id, const std::string& path, const std::string& name, Point2i size, Point2i destiny);
         //! Remove warp com a id informada.
         /*! 
          \param id ID do warp que se deseja remover.

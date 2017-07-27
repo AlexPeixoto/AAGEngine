@@ -11,8 +11,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 namespace Adventure{
     class SoundEffectManager;
     //! Define efeito sonoro que irá tocar no mapa.
@@ -22,9 +20,9 @@ namespace Adventure{
         //! Define a id do som
         int id;
         //! Define o caminho do rquivo de som.
-        string path;
+		std::string path;
         //! Define o nome do som.
-        string name;
+        std::string name;
         //Area that the sound is player with full volume
         //! Distancia minima, em pixels, do som no qual pode-se ouvi-lo com 100% de volume.
         int minPixelDistance;
@@ -46,7 +44,7 @@ namespace Adventure{
          \param name Nome do efeito sonoro.
          \param minPixelDistance Distancia minima em pixels no qual pode-se ouvir o som com 100% do volume.
          */
-        SoundEffect(int id, string path, string name, int minPixelDistance);
+        SoundEffect(int id, const std::string& path, const std::string& name, int minPixelDistance);
         //! Remove o som da memória.
         ~SoundEffect();
         
@@ -54,27 +52,27 @@ namespace Adventure{
         virtual int getID();
         
         //! Retorna caminho do arquivo do efeito sonoro.
-        virtual string getPath() const;
+        virtual std::string getPath() const;
         //! Define caminho do arquivo do efeito sonoro.
-        virtual void setPath(string path);
+        virtual void setPath(const std::string& path);
         
         //! Retorna o nome do efeito sonoro.
-        virtual string getName() const;
+        virtual std::string getName() const;
         //! Define o nome do efeito sonoro.
-        virtual void setName(string name);
+        virtual void setName(const std::string& name);
         
         //! Retorna distancia minima na qual se pode ouvir o som com 100% de volume.
-        virtual int getMinPixelDistance();
+        virtual int getMinPixelDistance() const;
         //! Define distancia minima na qual se pode ouvir o som com 100% de volume.
         virtual void setMinPixelDistance(int minPixelDistance);
         
         //! Retorna atenuação sonora após se exceder o minPixelDistance.
-        virtual float getAttenuation();
+        virtual float getAttenuation() const;
         //! Define atenuação sonora após se exceder o minPixelDistance.
         virtual void setAttenuation(float attenuation);
         
         //! Retorna área na qual se é possivel ouvir o som em ambos os canais de som.
-        virtual int getBothSpeakersArea();
+        virtual int getBothSpeakersArea() const;
         //! Define área na qual se é possivel ouvir o som em ambos os canais de som.
         virtual void setBothSpeakersArea(int bothSpeakersArea);
     };

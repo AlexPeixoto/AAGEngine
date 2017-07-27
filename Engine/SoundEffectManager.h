@@ -16,8 +16,6 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include "SoundEffect.h"
 
-using std::vector;
-using std::for_each;
 using sf::Sound;
 using sf::SoundBuffer;
 
@@ -26,16 +24,16 @@ namespace Adventure{
     class SoundEffectManager{
     private:
         //! Contem lista dos sound effects carregados.
-        static vector<SoundEffect*>* sfxList;
+        static std::vector<SoundEffect*>* sfxList;
         //! Verifica se já existe um soundeffect com a id informada.
         static bool checkIfExists(int id);
     public:
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de sound effects será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de instancias de sound effects será o definido no relativePath + nome do arquivo.
-        static string relativeInstancePath;
+        static std::string relativeInstancePath;
         
         //! Remove os sound effects carregados quando o programa fechar
         ~SoundEffectManager();
@@ -63,7 +61,7 @@ namespace Adventure{
          Nota: Caso o som já tenha sido carregado a id é ignorada.
          \return Retorna se foi possivel abrir o arquivo.
          */
-        static bool loadFromFile(string path);
+        static bool loadFromFile(const std::string& path);
         //! Descarrega todos os sons carregados.
         /*! Descarrega todos os sons carregados tornando os ponteiros retornados invalidos. */
         static void unloadData();
@@ -80,7 +78,7 @@ namespace Adventure{
          \param maxPixelDistance Distancia maxima, em pixels, da qual se pode ouvir o som com 100% de volume.
          \return Retorna se foi possivel remover o sound effect. Caso a id informada já exista é retornado (false).
          */
-        static bool addSoundEffect(int id, string path, string name, int maxPixelDistance);
+        static bool addSoundEffect(int id, const std::string& path, const std::string& name, int maxPixelDistance);
         //! Remove SoundEffect com a id informada.
         /*!
          \param id ID do sound effect que se deseja remover.

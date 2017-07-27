@@ -11,18 +11,18 @@
 using namespace Adventure;
 using Core::Collision;
 
-string ObjectMap::relativePath="";
+std::string ObjectMap::relativePath="";
 
 ObjectMap::ObjectMap(){
-    objectList=new vector<ObjectFake*>();
+    objectList=new std::vector<ObjectFake*>();
 }
-ObjectMap::ObjectMap(string path){
-    objectList=new vector<ObjectFake*>();
+ObjectMap::ObjectMap(const std::string& path){
+    objectList=new std::vector<ObjectFake*>();
     int size;
-    string loadPath;
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -34,8 +34,8 @@ ObjectMap::ObjectMap(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f)
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb"))
         throw std::runtime_error("[Object Map] Impossible to load file: " + loadPath);
     
     fread(&size, sizeof(int), 1, f);
@@ -68,7 +68,7 @@ bool ObjectMap::collided(Core::Collision::BoundingBox b, Vector2f movement){
     return collidedWith(b, movement) >= 0;
 }
 int ObjectMap::collidedWith(Core::Collision::BoundingBox b, Vector2f movement){
-    for(int x=0; x<objectList->size(); x++){
+    for(size_t x=0; x<objectList->size(); ++x){
         ObjectFake* object=objectList->at(x);
         if(!object->collidable)
             continue;
@@ -86,53 +86,53 @@ int ObjectMap::collidedWith(Core::Collision::BoundingBox b, Vector2f movement){
     }
     return -1;
 }
-void ObjectMap::setSpriteIndex(int index, Point2i spriteIndex){
+void ObjectMap::setSpriteIndex(size_t index, Point2i spriteIndex){
     if(index >= objectList->size())
-        throw runtime_error("[Object Map] There is not an object at the specified index");
+        throw std::runtime_error("[Object Map] There is not an object at the specified index");
     objectList->at(index)->spriteIndex=spriteIndex;
 }
 void ObjectMap::setSpriteIndex(int index, int spriteIndexX, int spriteIndexY){
     setSpriteIndex(index, Point2i(spriteIndexX, spriteIndexY));
 }
-void ObjectMap::setCollidable(int index, bool collidable){
+void ObjectMap::setCollidable(size_t index, bool collidable){
     if(index >= objectList->size())
-        throw runtime_error("[Object Map] There is not an object at the specified index");
+        throw std::runtime_error("[Object Map] There is not an object at the specified index");
     objectList->at(index)->collidable=collidable;
     
 }
-Point2i ObjectMap::getSpriteIndex(int index){
+Point2i ObjectMap::getSpriteIndex(size_t index) const{
     if(index >= objectList->size())
-        throw runtime_error("[Object Map] There is not an object at the specified index");
+        throw std::runtime_error("[Object Map] There is not an object at the specified index");
     return objectList->at(index)->spriteIndex;
 }
-int ObjectMap::getSpriteIndexX(int index){
+int ObjectMap::getSpriteIndexX(size_t index) const{
     if(index >= objectList->size())
-        throw runtime_error("[Object Map] There is not an object at the specified index");
+        throw std::runtime_error("[Object Map] There is not an object at the specified index");
     return objectList->at(index)->spriteIndex.x;
 }
 
-int ObjectMap::getSpriteIndexY(int index){
+int ObjectMap::getSpriteIndexY(size_t index) const{
     if(index >= objectList->size())
-        throw runtime_error("[Object Map] There is not an object at the specified index");
+        throw std::runtime_error("[Object Map] There is not an object at the specified index");
     return objectList->at(index)->spriteIndex.y;
 }
 
-bool ObjectMap::getCollidable(int index){
+bool ObjectMap::getIsCollidable(size_t index) const{
     if(index >= objectList->size())
-        throw runtime_error("[Object Map] There is not an object at the specified index");
+        throw std::runtime_error("[Object Map] There is not an object at the specified index");
     return objectList->at(index)->collidable;
 }
 void ObjectMap::addObject(int id, int x, int y, int spriteIndexX, int spriteIndexY){
     addObject(id, Point2i(x, y), Point2i(spriteIndexX, spriteIndexY));
 }
 void ObjectMap::addObject(int id, Point2i position, Point2i spriteIndex){
-    ObjectFake* o=new ObjectFake;
+    ObjectFake* o=new ObjectFake();
     o->id=id;
     o->position=position;
     o->spriteIndex=spriteIndex;
     objectList->push_back(o);
 }
-void ObjectMap::removeObject(int index){
+void ObjectMap::removeObject(size_t index){
     if(index < objectList->size())
         objectList->at(index)=nullptr;
 }
@@ -156,7 +156,6 @@ void ObjectMap::render(Point2i position, Vector2i size){
                 o->setPosition(Point2i(objectBB.position));
                 o->setTileSize(o->getTileSize());
                 o->render();
-                
             }
         }
     }
@@ -186,7 +185,7 @@ void ObjectMap::renderPerfect(Point2i position, Vector2i size, Vector2i movement
     }
 }
 
-vector<ObjectMap::ObjectFake*>* ObjectMap::getObjectList() const{
+std::vector<ObjectMap::ObjectFake*>* ObjectMap::getObjectList() const{
     return objectList;
 }
 Core::Collision::BoundingBox ObjectMap::getBoundingBox(ObjectFake* o){

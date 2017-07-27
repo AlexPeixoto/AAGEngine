@@ -9,8 +9,8 @@
 #include "WarpManager.h"
 
 using namespace Adventure;
-vector<Warp*> *WarpManager::warpList=new vector<Warp*>();
-string WarpManager::relativePath="";
+std::vector<Warp*> *WarpManager::warpList=new std::vector<Warp*>();
+std::string WarpManager::relativePath="";
 
 WarpManager::~WarpManager(){
     if(warpList!=nullptr){
@@ -43,11 +43,11 @@ bool WarpManager::checkIfExists(int id){
     
 }
 
-bool WarpManager::loadFromFile(string path){
-    string loadPath;
+bool WarpManager::loadFromFile(const std::string& path){
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -59,9 +59,9 @@ bool WarpManager::loadFromFile(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen_s(loadPath.c_str(), "rb");
-    if(!f){
-        throw runtime_error("[Warp Manager] Could not open: " + loadPath);
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb")){
+        throw std::runtime_error("[Warp Manager] Could not open: " + loadPath);
         return false;
     }
     int id=-1;
@@ -86,10 +86,10 @@ bool WarpManager::loadFromFile(string path){
         fread(&w->size.y, sizeof(int), 1, f);
         
         fread(_path, sizeof(char), 255, f);
-        w->path=string(_path);
+        w->path=std::string(_path);
         
         fread(name, sizeof(char), 100, f);
-        w->name=string(name);
+        w->name=std::string(name);
         
         fread(&w->destiny.x, sizeof(int), 1, f);
         fread(&w->destiny.y, sizeof(int), 1, f);
@@ -103,17 +103,18 @@ bool WarpManager::loadFromFile(string path){
     return true;
 }
 void WarpManager::unloadData(){
-    for(int x=0; x<warpList->size(); x++)
+    for(size_t x=0; x<warpList->size(); x++)
         delete warpList->at(x);
     warpList->clear();
 }
 bool WarpManager::addWarp(Warp* warp){
-    if(WarpManager::getWarp(warp->id))return false;
+    if(WarpManager::getWarp(warp->id))
+		return false;
     WarpManager::warpList->push_back(warp);
     return true;
     
 }
-bool WarpManager::addWarp(int id, string path, string name, Point2i size, Point2i destiny){
+bool WarpManager::addWarp(int id, const std::string& path, const std::string& name, Point2i size, Point2i destiny){
     if(WarpManager::getWarp(id))return false;
     else{
         Warp* w=new Warp(id, path, name, size, destiny);

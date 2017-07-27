@@ -33,7 +33,7 @@ namespace Adventure{
             //! Carrega imagem de tiles contida no header.
             void loadTiles();
             //! Carrega nivel com base no arquivo passado por parametro.
-            void loadLevel(string path);
+            void loadLevel(const std::string& path);
             
             //! Mapa de tiles.
             int16_t* tileData;
@@ -41,7 +41,7 @@ namespace Adventure{
             Core::Image* tileImage;
         public:
             //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de tiles será o definido no relativePath + nome do arquivo.
-            static string relativePath;
+            static std::string relativePath;
             //! Inicializa ponteiros de estrutura e dados como inválidos.
             TileMap();
             //! Inicializa mapa de tiles utilizando o arquivo informado.
@@ -52,7 +52,7 @@ namespace Adventure{
              Inteiro contendo a altura do bloco.<br />
              Vetor de inteiros de 16 bits do tamanho numero_de_blocos_eixo_x*numero_de_blocos_eixo_y.
              */
-            TileMap(string path);
+            TileMap(const std::string& path);
             //! Apaga estruturas do tilemap.
             ~TileMap();
             
@@ -109,7 +109,7 @@ namespace Adventure{
              \param tileSize Tamanho em pixels de cada bloco.
              \param path Caminho da imagem que será carregada
              */
-            virtual void initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, string path);
+            virtual void initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, const std::string& path);
             //! Inicializa manualmente um mapa.
             /*! Inicializa manualmente um mapa.
              \param tileBlockX Número de blocos no eixo x.
@@ -118,7 +118,7 @@ namespace Adventure{
              \param tileSizeY Tamanho em pixels do bloco no eixo y.
              \param path Caminho da imagem que será carregada
              */
-            virtual void initializeData(int tileBlockX, int tileBlockY, int tileSizeX, int tileSizeY, string path);
+            virtual void initializeData(int tileBlockX, int tileBlockY, int tileSizeX, int tileSizeY, const std::string& path);
             
             //Clear the data structure fill it with zero
             //! Preenche toda a estrutura do mapa com o valor 0.

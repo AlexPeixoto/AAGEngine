@@ -23,7 +23,7 @@ namespace Adventure{
         //! Posição da informação.
         Point2i position;
         //! Texto da informação.
-        string text;
+        std::string text;
         //! Tamanho da informação na tela.
         Vector2f scale;
         //! Cor do texto
@@ -40,7 +40,7 @@ namespace Adventure{
          \param position Posição do texto na tela.
          \param Cor do texto na tela.
          */
-        Information(TextControl* textControl, string text, Vector2f scale, Point2i position, Color color);
+        Information(TextControl* textControl, const std::string& text, Vector2f scale, Point2i position, Color color);
         
         //! Renderiza o texto.
         virtual void render();
@@ -50,18 +50,18 @@ namespace Adventure{
         //! Define tamanho do texto.
         virtual void setScale(Vector2f scale);
         //! Define o texto.
-        virtual void setText(string text);
+        virtual void setText(const std::string& text);
         //! Define posição do texto na tela.
         virtual void setPosition(Point2i position);
         
         //! Retorna cor do texto.
-        virtual Color getColor();
+        virtual Color getColor() const;
         //! Retorna tamanho do texto.
-        virtual Vector2f getScale();
+        virtual Vector2f getScale() const;
         //! Retorna o texto.
-        virtual string getText();
+        virtual std::string getText() const;
         //! Retorna posição do texto.
-        virtual Point2i getPosition();
+        virtual Point2i getPosition() const;
         
     };
 }

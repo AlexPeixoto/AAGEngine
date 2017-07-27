@@ -162,7 +162,7 @@ void BackgroundMusic::intersectWith(const std::string& path, IntersectMode im, l
     std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else

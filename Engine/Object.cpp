@@ -10,32 +10,28 @@
 
 using namespace Adventure;
 
-Object::Object(int id, string path, string name, int tileWidth, int tileHeight, bool randomize, bool load) : path(path), name(name), randomize(randomize){
+Object::Object(int id, const std::string& path, const std::string& name, int tileWidth, int tileHeight, bool randomize, bool load) : path(path), name(name), randomize(randomize){
     setTileSize(tileWidth, tileHeight);
     objectSprite=nullptr;
-    properties=new map<string, string>();
-    items=new map<int, int>();
+    properties=new std::map<std::string, std::string>();
+    items=new std::map<int, int>();
     if(load)
         loadSprite();
     
 }
-Object::Object(int id, string path, string name, Vector2i tileSize, bool randomize, bool load){
+Object::Object(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool randomize, bool load){
     Object::Object(id, path, name, tileSize.x, tileSize.y, randomize, load);
 }
 Object::Object(){
-    properties=new map<string, string>();
-    items=new map<int, int>();
+    properties=new std::map<std::string, std::string>();
+    items=new std::map<int, int>();
     objectSprite=nullptr;
 }
 Object::~Object(){
-    if(objectSprite!=nullptr){
-        delete objectSprite;
-        objectSprite=nullptr;
-    }
-    if(properties!=nullptr){
-        delete properties;
-        properties=nullptr;
-    }
+    delete objectSprite;
+    delete properties;
+	objectSprite = nullptr;
+	properties = nullptr;
 }
 
 void Object::render(){
@@ -56,10 +52,10 @@ bool Object::loadSprite(){
         return true;
     return false;
 }
-void Object::setName(string name){
+void Object::setName(const std::string& name){
     this->name=name;
 }
-void Object::setPath(string path, bool load){
+void Object::setPath(const std::string& path, bool load){
     this->path=path;
     if(load){
         if(objectSprite!=nullptr){
@@ -123,27 +119,27 @@ string Object::getName() const{
 string Object::getPath() const{
     return path;
 }
-Point2i Object::getPosition(){
+Point2i Object::getPosition() const{
     return position;
 }
-Vector2i Object::getTileSize(){
+Vector2i Object::getTileSize() const{
     return tileSize;
 }
-bool Object::getRandomize(){
+bool Object::getRandomize() const{
     return randomize;
 }
-void Object::addProperty(string key, string value){
+void Object::addProperty(const std::string& key, const std::string& value){
     if(properties==nullptr)
-        properties=new map<string, string>();
+        properties=new std::map<std::string, std::string>();
     if(properties->find(key)!=properties->end())
         throw  runtime_error("[Object] Cannot add a duplicated key on the properties list");
     properties->insert(make_pair(key, value));
     
 }
-int Object::getId(){
+int Object::getId() const{
     return this->id;
 }
-bool Object::updateProperty(string key, string value){
+bool Object::updateProperty(const std::string& key, const std::string& value){
     try {
         properties->at(key)=value;
         return true;
@@ -153,12 +149,12 @@ bool Object::updateProperty(string key, string value){
     }
 }
 //If the property dont exists the out of range exception must be intercepted by the function above in the stack
-string Object::getProperty(string key){
+std::string Object::getProperty(const std::string& key) const{
     if(properties->find(key)==properties->end())
         throw  runtime_error("[Object] Cannot find the property with the specified key");
     return properties->at(key);
 }
-bool Object::removeProperty(string key){
+bool Object::removeProperty(const std::string& key){
     map<string, string>::const_iterator p;
     if(properties!=nullptr)
         for (auto& x: *properties) {
@@ -186,7 +182,7 @@ bool Object::updateItem(int id, int quantity){
         return false;
     }
 }
-int Object::getItemQuantity(int id){
+int Object::getItemQuantity(int id) const{
     if(items->find(id)==items->end())
         throw  runtime_error("[Object] Cannot find the item with the specified id");
     return items->at(id);
@@ -202,12 +198,12 @@ bool Object::removeItem(int id){
         }
     return false;
 }
-int Object::getRow(){
+int Object::getRow() const{
     return tileIndex.y;
 }
-int Object::getColumn(){
+int Object::getColumn() const{
     return tileIndex.x;
 }
-Point2i Object::getTileIndex(){
+Point2i Object::getTileIndex() const{
     return tileIndex;
 }

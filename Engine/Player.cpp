@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Alex Peixoto. All rights reserved.
 //
 
+/*
+ * This is a custom implementation of the Character, it is intended to the developer to implement its own player.
+ */
 #include "Player.h"
 
 using namespace Adventure;
-using namespace std;
-//Player::Player();
-Player::Player(string idleSheet, int tileWidth, int tileHeight):Character(idleSheet, tileWidth, tileHeight){}
-Player::Player(string idleSheet, Vector2i tileSize) :Character(idleSheet, tileSize){}
+
+Player::Player(const std::string& idleSheet, int tileWidth, int tileHeight):Character(idleSheet, tileWidth, tileHeight){}
+Player::Player(const std::string& idleSheet, Vector2i tileSize) :Character(idleSheet, tileSize){}
 Player::~Player(){}
 void Player::process(){}
 void Player::render(){
@@ -20,7 +22,6 @@ void Player::render(){
 }
 
 void Player::updateByKeyboard(Directions direction, float deltaTime){
-    
     //FACE DESIGNED DIRECTION
     Character::updateDirection(direction, true);
     Vector2i destiny;

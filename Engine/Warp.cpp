@@ -10,15 +10,15 @@
 
 using namespace Adventure;
 Warp::Warp(){}
-Warp::Warp(int id, string path, string name, int width, int height, int destinyX, int destinyY)
+Warp::Warp(int id, const std::string& path, const std::string& name, int width, int height, int destinyX, int destinyY)
 : id(id), path(path), name(name), size(Vector2i(width, height)), destiny(Point2i(destinyX, destinyY))
 {}
 
-Warp::Warp(int id, string path, string name, Vector2i size, Point2i destiny): id(id), path(path), name(name), size(size), destiny(destiny){}
+Warp::Warp(int id, const std::string& path, const std::string& name, Vector2i size, Point2i destiny): id(id), path(path), name(name), size(size), destiny(destiny){}
 
 Warp::~Warp(){}
 
-void Warp::setPath(string path){
+void Warp::setPath(const std::string& path){
     this->path=path;
 }
 void Warp::setSize(int width, int height){
@@ -33,22 +33,22 @@ void Warp::setDestiny(int x, int y){
 void Warp::setDestiny(Point2i destiny){
     this->destiny=destiny;
 }
-void Warp::setName(string name){
+void Warp::setName(const std::string& name){
     this->name=name;
 }
 
-string Warp::getPath() const{
+std::string Warp::getPath() const{
     return path;
 }
-string Warp::getName() const{
+std::string Warp::getName() const{
     return name;
 }
-Vector2i Warp::getSize(){
+Vector2i Warp::getSize() const{
     return size;
 }
-Point2i Warp::getDestiny(){
+Point2i Warp::getDestiny() const{
     return destiny;
 }
-int Warp::getId(){
+int Warp::getId() const{
     return id;
 }

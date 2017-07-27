@@ -15,15 +15,15 @@ using namespace Adventure;
 std::string WarpMap::relativePath="";
 
 WarpMap::WarpMap(){
-    warpList=new vector<WarpFake*>();
+    warpList=new std::vector<WarpFake*>();
 }
-WarpMap::WarpMap(string path){
-    warpList=new vector<WarpFake*>();
+WarpMap::WarpMap(const std::string& path){
+    warpList=new std::vector<WarpFake*>();
     int size;
     std::string loadPath;
-    if(relativePath.size()>0){
+    if(!relativePath.empty()){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -35,8 +35,8 @@ WarpMap::WarpMap(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f)
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb"))
         throw std::runtime_error("[Warp Map] Impossible to load file: " + path);
     fread(&size, sizeof(int), 1, f);
     for(int x=0; x<size; x++){
@@ -73,7 +73,7 @@ std::vector<WarpMap::WarpFake*>* WarpMap::getWarpList() const{
     return warpList;
 }
 
-Core::Collision::BoundingBox WarpMap::getBoundingBox(WarpFake* w){
+Core::Collision::BoundingBox WarpMap::getBoundingBox(WarpFake* w) const{
     Core::Collision::BoundingBox b;
     Warp* _w= WarpManager::getWarp(w->id);
     b.position=Point2f(static_cast<int>(w->position.x), static_cast<int>(w->position.y));
@@ -81,17 +81,20 @@ Core::Collision::BoundingBox WarpMap::getBoundingBox(WarpFake* w){
     return b;
 }
 void WarpMap::warpProcessCollision(Core::Collision::BoundingBox b, Vector2f movement, int* changeTo){
+	if (changeTo == nullptr)
+		return;
+
     Core::Collision::BoundingBox w;
     Warp* _warp=nullptr;
-        for(auto &warp : *warpList){
-            w.position=(Point2f)warp->position + movement;
-            _warp=WarpManager::getWarp(warp->id);
-            if(_warp==nullptr)
-                continue;
-            w.size=(Vector2f)_warp->getSize();
+    for(auto &warp : *warpList){
+        w.position=(Point2f)warp->position + movement;
+        _warp=WarpManager::getWarp(warp->id);
+        if(_warp==nullptr)
+            continue;
+        w.size=(Vector2f)_warp->getSize();
         
-            if(Collision::collidedAABB(b, w))
-                (*changeTo)=warp->id;
+        if(Collision::collidedAABB(b, w))
+            (*changeTo)=warp->id;
     }
-    
+   
 }

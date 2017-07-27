@@ -77,22 +77,22 @@ namespace Adventure{
         //! Define uma opção dentro de uma pergunta.
         typedef struct Option{
             int id; /*!< Id da opção. */
-            string text; /*!< Texto da opção. */
+            std::string text; /*!< Texto da opção. */
         } Option;
         
         //! Define uma pergunta.
         typedef struct Question{
             int id; /*!< Id da pergunta. */
-            string title; /*!< Titulo da pergunta. */
+            std::string title; /*!< Titulo da pergunta. */
             std::function<void(int, int, int, Dialog*)> func; /*!< Ponteiro para função de callback da pergunta. */
-            vector<Option> options; /*!< Opções da pergunta. */
+            std::vector<Option> options; /*!< Opções da pergunta. */
             int widestSize; /*!< Largura da maior opção na pergunta. */
         } Question;
         
         //! Define um texto de uma conversa.
         typedef struct Speech{
             int id; /*!< Id do texto. */
-            string speech; /*!< Texto. */
+            std::string speech; /*!< Texto. */
             bool isEnd; /*!< Define se após este texto o dialog deve ser encerrado. */
         } Speech;
         //! Define fundo do texto.
@@ -104,14 +104,14 @@ namespace Adventure{
         
         //Vector of each text, so if i have dialogBoxSize variation the TextControl handles that.
         //! Vetor contendo cada um dos textos.
-        vector<Speech> speeches;
+        std::vector<Speech> speeches;
         
         //Maps after what text i should present a dialog
         //! Vetor mapeando a associação de cada texto com uma pergunta.
-        vector<DialogHandle> dialogToQuestion;
+		std::vector<DialogHandle> dialogToQuestion;
         //first => ID, second => Text
         //! Vetor de perguntas.
-        vector<Question> questions;
+		std::vector<Question> questions;
         
         //DialogBox and OptionBox Position
         //! Posição da caixa de dialogo.
@@ -130,7 +130,7 @@ namespace Adventure{
         bool optionBoxByLargest;
         
         //! Retorna iterator para a opção com o id especificado.
-        vector<Question>::iterator getQuestion(int id);
+		std::vector<Question>::iterator getQuestion(int id) const;
         
         //! Retorna, dentro de um vetor de opções, o tamanho da maior opção.
         int returnWidestOptionSize(vector<Option> options);
@@ -147,7 +147,7 @@ namespace Adventure{
             5. Define a cor de todos os textos como R=100, G=100, B=100, A-255.
             6. Invalida o tamanho da caixa do texto, pergunta e opção.
          */
-        Dialog(string font);
+        Dialog(const std::string& font);
         //! Descarrega fonte.
         ~Dialog();
         //function receives the speech id, question id, option id, and an pointer of the dialog
@@ -158,7 +158,7 @@ namespace Adventure{
          \param func Contem a função de callback da pergunta que será chamada quando uma opção for selecionada. Os parametros recebidos serão Id do texto, Id da pergunta, Id da opção e ponteiro para o dialogo.
          \return Retorna se a pergunta foi adicionada. Caso ja exista uma pergunta com a id informada é retornado (false).
          */
-        bool addQuestion(int id, string title, function<void(int, int, int, Dialog*)> func);
+        bool addQuestion(int id, const std::string& title, std::function<void(int, int, int, Dialog*)> func);
         //! Remove uma pergunta com a id especificada.
         /*! Remove uma pergunta com a id especificada.
          \param id Id da pergunta a ser removida.
@@ -175,7 +175,7 @@ namespace Adventure{
          \return Retorna se a opção foi adicionado. Caso ja exista uma opção com a id informada é retornado (false).
          \throw runtime_error.
          */
-        bool addOption(int questionId, int id, string option);
+        bool addOption(int questionId, int id, const std::string& option);
         //! Remove uma opção com a id especificada.
         /*! Remove uma opção com a id especificada.
          \param questionId Id da pergunta que se deseja remover uma opção.
@@ -218,7 +218,7 @@ namespace Adventure{
          */
         bool nextSpeech();
         //! Retorna a id do texto atual.
-        int getSpeechId();
+        int getSpeechId() const;
         
         //Check if the current text have a question associated to it
         //! Retorna se existe alguma pergunta associada ao texto atual.
@@ -226,12 +226,12 @@ namespace Adventure{
         //! Renderiza pergunta.
         void renderQuestion();
         //! Retorna id da pergunta.
-        int getQuestionId();
+        int getQuestionId() const;
         
         //! Define se deve-se renderizar uma pergunta.
         void setRenderingQuestion(bool renderingQuestion);
         //! Retorna se deve-se renderizar uma pergunta.
-        bool getRenderingQuestion();
+        bool getRenderingQuestion() const;
         
         //Select next option on the active question
         //! Seleciona a proxima pergunta da pergunta atual.
@@ -247,7 +247,7 @@ namespace Adventure{
         //! É executado o functor para a pergunta passando a opção atual como parametro
         void selectOption();
         //! Retorna a id da opção selecionada.
-        int getOptionId();
+        int getOptionId() const;
         
         //! Define a cor/borda de fundo do texto.
         void setSpeechBoxShape(BackgroundShape* speechBoxShape);
@@ -257,18 +257,18 @@ namespace Adventure{
         //! Define o a cor/borda de fundo da pergunta.
         void setQuestionBoxShape(BackgroundShape* questionBoxShape);
         //! Retorna a cor/borda de fundo da pergunta.
-        BackgroundShape* getQuestionBoxShape();
+        BackgroundShape* getQuestionBoxShape() const;
         
         //! Define o a cor/borda de fundo da opção.
         void setOptionShape(BackgroundShape* optionShape);
         //! Retorna a cor/borda de fundo da opção.
-        BackgroundShape* getOptionShape();
+        BackgroundShape* getOptionShape() const;
         
         //To manage the sizes
         //! Define a escala da fonte.
         void setFontScale(float scale);
         //! Retorna a escala da fonte.
-        float getFontScale();
+        float getFontScale() const;
         
         //! Define a tela onde esta sendo renderizado o texto.
         void static setWindow(sf::RenderWindow *window);
@@ -298,7 +298,7 @@ namespace Adventure{
         /*! Retorna Speech com a id informada.
          \return Retorna speech com a id informada. Caso não encontrar nenhum Speech com a id informada é retornado um Speech com a id=-1.
          */
-        Speech getSpeech(int id);
+        Speech getSpeech(int id) const;
         
         //! Define o tamanho da caixa de dialogo.
         void setDialogBoxSize(Vector2i size);
@@ -306,11 +306,11 @@ namespace Adventure{
         void setDialogBoxSize(int width, int height);
         
         //! Retorna a largura da caixa de dialogo.
-        int getDialogBoxWidth();
+        int getDialogBoxWidth() const;
         //! Retorna a altura da caixa de dialogo.
-        int getDialogBoxHeight();
+        int getDialogBoxHeight() const;
         //! Retorna o tamanho da caixa de dialogo.
-        Vector2i getDialogBoxSize();
+        Vector2i getDialogBoxSize() const;
     
         //! Define a posiç!ao da caixa de dialogo.
         void setDialogBoxPosition(Point2i position);
@@ -318,11 +318,11 @@ namespace Adventure{
         void setDialogBoxPositon(int x, int y);
         
         //! Retorna a posição da caixa de dialogo no eixo X.
-        int getDialogBoxX();
+        int getDialogBoxX() const;
         //! Retorna a posição da caixa de dialogo no eixo Y.
-        int getDialogBoxY();
+        int getDialogBoxY() const;
         //! Retorna a posição da caixa de dialogo.
-        Point2i getDialogBoxPosition();
+        Point2i getDialogBoxPosition() const;
         
         //! Define o tamanho da caixa que contem a pergunta.
         void setQuestionBoxSize(Vector2i size);
@@ -330,11 +330,11 @@ namespace Adventure{
         void setQuestionBoxSize(int width, int height);
         
         //! Retorna a largura da caixa que contem a pergunta.
-        int getQuestionBoxWidth();
+        int getQuestionBoxWidth() const;
         //! Retorna a altura da caixa que contem a pergunta.
-        int getQuestionBoxHeight();
+        int getQuestionBoxHeight() const;
         //! Retorna o tamanho da caixa que contem a pergunta.
-        Vector2i getQuestionBoxSize();
+        Vector2i getQuestionBoxSize() const;
         
         //! Define a posição da caixa de pergunta.
         void setQuestionBoxPosition(Point2i position);
@@ -342,26 +342,26 @@ namespace Adventure{
         void setQuestionBoxPositon(int x, int y);
         
         //! Retorna a posiçãp da caixa de pergunta no eixo X.
-        int getQuestionBoxX();
+        int getQuestionBoxX() const;
         //! Retorna a posiçãp da caixa de pergunta no eixo Y.
-        int getQuestionBoxY();
+        int getQuestionBoxY() const;
         //! Retorna posição da caixa de pergunta.
-        Point2i getQuestionBoxPosition();
+        Point2i getQuestionBoxPosition() const;
         
         //! Define se o tamanho da opção deve ser o tamanho da maior opção no vetor.
         void setQuestionBoxByLargest(bool largest);
         //! Retorna se o tamanho da opção deve ser o tamanho da maior opção no vetor.
-        bool getQuestionBoxByLargest();
+        bool getQuestionBoxByLargest() const;
         
         //! Define o tamanho da borda interna do texto.
         void setSpeechInnerBorder(int speechInnerBorder);
         //! Retorna o tamanho da borda interna do texto.
-        int getSpeechInnerBorder();
+        int getSpeechInnerBorder() const;
         
         //! Define o tamanho da borda interna da opção.
         void setOptionInnerBorder(int optionInnerBorder);
         //! Retorna o tamanho da borda interna da opção.
-        int getOptionInnerBorder();
+        int getOptionInnerBorder() const;
         
         //! Define a cor da fonte do texto.
         void setSpeechColor(Color speechColor);
@@ -369,7 +369,7 @@ namespace Adventure{
         void setSpeechColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
         
         //! Retorna a cor da fonte do texto.
-        Color getSpeechColor();
+        Color getSpeechColor() const;
         
         //! Define a cor da fonte da pergunta.
         void setQuestionColor(Color questionColor);
@@ -377,7 +377,7 @@ namespace Adventure{
         void setQuestionColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
         
         //! Retorna a cor da fonte da pergunta.
-        Color getQuestionColor();
+        Color getQuestionColor() const;
         
         //! Define a cor da fonte da opção.
         void setOptionColor(Color optionColor);
@@ -385,7 +385,7 @@ namespace Adventure{
         void setOptionColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
         
         //! Retorna a cor da fonte da opção.
-        Color getOptionColor();
+        Color getOptionColor() const;
 
     };
 }

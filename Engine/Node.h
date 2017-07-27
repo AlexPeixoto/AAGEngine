@@ -26,7 +26,7 @@ namespace Core{
         //! Ponteiro para o nó pai
         Node* parent;
         //! Lista de nós adjacentes
-        vector<Node*> childNode;
+        std::vector<Node*> childNode;
         //! ID do nó, sendo essa a posição X e Y na matriz
         Point2i id;
         //! Custo para se mover deste nó até o destino
@@ -67,7 +67,7 @@ namespace Core{
         bool removeNode(Node* child);
         
         //! Retorna a ID do nó
-        Point2i getID();
+        Point2i getID() const;
         //! Define a ID do nó
         /*!
          \param x Ponto x do nó na matriz
@@ -76,25 +76,25 @@ namespace Core{
         void setID(int x, int y);
         
         //! Define o custo de F
-        void setCostF(int costF);
+        void setFCost(int costF);
         //! Retorna o custo de F
-        int getCostF();
+        int getFCost() const;
         
         //! Define o custo de G
-        void setCostG(int costG);
+        void setGCost(int costG);
         //! Retorna o custo de G
-        int getCostG();
+        int getGCost() const;
         
         //! Define o custo de movimento do nó
-        void setCostMovement(int costMovement);
+        void setMovemenetCost(int costMovement);
         //! Retorna o custo de movimento do nó
-        int getCostMovement();
+        int getMovementCost() const;
         
         //! Define o nó pai
         void setParent(Node* parent);
         
         //! Retorna o nó pai
-        Node* getParent();
+        Node* getParent() const;
         
         //! Retorna todos os filhos do nó
         std::vector<Node*> getNodes() const;
@@ -102,7 +102,7 @@ namespace Core{
         //! Define o nivel de clearance do nó
         void setClearance(int clearance);
         //! Retorna o nivel de clearance do nó
-        int getClearance();
+        int getClearance() const;
         
     };
 }

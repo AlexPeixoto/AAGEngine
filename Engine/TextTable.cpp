@@ -11,9 +11,9 @@
 
 using namespace Core;
 
-string TextTable::relativePath="";
+std::string TextTable::relativePath="";
 
-map<string, string> TextTable::text;
+std::map<std::string, std::string> TextTable::text;
 /* Load using the format
     Key
     Text Text Text Text
@@ -24,11 +24,11 @@ map<string, string> TextTable::text;
     Text Text Text Text
     EOK
  */
-void TextTable::loadFromFile(string path){
-    string loadPath;
+void TextTable::loadFromFile(const std::string& path){
+	std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex != std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -39,13 +39,15 @@ void TextTable::loadFromFile(string path){
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
-    ifstream file(loadPath);
+	std::ifstream file(loadPath);
     if(!file.is_open())
         throw std::runtime_error("[TextTable] Impossible to load file: " + loadPath);
-    string line;
-    string key;
-    stringstream text;
+	std::string line;
+	std::string key;
+	std::stringstream text;
     int mode=0;
+	//Mode 0 = reading key
+	//Mode 1 = reading text
     while(!file.eof()){
         getline(file, line);
         if(mode==0){
@@ -53,45 +55,47 @@ void TextTable::loadFromFile(string path){
             key=line.substr(0, line.length()-1);
             mode=1;
         }
-        else if( mode==1 && line!="EOK" )
-            text<<line;
+		else if (mode == 1 && line != "EOK") {
+			text << line;
+		}
         else if(line == "EOK"){
-            map<string, string>::iterator it;
-            if(((it=TextTable::text.find(key))!=TextTable::text.end())){
+			std::map<std::string, std::string>::iterator it;
+            if((it=TextTable::text.find(key))!=TextTable::text.end()){
                 it->second=text.str();
             }
-            else
-                TextTable::text.insert(make_pair(key, text.str()));
+			else {
+				TextTable::text.insert(make_pair(key, text.str()));
+			}
             text.str("");
             mode=0;
         }
     }
 }
-string TextTable::getByKey(string key){
-    map<string, string>::iterator it;
+std::string TextTable::getByKey(const std::string& key) const{
+	std::map<std::string, std::string>::iterator it;
     if(((it=TextTable::text.find(key))!=TextTable::text.end())){
         return it->second;
     }
     throw std::runtime_error("[TextTable] Could not find the key: " + key);
 }
-bool TextTable::addKeyValue(string key, string value){
-    map<string, string>::iterator it;
+bool TextTable::addKeyValue(const std::string& key, const std::string& value){
+	std::map<std::string, std::string>::iterator it;
     if(((it=TextTable::text.find(key))!=TextTable::text.end())){
         return false;
     }
     TextTable::text.insert(make_pair(key, value));
     return true;
 }
-bool TextTable::updateKeyValue(string key, string value){
-    map<string, string>::iterator it;
+bool TextTable::updateKeyValue(const std::string& key, const std::string& value){
+	std::map<std::string, std::string>::iterator it;
     if(((it=TextTable::text.find(key))!=TextTable::text.end())){
         it->second=value;
         return true;
     }
     return false;
 }
-bool TextTable::removeKey(string key){
-    map<string, string>::iterator it;
+bool TextTable::removeKey(const std::string& key){
+	std::map<std::string, std::string>::iterator it;
     if(((it=TextTable::text.find(key))!=TextTable::text.end())){
         TextTable::text.erase(it);
         return true;
@@ -102,6 +106,6 @@ bool TextTable::removeKey(string key){
 void TextTable::removeAll(){
     TextTable::text.clear();
 }
-map<string, string> TextTable::getAllKeyValues(){
+std::map<std::string, std::string> TextTable::getAllKeyValues() const{
     return text;
 }

@@ -77,7 +77,7 @@ namespace Adventure{
          \param name Nome do objeto.
          \param tileSize Largura e altura do tile do objeto.
          */
-        static bool addItem(int id, std::string&& path, std::string&& name, Vector2i tileSize);
+        static bool addItem(int id, const std::string& path, const std::string& name, Vector2i tileSize);
         //! Remove objeto com a id informada.
         /*!
          \param id ID do objeto que se deseja remover.

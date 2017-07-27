@@ -10,15 +10,15 @@
 
 using namespace Adventure;
 
-vector<Object*> *ObjectManager::objectList=new vector<Object*>();
-string ObjectManager::relativePath="";
+std::vector<Object*> *ObjectManager::objectList=new std::vector<Object*>();
+std::string ObjectManager::relativePath="";
 
 ObjectManager::~ObjectManager(){
     if(objectList!=nullptr){
 #ifndef _WIN32
-        for_each(objectList->begin(), objectList->end(), default_delete<Object>());
+        std::for_each(objectList->begin(), objectList->end(), default_delete<Object>());
 #else
-for_each(objectList->begin(), objectList->end(),
+std::for_each(objectList->begin(), objectList->end(),
 	[](Object* o){
 	delete o;
 });
@@ -28,7 +28,7 @@ for_each(objectList->begin(), objectList->end(),
     }
 }
 
-void ObjectManager::render(int id, Point2i position){
+void ObjectManager::render(size_t id, Point2i position){
     for(const auto& object : *objectList)
         if(object->id == id){
             if(object->objectSprite==nullptr){
@@ -37,26 +37,24 @@ void ObjectManager::render(int id, Point2i position){
             }
             object->render();
         }
-    
 }
 
-Object* ObjectManager::getObject(int id) {
+Object* ObjectManager::getObject(size_t id) {
     for(const auto& object : *objectList)
         if(object->id == id)
             return object;
     return nullptr;
 }
-bool ObjectManager::loadSprite(int id){
+bool ObjectManager::loadSprite(size_t id){
     for(const auto& object : *objectList)
         if(object->id == id){
             object->loadSprite();
             return true;
         }
     return false;
-    
 }
 
-bool ObjectManager::checkIfExists(int id){
+bool ObjectManager::checkIfExists(size_t id){
     for(const auto& object : *objectList)
         if(object->id == id)
             return true;
@@ -64,11 +62,11 @@ bool ObjectManager::checkIfExists(int id){
 }
 
 //Need to check first if that item exists
-bool ObjectManager::loadFromFile(string path){
-    string loadPath;
+bool ObjectManager::loadFromFile(const std::string& path){
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -80,9 +78,9 @@ bool ObjectManager::loadFromFile(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f){
-        throw runtime_error("[Object Manager] Could not open: " + loadPath);
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb")){
+        throw std::runtime_error("[Object Manager] Could not open: " + loadPath);
         return false;
     }
     Object* o=nullptr;
@@ -111,10 +109,10 @@ bool ObjectManager::loadFromFile(string path){
         fread(&o->tileSize.y, sizeof(int), 1, f);
         
         fread(_path, sizeof(char), 255, f);
-        o->path=string(_path);
+        o->path=std::string(_path);
         
         fread(name, sizeof(char), 100, f);
-        o->name=string(name);
+        o->name=std::string(name);
         
         fread(&o->randomize, sizeof(bool), 1, f);
         int pSize;
@@ -138,12 +136,12 @@ bool ObjectManager::loadFromFile(string path){
             //Now i will write THE value
             fread(kValue, sizeof(char), vSize, f);
             
-            if(o->properties->find(string(kChar))!=o->properties->end()){
+            if(o->properties->find(std::string(kChar))!=o->properties->end()){
                 Debug::LogManager::log(Debug::LogLevel::WARNING, "[Object Manager]Skiping object property on loadFromFile with objectId: %T and propertyKey: %T" , id, kChar);
                 continue;
             }
             
-            o->properties->insert(make_pair(string(kChar), string(kValue)));
+            o->properties->insert(std::make_pair(std::string(kChar), std::string(kValue)));
         }
         int iSize, itemId, itemQuantity;
         fread(&iSize, sizeof(int), 1, f);
@@ -154,7 +152,7 @@ bool ObjectManager::loadFromFile(string path){
                 Debug::LogManager::log(Debug::LogLevel::WARNING, "[Object Manager]Skiping object item on loadFromFile with objectId: %T and itemId: %T" , id, itemId);
                 continue;
             }
-            o->items->insert(make_pair(itemId, itemQuantity));
+            o->items->insert(std::make_pair(itemId, itemQuantity));
         }
         
         if(skipLater){
@@ -178,7 +176,7 @@ bool ObjectManager::addObject(Object* object){
     ObjectManager::objectList->push_back(object);
     return true;
 }
-bool ObjectManager::addObject(int id, string path, string name, Vector2i tileSize, bool randomize){
+bool ObjectManager::addObject(size_t id, const std::string& path, const std::string& name, Vector2i tileSize, bool randomize){
     if(ObjectManager::getObject(id))return false;
     else{
         Object* o=new Object(id, path, name, tileSize, randomize);
@@ -186,7 +184,7 @@ bool ObjectManager::addObject(int id, string path, string name, Vector2i tileSiz
         return true;
     }
 }
-bool ObjectManager::removeObject(int id){
+bool ObjectManager::removeObject(size_t id){
     for(auto i=ObjectManager::objectList->begin(); i!=ObjectManager::objectList->end(); i++)
         if((*i)->id == id){
             ObjectManager::objectList->erase(i);
@@ -194,19 +192,19 @@ bool ObjectManager::removeObject(int id){
         }
     return false;
 }
-int ObjectManager::getRandomItem(int id){
+size_t ObjectManager::getRandomItem(size_t id){
     Object* o=getObject(id);
     //Load all the ids inside a vector
-    vector<int> ids;
+    std::vector<int> ids;
     for(auto i=o->items->begin(); i!=o->items->end(); i++)
         ids.push_back(i->first);
     
-    int max=(int)o->items->size()-1;
+	size_t max=o->items->size()-1;
     // Seed with a real random value, if available
     std::random_device rd;
     
     std::default_random_engine e1(rd());
-    std::uniform_int_distribution<int> uniform_dist(0, max);
+    std::uniform_int_distribution<size_t> uniform_dist(0, max);
     int index=uniform_dist(e1);
     return o->items->at(ids.at(index));
 }

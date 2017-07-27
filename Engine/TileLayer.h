@@ -15,24 +15,22 @@
 #include "Image.h"
 #include "Collision.h"
 
-using namespace std;
-
 namespace Adventure{
     //! Define, dentro do mapa, multiplas camadas de tiles.
     class TileLayer {
     protected:
         //! Vetor contendo cada uma das camadas de tiles.
-        vector<TileMap*>* tileList;
+        std::vector<TileMap*>* tileList;
         
     public:
         //! Inicializa lista de TileMap.
         TileLayer();
         //! Inicializa lista de TileMap e carrega o primeiro tileManager
-        TileLayer(string path);
+        TileLayer(const std::string& path);
         
         ~TileLayer();
         //! Carrega novo mapa na lista de TileMap.
-        virtual void loadTileMap(string path);
+        virtual void loadTileMap(const std::string& path);
         
         //! Renderiza mapa.
         /*! Renderiza mapa, correspondente ao indice, na posição especificada com o tamanho delimitado.
@@ -80,16 +78,16 @@ namespace Adventure{
          \param height Altura do objeto.
          \return Retorna se o objeto se encontra fora de algum TileMap.
          */
-        virtual bool isEnd(int x, int y, int width, int height);
+        virtual bool isEnd(int x, int y, int width, int height) const;
         //! Retorna se o objeto informado está fora de algum dos TileMap.
         /*! Retorna se o objeto informado está fora de algum dos TileMap.
          \param b BoundingBox do objeto.
          \return Retorna se o objeto se encontra fora de algum TileMap.
          */
-        virtual bool isEnd(Core::Collision::BoundingBox b);
+        virtual bool isEnd(Core::Collision::BoundingBox b) const;
         
         //! Retorna o tile map no indice informado.
-        virtual TileMap* getTileMap(int index);
+        virtual TileMap* getTileMap(int index) const;
     };
     
 }

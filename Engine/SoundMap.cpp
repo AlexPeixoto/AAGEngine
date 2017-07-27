@@ -10,17 +10,17 @@
 
 using namespace Adventure;
 
-string SoundMap::relativePath="";
+std::string SoundMap::relativePath="";
 
 SoundMap::SoundMap(){
-    sounds=new vector<SoundMapStructure*>();
+    sounds=new std::vector<SoundMapStructure*>();
     position=Point2i(-1,-1);
 }
-SoundMap::SoundMap(string path) : SoundMap(){
-    string loadPath;
+SoundMap::SoundMap(const std::string& path) : SoundMap(){
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -32,8 +32,8 @@ SoundMap::SoundMap(string path) : SoundMap(){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f)
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb"))
         throw std::runtime_error("[Item Map] Impossible to load file: " + loadPath);
     int soundsMapSize=-1;
     fread(&soundsMapSize, sizeof(int), 1, f);
@@ -90,7 +90,6 @@ void SoundMap::removeSound(int id){
         if((*i)->id==id)
             //Reverse iterator erase
             sounds->erase( next(i).base() );
-
 }
 
 void SoundMap::updatePosition(Point2i position){
@@ -114,6 +113,6 @@ SoundMap::SoundMapStructure* SoundMap::getSound(Point2i position){
             return *i;
     return nullptr;
 }
-vector<SoundMap::SoundMapStructure*>* SoundMap::getSounds() const {
+std::vector<SoundMap::SoundMapStructure*>* SoundMap::getSounds() const{
     return sounds;
 }

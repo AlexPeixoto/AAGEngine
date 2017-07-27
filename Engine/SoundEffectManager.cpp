@@ -10,16 +10,16 @@
 
 using namespace Adventure;
 
-vector<SoundEffect*>* SoundEffectManager::sfxList=sfxList=new vector<SoundEffect*>();;
-string SoundEffectManager::relativePath="";
-string SoundEffectManager::relativeInstancePath="";
+std::vector<SoundEffect*>* SoundEffectManager::sfxList=sfxList=new std::vector<SoundEffect*>();;
+std::string SoundEffectManager::relativePath="";
+std::string SoundEffectManager::relativeInstancePath="";
 
 SoundEffectManager::~SoundEffectManager(){
     if(sfxList!=nullptr){
 #ifndef _WIN32
         for_each(sfxList->begin(), sfxList->end(), default_delete<SoundEffect>());
 #else
-		for_each(sfxList->begin(), sfxList->end(),
+		std::for_each(sfxList->begin(), sfxList->end(),
 	[](SoundEffect* se){
 	delete se;
 });
@@ -35,11 +35,11 @@ Sound* SoundEffectManager::createInstance(int id){
     for(auto &sfx : *sfxList){
         
         
-        string loadPath;
-        string path=sfx->getPath();
+        std::string loadPath;
+        std::string path=sfx->getPath();
         if(relativeInstancePath.size()>0){
             size_t lastIndex=path.find_last_of("/");
-            if(lastIndex!=string::npos)
+            if(lastIndex!=std::string::npos)
                 //if path have the / on the end
                 loadPath=path[path.size()-1]=='/' ? relativeInstancePath+path.substr(lastIndex+1) : relativeInstancePath+"/"+path.substr(lastIndex+1);
             else
@@ -81,11 +81,11 @@ bool SoundEffectManager::checkIfExists(int id){
             return true;
     return false;
 }
-bool SoundEffectManager::loadFromFile(string path){
-    string loadPath;
+bool SoundEffectManager::loadFromFile(const std::string& path){
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -97,9 +97,9 @@ bool SoundEffectManager::loadFromFile(string path){
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     
-    FILE* f = fopen(loadPath.c_str(), "rb");
-    if(!f){
-        throw runtime_error("[Sound Effect Manager] Could not open: " + loadPath);
+	FILE* f;
+    if(!fopen_s(&f, loadPath.c_str(), "rb")){
+        throw std::runtime_error("[Sound Effect Manager] Could not open: " + loadPath);
         return false;
     }
     //read the number of sounds
@@ -144,7 +144,7 @@ bool SoundEffectManager::addSoundEffect(SoundEffect* soundEffect){
     }
     return false;
 }
-bool SoundEffectManager::addSoundEffect(int id, string path, string name, int maxPixelDistance){
+bool SoundEffectManager::addSoundEffect(int id, const std::string& path, const std::string& name, int maxPixelDistance){
     if(checkIfExists(id))return false;
     SoundEffect* sfx = new SoundEffect(id, path, name, maxPixelDistance);
     sfxList->push_back(sfx);

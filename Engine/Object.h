@@ -65,7 +65,7 @@ namespace Adventure{
          \param randomize Se o item a ser retornado deve ser randomizado.
          \param load Se é necessario carregar a imagem no construtor. Caso seja definido como (false) a imagem será carregada na primeira chamada de render.
          */
-        Object(int id, string path, string name, int tileWidth, int tileHeight, bool randomize, bool load=false);
+        Object(int id, const std::string& path, const std::string& name, int tileWidth, int tileHeight, bool randomize, bool load=false);
         //! Inicializa objeto.
         /*!
          \param id ID unica do objeto.
@@ -75,12 +75,12 @@ namespace Adventure{
          \param randomize Se o item a ser retornado deve ser randomizado.
          \param load Se é necessario carregar a imagem no construtor. Caso seja definido como (false) a imagem será carregada na primeira chamada de render.
          */
-        Object(int id, string path, string name, Vector2i tileSize, bool randomize,  bool load=false);
+        Object(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool randomize,  bool load=false);
         //! Remove Sprite do objeto e apaga sua lista de propriedades.
         ~Object();
         
         //! Define caminho da imagem do Sprite e se o mesmo deve ser carregado no momento que a imagem é definida.
-        virtual void setPath(string path, bool load=false);
+        virtual void setPath(const std::string& path, bool load=false);
         //! Define posição do objeto no mapa.
         virtual void setPosition(int x, int y);
         //! Define posição do objeto no mapa.
@@ -90,7 +90,7 @@ namespace Adventure{
         //! Define tamanho do tile do objeto.
         virtual void setTileSize(Vector2i tileSize);
         //! Define nome do objeto.
-        virtual void setName(string name);
+        virtual void setName(const std::string& name);
         //! Define se o item a ser retornado do objeto é randomico.
         virtual void setRandomize(bool randomize);
         //! Define em qual linha do tile do objeto.
@@ -109,19 +109,19 @@ namespace Adventure{
         //! Retorna o nome do objeto.
         virtual string getName() const;
         //! Retorna a posição do objeto no mapa.
-        virtual Point2i getPosition();
+        virtual Point2i getPosition() const;
         //! Retorna o tamanho do tile do objeto.
-        virtual Vector2i getTileSize();
+        virtual Vector2i getTileSize() const;
         //! Retorna a id do objeto.
-        virtual int getId();
+        virtual int getId() const;
         //! Retorna se o item que será retornado será randomico.
-        virtual bool getRandomize();
+        virtual bool getRandomize() const;
         //! Retorna a linha do tile do objeto.
-        virtual int getRow();
+        virtual int getRow() const;
         //! Retorna a coluna do tile do objeto.
-        virtual int getColumn();
+        virtual int getColumn() const;
         //! Retorna a linha e a coluna do tile do objeto.
-        virtual Point2i getTileIndex();
+        virtual Point2i getTileIndex() const;
         
         //! Atualiza a posição no sprite.
         virtual void updateTileIndex();
@@ -137,24 +137,24 @@ namespace Adventure{
         /*!
          \throw std::runtime_exception.
          */
-        virtual void addProperty(string key, string value);
+        virtual void addProperty(const std::string& key, const std::string& value);
         //! Atualiza uma propriedade existente.
         /*!
          \return Retorna se a propriedade foi atualizada. Caso a propriedade não exista é retornado false.
          \throw std::runtime_error.
          */
-        virtual bool updateProperty(string key, string value);
+        virtual bool updateProperty(const std::string& key, const std::string& value);
         //! Retorna propriedade associada a chave.
         /*!
          \return Retorna propriedade associada a chave.
          \throw std::runtime_exception
          */
-        virtual string getProperty(string key);
+        virtual std::string getProperty(const std::string& key) const;
         //! Remove propriedade.
         /*!
          \return Retorna se a chave foi removida com sucesso. Caso a chave não exista é retornado (false).
          */
-        virtual bool removeProperty(string key);
+        virtual bool removeProperty(const std::string& key);
         //! Adiciona novo item no objeto com a quantidade especificada.
         /*!
          \throw std::exception
@@ -169,7 +169,7 @@ namespace Adventure{
         /*! Retorna a quantidade de itens dentro do objeto com a id associada.
          \throw std::exception
          */
-        virtual int getItemQuantity(int id);
+        virtual int getItemQuantity(int id) const;
         //! Remove o item.
         /*!
          \return Retorna se o item foi removido com sucesso. Caso o item não exista é retornado (false).

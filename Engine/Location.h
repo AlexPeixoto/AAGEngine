@@ -17,12 +17,12 @@ namespace Core{
     /*! Class utilized to represent an object inside the window, as its size*/
     template<typename T> class Location{
     public:
-        //! Posição do objeto.
+        //! Object's position.
         sf::Point2<T> position;
-        //! Tamanho do objeto.
+        //! Object's size.
         sf::Vector2<T> size;
     public:
-        //! Define valor da posição do objeto no eixo x.
+        //! Define the object's position on the x axis.
         void setX(T x);
         //! Define valor da posição do objeto no eixo y.
         void setY(T y);

@@ -199,14 +199,14 @@ namespace Adventure{
                  \param tileHeight Altura do tile do sprite.
                  \return Retorna indice do sprite ou -1 caso o sprite não tenha sido adicionado
                  */
-                virtual int addSprite(const string& path, int tileWidth, int tileHeight);
+                virtual int addSprite(const std::string& path, int tileWidth, int tileHeight);
                 //! Adiciona novo Sprite.
                 /*! Adiciona novo sprite a lista de sprites.
                  \param path Caminho do sprite a ser adicionado.
                  \param tileSize Altura e Largura do tile do sprite.
                  \return Retorna indice do sprite ou -1 caso o sprite não tenha sido adicionado
                  */
-                virtual int addSprite(const string& path, Vector2i tileSize);
+                virtual int addSprite(const std::string& path, Vector2i tileSize);
                 //Just disables the sprite, i need to maintain the index if not i mess with it
                 //! Remove Sprite-Sheet no indice informado populando o indice com nullptr.
                 virtual void disableSprite(int index);
@@ -225,13 +225,13 @@ namespace Adventure{
                  \return Retorna se a propriedade foi atualizada. Caso a propriedade não exista é retornado false.
                  \throw std::runtime_error/
                  */
-                virtual void updateProperty(const std::string& key, const::string& value);
+                virtual void updateProperty(const std::string& key, const std::string& value);
                 //! Retorna propriedade associada a chave.
                 /*!
                  \return Retorna propriedade associada a chave.
                  \throw std::runtime_exception
                  */
-                virtual string getProperty(const std::string& key) const;
+                virtual std::string getProperty(const std::string& key) const;
                 //! Remove propriedade.
                 /*!
                  \return Retorna se a chave foi removida com sucesso. Caso a chave não exista é retornado (false).
@@ -242,22 +242,22 @@ namespace Adventure{
                 /*!
                  \throw std::exception
                  */
-                virtual void addItem(int id, int quantity);
+                virtual void addItem(size_t id, int quantity);
                 //! Atualiza um quantidade de um item existente.
                 /*!
                  \return Retorna se o item foi atualizada. Caso o item não exista é retornado false.
                  */
-                virtual bool updateItem(int id, int quantity);
+                virtual bool updateItem(size_t id, int quantity);
                 //! Retorna a quantidade de itens da id associada.
                 /*! Retorna a quantidade de itens dentro do personagem com a id associada.
                  \throw std::exception
                  */
-                virtual int getItemQuantity(int id) const;
+                virtual int getItemQuantity(size_t id) const;
                 //! Remove o item.
                 /*!
                  \return Retorna se o item foi removido com sucesso. Caso o item não exista é retornado (false).
                  */
-                virtual bool removeItem(int id);
+                virtual bool removeItem(size_t id);
                 
                 //! retorna se esta ocorrendo uma animação automatica.
                 virtual bool getAutoMovement() const;

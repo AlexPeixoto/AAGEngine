@@ -35,9 +35,9 @@ namespace Adventure{
         int loopTo;
     public:
         //! Inicializa Sprite.
-        Sprite(string path, int tileWidth, int tileHeight);
+        Sprite(const std::string& path, int tileWidth, int tileHeight);
         //! Inicializa Sprite.
-        Sprite(string path, Vector2i tileSize);
+        Sprite(const std::string& path, Vector2i tileSize);
         //! Remove Sprite carregado em memória.
         ~Sprite();
         
@@ -83,12 +83,12 @@ namespace Adventure{
         //! Renderiza o tile do Sprite na área definida pelo setPosition
         void render() override;
         //! Altera a imagem do Sprite.
-        void changeSprite(string ImagePath, int tileWidth, int tileHeight);
+        void changeSprite(const std::string& ImagePath, int tileWidth, int tileHeight);
         
         //! Retorna indice do tile do sprite.
-        Point2i getSpriteIndex();
+        Point2i getSpriteIndex() const;
         //! Retorna tamanho do tile do Sprite.
-        Vector2i getTileSize();
+        Vector2i getTileSize() const;
     };
 }
 

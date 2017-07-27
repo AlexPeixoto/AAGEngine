@@ -14,7 +14,7 @@ using namespace Core;
 using std::cout;
 using sf::RenderWindow;
 RenderWindow* TextControl::window=nullptr;
-string TextControl::relativePath="";
+std::string TextControl::relativePath="";
 
 TextControl::TextControl()
 {
@@ -22,21 +22,21 @@ TextControl::TextControl()
     fontScale.x=fontScale.y=.5f;
     textRender=new sf::Text();
     textRender->setFont(*font);
-	word = vector<string>();
-	line = vector<string>();
-	screen = vector<pair<int, int>>();
+	word = std::vector<std::string>();
+	line = std::vector<std::string>();
+	screen = std::vector<std::pair<int, int>>();
     textSpacing=0;
     if(Game::window!=nullptr)
         TextControl::window=Game::window;
     
 }
                                                     //Constructor delegation C++11
-TextControl::TextControl(string path, string text) : TextControl::TextControl()
+TextControl::TextControl(const std::string& path, const std::string& text) : TextControl::TextControl()
 {
-    string loadPath;
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=string::npos)
+        if(lastIndex!=std::string::npos)
             //if path have the / on the end
             loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
         else
@@ -48,7 +48,7 @@ TextControl::TextControl(string path, string text) : TextControl::TextControl()
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
     if (font!=nullptr && !font->loadFromFile(loadPath)){
-        throw runtime_error("[TextControl] Could not load the file:" + loadPath);
+        throw std::runtime_error("[TextControl] Could not load the file:" + loadPath);
     }
     else{
         textRender=new sf::Text(text, *font , 30);
@@ -83,46 +83,40 @@ void TextControl::setScale(float scale){
     fontScale.x=fontScale.y=scale;
     textRender->setScale(fontScale);
 }
-float TextControl::getScalef(){
+float TextControl::getScalef() const{
     return fontScale.x;
 }
 void TextControl::setScale(Vector2f scale){
     fontScale=scale;
     textRender->setScale(fontScale);
 }
-Vector2f TextControl::getScale(){
+Vector2f TextControl::getScale() const{
     return fontScale;
 }
-void TextControl::clearWords()
-{
+void TextControl::clearWords(){
 	word.erase(word.begin(), word.end());
 	word.clear();
 }
-void TextControl::clearLines()
-{
+void TextControl::clearLines(){
 	line.erase(line.begin(), line.end());
 	line.clear();
 }
-void TextControl::clearScreens()
-{
+void TextControl::clearScreens(){
 	screen.erase(screen.begin(), screen.end());
 	screen.clear();
 }
-sf::Font* TextControl::getFont(string path)
-{
+sf::Font* TextControl::getFont(const std::string& path) const{
 	sf::Font* returnFont = new Font();
     if(returnFont->loadFromFile(path))
         return returnFont;
     else
         return nullptr;
 }
-void TextControl::setText(string text)
-{
+void TextControl::setText(const std::string& text){
     this->text=text;
     textRender->setString(text);
 }
-bool TextControl::setFont(string path)
-{
+bool TextControl::setFont(const std::string& path){
     //i load the font on another variable so i can keep rendering if i do the font change on a mulithread process.
 	if(font != nullptr)
 	{
@@ -149,14 +143,14 @@ bool TextControl::setFont(string path)
 void TextControl::setSpacing(int spacing){
     this->textSpacing=spacing;
 }
-int TextControl::getWidth(string text){
+int TextControl::getWidth(const std::string& text) const{
     sf::Text cs;
     cs.setFont(*font);
     cs.setString(text);
     return (int)(cs.getLocalBounds().width * fontScale.x);
     
 }
-int TextControl::getHeight(string text){
+int TextControl::getHeight(const std::string& text) const{
     sf::Text cs;
     cs.setFont(*this->font);
     cs.setString(text);
@@ -189,48 +183,43 @@ void TextControl::splitInWords()
 void TextControl::splitInLines(int width)
 {
 	splitInWords();//delete words
-	string prototype = "";
+	std::string tempLine = "";
 	while(word.size() != 0)
 	{       
         if(getWidth(word.at(0)) > width){
             clearWords();
             clearLines();
             clearScreens();
-            throw domain_error("Your string is bigger than the size you defined");
+            throw std::domain_error("Your string is bigger than the size you defined");
         }
         
         //check if the word size is bigger than the screen size, if it is... return false STOP
-        
-		if(getWidth(prototype+word.at(0)) <= width && word.at(0).find_first_of('\n')==string::npos)//check if actual status + next word < limit size
+		if(getWidth(tempLine +word.at(0)) <= width && word.at(0).find_first_of('\n')==std::string::npos)//check if actual status + next word < limit size
 		{
-			prototype += word.at(0);
+			tempLine += word.at(0);
 			word.erase(word.begin());
 		}
         //The text is broken into lines on the screen, but its internal representation shows it as just one line
-        else if(word.at(0).find_first_of('\n')!=string::npos)
+        else if(word.at(0).find_first_of('\n')!=std::string::npos)
         {
             word.at(0).erase(word.at(0).find_first_of('\n'), 1);
-            prototype += word.at(0);
+			tempLine += word.at(0);
 			word.erase(word.begin());
-            line.push_back(prototype);
-            prototype="";
+            line.push_back(tempLine);
+			tempLine ="";
         }
-		else if(getWidth(prototype+word.at(0)) > width)
+		else if(getWidth(tempLine +word.at(0)) > width)
 		{
-			line.push_back(prototype);
-			prototype = "";
-			
+			line.push_back(tempLine);
+			tempLine = "";
 		}
-        
-		
 	}
     //if i removed the word and the size is zero i need to push the word on the line vector
-    if(word.size() == 0 && getWidth(prototype.c_str()) <= width)
+    if(word.size() == 0 && getWidth(tempLine.c_str()) <= width)
     {
-        line.push_back(prototype);
+        line.push_back(tempLine);
     }
 	clearWords();
-    
 }
 void TextControl::splitInScreens(Vector2i size){
     splitInScreens(size.x, size.y);
@@ -239,36 +228,42 @@ void TextControl::splitInScreens(int width, int height)
 {
     clearLines();
 	splitInLines(width);
-	int position = 0;
+	//Number of lines that fit in this screen
+	int lineCount = 0;
 	int start = 0;
 	int end = 0;
+	//Size in pixels, used to check if the total size is not bigger than the screen
 	int size = 0;
+	//Ussed to calculate the height of the text
     int tmpSize;
-	while(position != line.size())
+	while(lineCount != line.size())
 	{
-        tmpSize=getHeight(line.at(position).c_str()) + textSpacing;
-        //if one line
+        tmpSize=getHeight(line.at(lineCount).c_str()) + textSpacing;
+        //If there is just one line I create a screen.
         if(line.size()==1){
-            screen.push_back(make_pair(0, 0));
+            screen.push_back(std::make_pair(0, 0));
             break;
         }
-		if((size + tmpSize)< height)
+		//Check if adding the line to the screen will surpass the maximum height, if not, add 
+		if((size + tmpSize) < height)
 		{
             size+=tmpSize;
-            position++;
+			++lineCount;
 		}
+		//This is the last line that can fit inside the screen
         else
 		{
-			end = position;
-			screen.push_back(make_pair(start, end));
-			position++;
-			start = position;
+			end = lineCount;
+			screen.push_back(std::make_pair(start, end));
+			++lineCount;
+			start = lineCount;
             size=0;
 		}
         
-		if(size <= height && position == line.size() -1)
+		//If this is the last line I will add it and break the loop
+		if(size <= height && lineCount == line.size() -1)
 		{
-			screen.push_back(make_pair(start, position)); // if just one screen
+			screen.push_back(std::make_pair(start, lineCount)); // if just one screen
 			break;
 		}
 	}
@@ -299,8 +294,7 @@ void TextControl::renderScreen(int x, int y, int screen)
 void TextControl::renderScreen(Point2i position, int screen){
     renderScreen(position.x, position.y, screen);
 }
-void TextControl::renderSimpleText(int x, int y, string text)
-{
+void TextControl::renderSimpleText(int x, int y, const std::string& text){
     std::string utf8str = text;
     std::basic_string<sf::Uint32> utf32str;
     sf::Utf8::toUtf32(utf8str.begin(), utf8str.end(), std::back_inserter(utf32str));
@@ -310,30 +304,30 @@ void TextControl::renderSimpleText(int x, int y, string text)
     if(TextControl::window!=nullptr)
         TextControl::window->draw(*textRender);
 }
-void TextControl::renderSimpleText(Point2i position, string text){
+void TextControl::renderSimpleText(Point2i position, const std::string& text){
     renderSimpleText(position.x, position.y, text);
 }
-int TextControl::numberOfScreens(){
-    return (int)screen.size();
+size_t TextControl::getNumberOfScreens() const{
+    return screen.size();
 }
-int TextControl::numberOfLines(){
-    return (int)line.size();
+size_t TextControl::getNumberOfLines() const{
+    return line.size();
 }
-int TextControl::numberOfWords(){
-    return (int)word.size();
+size_t TextControl::getNumberOfWords() const{
+    return word.size();
 }
-string TextControl::getText(){
+std::string TextControl::getText() const{
     return text;
 }
-vector<pair<int, int>> TextControl::getScreen(){
+std::vector<std::pair<int, int>> TextControl::getScreen() const{
     return screen;
 }
-vector<string> TextControl::getLine(){
+std::vector<std::string> TextControl::getLine() const{
     return line;
 }
-vector<string> TextControl::getWord(){
+std::vector<std::string> TextControl::getWord() const{
     return word;
 }
-string TextControl::getFontPath(){
+std::string TextControl::getFontPath() const{
     return fontPath;
 }

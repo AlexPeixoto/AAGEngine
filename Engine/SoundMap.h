@@ -21,7 +21,6 @@
 using sf::Point2i;
 using sf::Sound;
 using sf::Vector2i;
-using namespace std;
 
 namespace Adventure{
     //! Define, dentro do mapa, locais onde existem sons.
@@ -38,10 +37,10 @@ namespace Adventure{
         Point2i position;
         
         //! Lista de sons carregados.
-        vector<SoundMapStructure*>* sounds;
+        std::vector<SoundMapStructure*>* sounds;
     public:
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de sons dentro do mapa será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         //! Inicializa vetor de sons e inicia a posição como inválida.
         SoundMap();
         //! Inicializa vetor de sons.
@@ -50,7 +49,7 @@ namespace Adventure{
          2. Inteiro contendo a id do som.<br />
          Caso a id do som seja invalida o mesmo é ignorado.
          */
-        SoundMap(string path);
+        SoundMap(const std::string& path);
         //! Remove os sons carregados no mapa.
         ~SoundMap();
         
@@ -73,8 +72,6 @@ namespace Adventure{
         virtual SoundMapStructure* getSound(Point2i position);
         //! Retorna vetor de sons.
         virtual vector<SoundMapStructure*>* getSounds() const;
-        
-        
     };
 }
 

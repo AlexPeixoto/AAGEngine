@@ -39,7 +39,7 @@ namespace Core{
         Vector2i size;
         
         //!Função de heuristica.
-        function<int (Point2i origin, Point2i destiny)> heuristicFunc;
+        std::function<int (Point2i origin, Point2i destiny)> heuristicFunc;
         
         //bool diagonal (to return the correct heuristic method)
         bool diagonal;
@@ -76,13 +76,13 @@ namespace Core{
          \param clearanceMap Representação do mapa contendo o nivel de clearance de cada ponto do mapa.
          \param moveMap Representação dos nós sobre o qual pode se movimentar.
          \param size Tamanho do mapa.
-         \param origin Posição do nó a ser adicionado no node.
+         \param origin Posição do nó a ser adicionado no node. Estas sao as origens que levam a este no
          \param node Nó que se deseja adicionar o origin.
          \param ol Lista aberta de nós.
          \param cl Lista fechada de nós.
          \param iol Lista aberta de nós contendo a id como um inteiro.
          */
-        void addNodeAndCheck(int* clearanceMap, int* moveMap, Vector2i size, Point2i origin, Node* node, vector<Node*>* ol, vector<Node*> cl, vector<int>* iol);
+        void addNodeAndCheck(int* clearanceMap, int* moveMap, Vector2i size, Point2i origin, Node* node, std::vector<Node*>& ol, std::vector<Node*> cl, std::vector<int>& iol);
         //EOF Generate Nodes
         
         //! Verifica se a posição se encontra dentro do tamanho da matriz
@@ -100,7 +100,7 @@ namespace Core{
          \param remove Booleana para verificar se remove o nó ao retorna-lo.
          \return Retorna o melhor nó da lista.
          */
-        Node* getBestOnList(vector<Node*>* openList, bool remove=true);
+        Node* getBestOnList(std::vector<Node*>* openList, bool remove=true);
         //! Retorna um valor, com base na heuristica, para se mover da origem ao destino
         /*!
          Utilizando distancia de manhattan ou PERGUNTAR AO DIOGENES
@@ -157,7 +157,7 @@ namespace Core{
         /*! Define função de heuristica do pathfind que será utilizada para calcular o custo no método generaePathfind.
          \param heuristicFunc Função de heuristica
          */
-        void setHeuristicFunction(function<int (Point2i origin, Point2i destiny)> heuristicFunc);
+        void setHeuristicFunction(std::function<int (Point2i origin, Point2i destiny)> heuristicFunc);
         
     };
 }

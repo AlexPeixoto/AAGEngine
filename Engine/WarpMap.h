@@ -18,7 +18,6 @@
 #include "WarpManager.h"
 #include "Collision.h"
 
-using namespace std;
 using sf::Point2i;
 using sf::Vector2i;
 using Core::Collision;
@@ -50,7 +49,7 @@ namespace Adventure{
          4. Inteiro contendo o eixo y da posição do objeto no mapa.<br />
          O objeto é definido por padrão como habilitado.
          */
-        explicit WarpMap(std::string path);
+        explicit WarpMap(const std::string& path);
         //! Remove os objetos carregados no mapa.
         ~WarpMap();
         
@@ -69,13 +68,15 @@ namespace Adventure{
          \param enabled Define se o warp esta habilitado.
          */
         virtual void addWarp(int id, Point2i position, bool enabled);
+
         //! Remove warp do indice.
         virtual void removeWarp(size_t index);
         
         //! Retorna lista com todos os warps.
         virtual std::vector<WarpFake*>* getWarpList() const;
+
         //! Retorna BoundingBox do warp passado por parametro.
-        Core::Collision::BoundingBox getBoundingBox(WarpFake* w);
+        Core::Collision::BoundingBox getBoundingBox(WarpFake* w) const;
         
         //! Verifica se o BoundingBox colidiu com algum warp.
         /*!

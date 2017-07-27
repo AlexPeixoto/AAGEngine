@@ -22,7 +22,7 @@ namespace Debug {
     /*! A utilização dos niveis é de responsabilidade do desenvolvedor.
         O mesmo deve definir quando utilizar cada nivel.
     */
-    enum LogLevel{
+	enum class  LogLevel{
         ERROR, /*!< Mensagens de erro. */
         WARNING, /*!< Mensagens de alerta. */
         MESSAGE, /*!< Mensagens gerais, normalmente utilizadas para propositos de debug. */
@@ -34,7 +34,7 @@ namespace Debug {
         A Engine verifica se destinos para arquivos/dispositivos ja estão abertos.
         O LogManager não faz distinção entre Devide e File, os dois internamente funcionam da mesma maneira, os dois existem somente por questões de organização interna.
      */
-    enum Destiny{
+    enum class Destiny{
 #ifndef _WIN32
         Device, /*!< Mapeia dispositivos como destino, sendo unidades existentes no /dev/  (*nix/Mac Os X) */
 #endif
@@ -58,18 +58,18 @@ namespace Debug {
          Guarda um todos os mapeamentos existentes entre um LogLevel e um Destiny.
          É utilizado um vector<pair<..., ...>> pois é possivel existir multiplos destinos para o mesmo LogLevel
          */
-        static vector<pair<LogLevel, Destiny>> *ld;
+        static std::vector<std::pair<LogLevel, Destiny>> *ld;
         
         //! Guarda lista de arquivos abertos
-        static map<LogLevel, ofstream*> *fileOpenPool;
+        static std::map<LogLevel, std::ofstream*> *fileOpenPool;
         //! Guarda lista de dispositivos abertos
-        static map<LogLevel, ofstream*> *devOpenPool;
+        static std::map<LogLevel, std::ofstream*> *devOpenPool;
         //! Guarda lista de ScreenLog`s associadas ao LogLevel
-        static map<LogLevel, ScreenLog*> *screenOpenPool;
+        static std::map<LogLevel, ScreenLog*> *screenOpenPool;
         //! Define o Destiny::Console como /dev/stdout
-        static ofstream* _stdout;
+        static std::ofstream* _stdout;
         //! Lista de niveis para utilizar como cabeçalho da mensagem
-        static string levelPre[];
+        static std::string levelPre[];
 
         
        //! Define template a ser chamado pelo <i> Variadic Template </i> log
@@ -128,7 +128,7 @@ namespace Debug {
          \param destinyFile define o arquivo de destino ou despositivo de destino.
          \param isDevice define se o destinyFile deve ser tratado como um dispositivo.
          */
-        static void addLevelDestiny(LogLevel logLevel, Destiny destiny, string destinyFile="", bool isDevice=false);
+        static void addLevelDestiny(LogLevel logLevel, Destiny destiny, const std::string& destinyFile="", bool isDevice=false);
         //! Define metodo para relacionar um nivel de log com um screenLog
         /*!
          Relaciona um nivel de log (LogLevel) com um destino (Destiny). <br />
@@ -170,14 +170,14 @@ namespace Debug {
 					if (ld == nullptr)
 						return;
 					if (_stdout == nullptr){
-						_stdout = new ofstream();
+						_stdout = new std::ofstream();
 						_stdout->open("/dev/stdout");
 					}
 					//For each device mapped to that LogLevel
 					//I store the begin of the message
 					const char *beginS = string;
 					//The temporary ofstream
-					ofstream* tmpof;
+					std::ofstream* tmpof;
 					//Loop throught the output
 					for (auto &_ld : *ld){
 						tmpof = nullptr;
@@ -202,7 +202,7 @@ namespace Debug {
 								}
 								(*tmpof) << *(string++);
 							}
-							(*tmpof) << endl;
+							(*tmpof) << std::endl;
 							//Force to flush the data, if not the ofstream dont flush to /dev/stdout
 							tmpof->flush();
 						}
@@ -230,7 +230,7 @@ namespace Debug {
 						else{
 							//I create an iterator so i can load everything on the file pool or on the device pool.
 							//Now for each one of those i store the message inside the ofstream.
-							map<LogLevel, ofstream*>::iterator bit, eit;
+							std::map<LogLevel, std::ofstream*>::iterator bit, eit;
 							if (_ld.second == Destiny::File){
 								bit = fileOpenPool->begin();
 								eit = fileOpenPool->end();
@@ -243,7 +243,7 @@ namespace Debug {
 #endif
 							for (auto it = bit; it != eit; it++){
 								tmpof = (*it).second;
-								(*tmpof) << levelPre[(int)logLevel] << endl;
+								(*tmpof) << levelPre[(int)logLevel] << std::endl;
 								while (*string){
 									if (*string == '%' && *(++string) == 'T'){
 										(*tmpof) << value;

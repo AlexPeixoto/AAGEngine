@@ -39,20 +39,20 @@ namespace Adventure{
         } Element;
         
         //! Vetor de dropdown.
-        vector<Dropdown*> dropdowns;
+        std::vector<Dropdown*> dropdowns;
         //! Vetor de checkbox.
-        vector<Checkbox*> checkboxes;
+		std::vector<Checkbox*> checkboxes;
         //! Vetor de informações.
-        vector<Information*> informations;
+		std::vector<Information*> informations;
         //! Vetor de imagens informativas.
-        vector<InformationImage*> informationimage;
+		std::vector<InformationImage*> informationimage;
         //! Vetor de slidebars.
-        vector<Slidebar*> slidebars;
+		std::vector<Slidebar*> slidebars;
         //! Vetor de itens selecionaveis.
-        vector<Selectable*> selectables;
+		std::vector<Selectable*> selectables;
         
         //! Vetor que mapeia o elemento com o indice real dentro.
-        vector<Element*> elements;
+		std::vector<Element*> elements;
         
         //! Utilizado para renderizar os textos na tela.
         TextControl* textControl;
@@ -80,7 +80,7 @@ namespace Adventure{
          \param color Cor do texto.
          \param callback Função que será executada quando o checkbox for marcado ou desmarcado.
          */
-        virtual void addCheckbox(string text, string backgroundPath, string selectionPath, Point2i position, Point2i textPosition, Color color, function<void (bool, Checkbox*)> callback);
+        virtual void addCheckbox(const std::string& text, const std::string& backgroundPath, const std::string& selectionPath, Point2i position, Point2i textPosition, Color color, function<void (bool, Checkbox*)> callback);
         
         //! Adiciona nova informação.
         /*! Adiciona nova informação.
@@ -94,17 +94,17 @@ namespace Adventure{
          \param position Posição do texto na tela.
          \param Cor do texto na tela.
          */
-        virtual void addInformation(string information, Vector2f scale, Point2i position, Color color);
+        virtual void addInformation(const std::string& information, Vector2f scale, Point2i position, Color color);
         
         //! Adiciona nova imagem contendo uma informação.
         virtual void addInformationImage(InformationImage* informationImage);
         //! Adiciona nova imagem contendo uma informação.
-        virtual void addInformationImage(string imagePath, string text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
+        virtual void addInformationImage(const std::string& imagePath, const std::string& text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
         
         //! Adiciona uma nova barra de slide.
         virtual void addSlidebar(Slidebar* slidebar);
         //! Adiciona uma nova barra de slide.
-        virtual void addSlidebar(string slideBarPath, string slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback);
+        virtual void addSlidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback);
 
         //! Adiciona uma nova lista de itens selecionaveis.
         virtual void addSelectable(int numberOfItens, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, function<void (int, Selectable*)> callback);

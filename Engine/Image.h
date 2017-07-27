@@ -48,24 +48,24 @@ namespace Core{
         Point2i origin;
         
         //! Texture Size
-        Vector2<unsigned> textureSize;
+        Vector2<unsigned int> textureSize;
     
         //! Specifies if the image is being reloaded
         bool reloading;
  
     public:
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de imagem será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         //! Inicializa Imagem.
         /* Inicializa textura utilizando imagem no caminho especificado assim como sprite que irá carregar a textura. <br />
            Caso não seja possivel carregar a imagem é gerada uma excessão do tipo std::runtime_exception.
            \param path Caminha da imagem.
          */
-        Image(string path);
+        Image(const std::string& path);
         //! Remove estruturas da imagem.
         ~Image();
         //! Altera imagem chamando o construtor Image().
-        virtual void changeImage(string path);
+        virtual void changeImage(const std::string& path);
     
         //! Render the image on the specified position
         /*! Render the image ont he position specified by the methid <i>setPosition</i>*/
@@ -102,14 +102,14 @@ namespace Core{
          */
         virtual void setScale(Vector2f scale);
         //! Retorna escala da textura no eixo x.
-        virtual float getWidthScale();
+        virtual float getWidthScale() const;
         //! Retorna escala da textura no eixo y.
-        virtual float getHeightScale();
+        virtual float getHeightScale() const;
         //! Retorna um vetor contendo as duas escalas da imagem.
         /*! Retorna um vetor contendo as duas escalas da imagem.
          \return Vetor contendo as duas escalas da imagem.
          */
-        virtual Vector2f getScale();
+        virtual Vector2f getScale() const;
         
         //! Define a posição no eixo x onde deve-se renderizar a imagem.
         /*!
@@ -137,27 +137,27 @@ namespace Core{
         virtual void setOrigin(Point2i origin);
         
         //! Retorna posição da imagem no eixo x.
-        virtual int getY();
+        virtual int getY() const;
         //! Retorna posição da imagem no eixo y.
-        virtual int getX();
+        virtual int getX() const;
         //! Retorna estrutura contendo a posição da imagem no eixo x e y.
-        virtual Point2i getPosition();
+        virtual Point2i getPosition() const;
         
         //! Retorna largura da imagem.
-        virtual int getWidth();
+        virtual int getWidth() const;
         //! Retorna altura da imagem.
-        virtual int getHeight();
+        virtual int getHeight() const;
         //! Retorna estrutura contendo largura e altura da imagem.
-        virtual Vector2<unsigned> getSize();
+        virtual Vector2<unsigned int> getSize() const;
         
         //! Retorna o angulo de rotação da imagem.
-        virtual float getRotation();
+        virtual float getRotation() const;
         
         //! Retorna a origem da imagem.
-        virtual Point2i getOrigin();
+        virtual Point2i getOrigin() const;
     
         //! Retorna o caminho da imagem.
-        virtual string getPath() const;
+        virtual std::string getPath() const;
         //! Define a tela onde deve ocorrer o processo de render da imagem.
         void static setWindow(sf::RenderWindow *window);
         

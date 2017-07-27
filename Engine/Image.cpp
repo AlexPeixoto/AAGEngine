@@ -9,13 +9,12 @@
 #include "Image.h"
 #include "Game.h"
 using namespace Core;
-using std::stringstream;
 
 RenderWindow * Image::window = nullptr;
-string Image::relativePath="";
+std::string Image::relativePath="";
 
-Image::Image(string path){
-    string loadPath;
+Image::Image(const std::string& path){
+    std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
         if(lastIndex!=string::npos)
@@ -47,7 +46,7 @@ Image::~Image(){
 void Image::setWindow(sf::RenderWindow *window){
     Image::window=window;
 }
-void Image::changeImage(string path){
+void Image::changeImage(const std::string& path){
     reloading=true;
     if(sprite!=nullptr){
         delete sprite;
@@ -59,16 +58,16 @@ void Image::changeImage(string path){
     }
     Image::Image(path.c_str());
 }
-int Image::getHeight(){
+int Image::getHeight() const{
     return textureSize.y;
 }
-int Image::getWidth(){
+int Image::getWidth() const{
     return textureSize.x;
 }
-float Image::getRotation(){
+float Image::getRotation() const{
     return rotation;
 }
-Vector2<unsigned> Image::getSize(){
+Vector2<unsigned> Image::getSize() const{
     return textureSize;
 }
 void Image::setScale(Vector2f scale){
@@ -82,13 +81,13 @@ void Image::setWidthScale(float width){
     //The height in px
     frameSize.x=width;
 }
-float Image::getWidthScale(){
+float Image::getWidthScale() const{
     return frameSize.x;
 }
-float Image::getHeightScale(){
+float Image::getHeightScale() const{
     return frameSize.y;
 }
-Vector2f Image::getScale(){
+Vector2f Image::getScale() const{
     return frameSize;
 }
 void Image::setX(int x){
@@ -97,13 +96,13 @@ void Image::setX(int x){
 void Image::setY(int y){
     framePos.y=y;
 }
-int Image::getX(){
+int Image::getX() const{
     return framePos.x;
 }
-int Image::getY(){
+int Image::getY() const{
     return framePos.y;
 }
-Point2i Image::getPosition(){
+Point2i Image::getPosition() const{
     return framePos;
 }
 void Image::setPosition(Point2i position){
@@ -118,7 +117,7 @@ void Image::setOrigin(Point2i origin){
     this->origin=origin;
     sprite->setOrigin(origin.x, origin.y);
 }
-Point2i Image::getOrigin(){
+Point2i Image::getOrigin() const{
     return origin;
 }
 string Image::getPath() const{
