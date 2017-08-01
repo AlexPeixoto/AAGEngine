@@ -28,34 +28,34 @@ MapManager::~MapManager(){
     if(om!=nullptr)
         delete om;
 }
-bool MapManager::loadTileLayer(string mapFile){
+bool MapManager::loadTileLayer(const std::string& mapFile){
     tl=new TileLayer();
     if(!tl)return false;
     tl->loadTileMap(mapFile);
     return true;
 }
-bool MapManager::loadCollisionMap(string collisionFile){
+bool MapManager::loadCollisionMap(const std::string& collisionFile){
     cm=new CollisionMap(collisionFile);
     if(!cm)return false;
     return true;
 }
-bool MapManager::loadItemMap(string itemFile) {
+bool MapManager::loadItemMap(const std::string& itemFile) {
     im=new ItemMap(itemFile);
     if(!im)return false;
     return true;
 }
-bool MapManager::loadSoundMap(string soundFile){
+bool MapManager::loadSoundMap(const std::string& soundFile){
     sm=new SoundMap(soundFile);
     if(!sm)return false;
     sm->updatePosition(sf::Point2i(0, 0));
     return true;
 }
-bool MapManager::loadObjectMap(string objectFile){
+bool MapManager::loadObjectMap(const std::string& objectFile){
     om=new ObjectMap(objectFile);
     if(!om)return false;
     return true;
 }
-bool MapManager::loadWarpMap(string warpFile){
+bool MapManager::loadWarpMap(const std::string& warpFile){
     wm=new WarpMap(warpFile);
     if(!wm)return false;
     return true;
@@ -64,7 +64,7 @@ void MapManager::move(float x, float y){
     movement.x+=x;
     movement.y+=y;
 }
-bool MapManager::isEnd(int x, int y, int width, int height){
+bool MapManager::isEnd(int x, int y, int width, int height) const{
     return tl->isEnd(x, y, width, height);
 }
 void MapManager::render(int x, int y, int width, int height)

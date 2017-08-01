@@ -30,14 +30,13 @@ namespace Core{
         //! ID do nó, sendo essa a posição X e Y na matriz
         Point2i id;
         //! Custo para se mover deste nó até o destino
-        int costF;
+        int fCost;
         //! Custo para se mover até este nó
-        int costG;
+        int gCost;
         //! Custo do movimento no nó
-        int costMovement;
+        int movementCost;
         //! Nivel de clearance do nó
         int clearance;
-        
         
     public:
         //! Construtor onde a posição é associada a um ID.
@@ -86,7 +85,7 @@ namespace Core{
         int getGCost() const;
         
         //! Define o custo de movimento do nó
-        void setMovemenetCost(int costMovement);
+        void setMovementCost(int movementCost);
         //! Retorna o custo de movimento do nó
         int getMovementCost() const;
         
@@ -97,7 +96,7 @@ namespace Core{
         Node* getParent() const;
         
         //! Retorna todos os filhos do nó
-        std::vector<Node*> getNodes() const;
+        const std::vector<Node*>& getNodes() const;
         
         //! Define o nivel de clearance do nó
         void setClearance(int clearance);

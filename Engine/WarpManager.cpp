@@ -28,17 +28,21 @@ WarpManager::~WarpManager(){
 }
 
 Warp* WarpManager::getWarp(int id){
-    for(const auto& warp : *warpList)
-        if(warp->id == id)
-            return warp;
+	for (const auto& warp : *warpList) {
+		if (warp->id == id) {
+			return warp;
+		}
+	}
     return nullptr;
 
 }
 
 bool WarpManager::checkIfExists(int id){
-    for(const auto& warp : *warpList)
-        if(warp->id == id)
-            return true;
+	for (const auto& warp : *warpList) {
+		if (warp->id == id) {
+			return true;
+		}
+	}
     return false;
     
 }
@@ -47,14 +51,17 @@ bool WarpManager::loadFromFile(const std::string& path){
     std::string loadPath;
     if(relativePath.size()>0){
         size_t lastIndex=path.find_last_of("/");
-        if(lastIndex!=std::string::npos)
-            //if path have the / on the end
-            loadPath=path[path.size()-1]=='/' ? relativePath+path.substr(lastIndex+1) : relativePath+"/"+path.substr(lastIndex+1);
-        else
-            loadPath=path[path.size()-1]=='/' ? relativePath+path : relativePath+"/"+path;
+		if (lastIndex != std::string::npos) {
+			//if path have the / on the end
+			loadPath = path[path.size() - 1] == '/' ? relativePath + path.substr(lastIndex + 1) : relativePath + "/" + path.substr(lastIndex + 1);
+		}
+		else {
+			loadPath = path[path.size() - 1] == '/' ? relativePath + path : relativePath + "/" + path;
+		}
     }
-    else
-        loadPath=path;
+	else {
+		loadPath = path;
+	}
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
 #endif
@@ -103,13 +110,15 @@ bool WarpManager::loadFromFile(const std::string& path){
     return true;
 }
 void WarpManager::unloadData(){
-    for(size_t x=0; x<warpList->size(); x++)
-        delete warpList->at(x);
+	for (size_t x = 0; x < warpList->size(); x++) {
+		delete warpList->at(x);
+	}
     warpList->clear();
 }
 bool WarpManager::addWarp(Warp* warp){
-    if(WarpManager::getWarp(warp->id))
+	if (WarpManager::getWarp(warp->id)) {
 		return false;
+	}
     WarpManager::warpList->push_back(warp);
     return true;
     

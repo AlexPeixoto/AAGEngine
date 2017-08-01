@@ -30,7 +30,7 @@ namespace Adventure{
     public:
         
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de itens será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         
         
         //! Remove os itens carregados quando o programa terminar.
@@ -40,7 +40,7 @@ namespace Adventure{
         static void render(int id, Point2i position);
         
         //! Retorna o objeto com a id informada.
-        static Item* getItem(int id) const;
+        static Item* getItem(size_t id);
         //! Carrega Sprite do objeto com a id informada.
         static bool loadSprite(int id);
         //! Carrega objetos a partir do arquivo passado por parametro.

@@ -14,7 +14,6 @@
 #include "Image.h"
 #include "BackgroundShape.h"
 
-using namespace std;
 using namespace Core;
 
 namespace Adventure{
@@ -24,7 +23,7 @@ namespace Adventure{
         std::vector<Core::Image*> items;
         
         //! Indice do item selecionado
-        int selectedItemIndex;
+        size_t selectedItemIndex;
         //! Define a quantidade maxima de itens.
         int numberOfItemsPerScreen;
         //! Define o espaçamento lateral, superior e inferior entre items e será utilizado para ajustar o selectedItem shape subtraindo de sua posição a metade do espaçamento.
@@ -41,7 +40,7 @@ namespace Adventure{
     public:
         Selectable() = delete;
         //! Inicializa o selectable.
-        Selectable(int numberOfItensPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Selectable*)> callback);
+        Selectable(int numberOfItemsPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Selectable*)> callback);
         
         //! Renderiza itens.
         virtual void render();
@@ -82,19 +81,19 @@ namespace Adventure{
         /*! Retorna uma imagem no indice especificado.
         \param index Indice do item que se deseja retornar o ponteiro para a imagem.
          */
-        virtual Core::Image* getItem(int index) const;
+        virtual Core::Image* getItem(size_t index) const;
         //! Retorna o shape que irá indicar o item selecionado.
         virtual BackgroundShape* getSelectedItemBackground() const;
         
         //! Retorna lista de itens.
-        virtual vector<Core::Image*> getItems() const;
+        virtual const std::vector<Core::Image*>& getItems() const;
         
         //! Remove o item.
         /*! Remove o item.
          \param index Indice do item que se deseja remover.
          \return Retorna se foi possivel remover o item.
          */
-        virtual bool removeItem(int index);
+        virtual bool removeItem(size_t index);
         
         //! Seleciona o item com base no click do mouse.
         /*! Seleciona um item que esteja dentro da área que o mouse clicou.

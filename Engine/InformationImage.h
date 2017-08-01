@@ -50,7 +50,7 @@ namespace Adventure{
         virtual void setTextScale(const Vector2f& textScale);
         virtual void setTextColor(const Color& textColor);
         
-        virtual string getImagePath() const;
+        virtual std::string getImagePath() const;
         virtual Core::Image* getImage() const;
         virtual std::string getText() const;
         virtual Point2i getImagePosition() const;

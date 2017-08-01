@@ -18,7 +18,6 @@
 #include "ItemManager.h"
 #include "Collision.h"
 
-using namespace std;
 using sf::Point2i;
 using sf::Vector2i;
 using Core::Collision;
@@ -36,10 +35,10 @@ namespace Adventure{
         
     protected:
         //! Lista de itens carregados no mapa.
-        vector<ItemFake*>* itemList;
+        std::vector<ItemFake*>* itemList;
     public:
         //! Define um caminho relativo, caso seja inicializado com um valor diferente de vazio o caminho para o carregamento de arquivos de itens dentro do mapa será o definido no relativePath + nome do arquivo.
-        static string relativePath;
+        static std::string relativePath;
         //! Inicializa vetor de itens.
         ItemMap();
         //! Inicializa vetor de itens.

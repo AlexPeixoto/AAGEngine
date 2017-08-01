@@ -121,6 +121,13 @@ namespace Core{
          \param y Posição em y onde a imagem deve ser renderizada na tela.
          */
         virtual void setY(int y);
+
+		//! Define a posição no eixo x e y de onde deve-se renderizar a imagem.
+		/*!
+		\param position Posição x e y da imagem na tela.
+		*/
+		virtual void setPosition(int y, int x);
+
         //! Define a posição no eixo x e y de onde deve-se renderizar a imagem.
         /*!
          \param position Posição x e y da imagem na tela.

@@ -34,7 +34,7 @@ namespace Adventure{
         
     public:
         //! Construtor utilizado pelo WarpManager.
-        Warp();
+        Warp() = default;
         //! Inicializa warp
         /*
          \param id ID unica do warp.

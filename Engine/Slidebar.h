@@ -38,18 +38,18 @@ namespace Adventure{
         Core::Image* slideElementImage;
         
         //! Função de callback
-        function<void (int value)> callback;
+        std::function<void (int value)> callback;
         
         //! Atualiza posição em pixels do seletor da barra de slide.
         void updateSlidebarPosition();
     public:
-        Slidebar()=delete;
+        Slidebar();
         //! Inicializa a barra de slide.
         /*!
          Pode executar um throw caso o valor minimo e maximo não sejam multiplos do valor definido pelo increasce value
          \throw runtime_error
          */
-        Slidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback);
+        Slidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, std::function<void (int value)> callback);
         
         //! Renderiza a barra com o elemento sobre ela.
         virtual void render();
@@ -83,11 +83,8 @@ namespace Adventure{
         //! Retorna largura da imagem sem o stretch.
         virtual int getSlideBarWidth();
         //! Retorna largura da imagem sem o stretch.
-        virtual int getStretchedSlideBarWidth();
-        
-        
-        
-        
+        virtual float getStretchedSlideBarWidth();
+
     };
 }
 #endif /* defined(__Action_Adventure_Game_Engine__Slidebar__) */

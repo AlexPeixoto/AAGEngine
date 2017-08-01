@@ -46,7 +46,7 @@ namespace Adventure{
             Inteiro contendo a altura do bloco.<br />
             Vetor de inteiros de 16 bits do tamanho numero_de_blocos_eixo_x*numero_de_blocos_eixo_y.
          */
-        CollisionMap(std::string path);
+        CollisionMap(const std::string& path);
         
         ~CollisionMap();
         

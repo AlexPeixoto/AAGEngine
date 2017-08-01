@@ -192,7 +192,7 @@ namespace Debug {
 							//ofstream devOut=ofstream();
 							//devOut.open("/dev/stdout");
 							tmpof = _stdout;
-							(*tmpof) << levelPre[(int)logLevel] << endl;
+							(*tmpof) << levelPre[(int)logLevel] << std::endl;
 							while (*string){
 								if (*string == '%' && *(++string) == 'T'){
 									(*tmpof) << value;
@@ -253,7 +253,7 @@ namespace Debug {
 									}
 									(*tmpof) << *(string++);
 								}
-								(*tmpof) << endl;
+								(*tmpof) << std::endl;
 								//Force to flush the data, if not the ofstream dont flush to /dev/stdout
 								tmpof->flush();
 							}

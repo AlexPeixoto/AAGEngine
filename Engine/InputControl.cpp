@@ -8,7 +8,6 @@
 
 #include "InputControl.h"
 
-using namespace std;
 using namespace Core;
 
 map<int, bool> InputControl::heldKeyboardKey, InputControl::releasedKeyboardKey, InputControl::pressedKeyboardKey;

@@ -36,7 +36,7 @@ namespace Adventure{
         
     public:
         //! Construtor utilizado pelo SoundEffectManager.
-        SoundEffect();
+        SoundEffect() = default;
         //! Inicializa o efeito sonoro.
         /*! Inicializa o efeito sonoro.
          \param id Id do efeito sonoro.
@@ -49,7 +49,7 @@ namespace Adventure{
         ~SoundEffect();
         
         //! Retorna id do efeito sonoro.
-        virtual int getID();
+        virtual int getID() const;
         
         //! Retorna caminho do arquivo do efeito sonoro.
         virtual std::string getPath() const;

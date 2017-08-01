@@ -71,7 +71,7 @@ namespace Adventure{
         //! Retorna som com base na posição.
         virtual SoundMapStructure* getSound(Point2i position);
         //! Retorna vetor de sons.
-        virtual vector<SoundMapStructure*>* getSounds() const;
+        virtual std::vector<SoundMapStructure*>* getSounds() const;
     };
 }
 

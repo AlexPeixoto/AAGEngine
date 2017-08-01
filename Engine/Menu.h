@@ -18,8 +18,6 @@
 #include "Dropdown.h"
 #include "Selectable.h"
 
-using namespace std;
-
 namespace Adventure{
     class Menu{
     public:
@@ -60,7 +58,7 @@ namespace Adventure{
         //! Remove construtor padrão.
         Menu() = delete;
         //! Inicializa menu definindo sua fonte.
-        Menu(string font);
+        Menu(const std::string& font);
         
         //! Renderiza todos os itens.
         virtual void render();
@@ -80,7 +78,7 @@ namespace Adventure{
          \param color Cor do texto.
          \param callback Função que será executada quando o checkbox for marcado ou desmarcado.
          */
-        virtual void addCheckbox(const std::string& text, const std::string& backgroundPath, const std::string& selectionPath, Point2i position, Point2i textPosition, Color color, function<void (bool, Checkbox*)> callback);
+        virtual void addCheckbox(const std::string& text, const std::string& backgroundPath, const std::string& selectionPath, Point2i position, Point2i textPosition, Color color, std::function<void (bool, Checkbox*)> callback);
         
         //! Adiciona nova informação.
         /*! Adiciona nova informação.
@@ -104,42 +102,42 @@ namespace Adventure{
         //! Adiciona uma nova barra de slide.
         virtual void addSlidebar(Slidebar* slidebar);
         //! Adiciona uma nova barra de slide.
-        virtual void addSlidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback);
+        virtual void addSlidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, std::function<void (int value)> callback);
 
         //! Adiciona uma nova lista de itens selecionaveis.
-        virtual void addSelectable(int numberOfItens, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, function<void (int, Selectable*)> callback);
+        virtual void addSelectable(int numberOfItens, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Selectable*)> callback);
         //! Adiciona uma nova lista de itens selecionaveis.
         virtual void addSelectable(Selectable* selectable);
         
         //! Adiciona um novo dropdown.
         virtual void addDropdown(Dropdown* dropdown);
         //! Adiciona um novo dropdown.
-        virtual void addDropdown(int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, function<void (int, Dropdown*)> callback);
+        virtual void addDropdown(int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (int, Dropdown*)> callback);
         
         //! Remove elemento utilizando o vetor de elements.
         /*! Os indices são mantidos e o ponteiro vira nullptr. */
         virtual bool removeElement(int index, bool deletePointer=true);
         
         //! Retorna todas as associações elementos->tipo
-        virtual std::vector<Element*> getElements() const;
+        virtual const std::vector<Element*>& getElements() const;
         
         //! Retorna todos os checkboxes.
-        virtual std::vector<Checkbox*> getCheckboxes() const;
+        virtual const std::vector<Checkbox*>& getCheckboxes() const;
         
         //! Retorna todas as informações.
-        virtual std::vector<Information*> getInformations() const;
+        virtual const std::vector<Information*>& getInformations() const;
         
         //! Retorna todas as imagens com informações.
-        virtual std::vector<InformationImage*> getInformationImages() const;
+        virtual const std::vector<InformationImage*>& getInformationImages() const;
         
         //! Retorna todas as slidebars.
-        virtual std::vector<Slidebar*> getSlidebars() const;
+        virtual const std::vector<Slidebar*>& getSlidebars() const;
         
         //! Retorna todos os dropdowns.
-        virtual std::vector<Dropdown*> getDropdowns() const;
+        virtual const std::vector<Dropdown*>& getDropdowns() const;
         
         //! Retorna todos os itens selecionaveis.
-        virtual std::vector<Selectable*> getSelectables() const;
+        virtual const std::vector<Selectable*>& getSelectables() const;
         
     };
 }

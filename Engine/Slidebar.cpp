@@ -10,8 +10,7 @@
 
 using namespace Adventure;
 
-Slidebar::Slidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, function<void (int value)> callback){
-    
+Slidebar::Slidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, std::function<void (int value)> callback){
     this->position=position;
     this->valuePerPixel=valuePerPixel;
     this->increaseValue=increaseValue;
@@ -121,12 +120,12 @@ void Slidebar::setSlideElementImage(const std::string& path){
 
 void Slidebar::setSlideBarWidth(int width){
     // Get the actual width and divide by what is wanted so i can stretch it.
-    slideBarImage->setWidthScale((slideBarImage->getWidth()/width));
+    slideBarImage->setWidthScale(static_cast<float>(slideBarImage->getWidth()/width));
     updateSlidebarPosition();
 }
 int Slidebar::getSlideBarWidth(){
     return slideBarImage->getWidth();
 }
-int Slidebar::getStretchedSlideBarWidth(){
+float Slidebar::getStretchedSlideBarWidth(){
     return slideBarImage->getWidth()*slideBarImage->getWidthScale();
 }

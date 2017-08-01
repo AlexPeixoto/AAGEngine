@@ -86,15 +86,15 @@ namespace Adventure{
          */
         void addObject(int id, int x, int y, int spriteIndexX, int spriteIndexY);
         //! Remove objeto do indice.
-        void removeObject(int index);
+        void removeObject(size_t index);
         
         //! Define indice do sprite do objeto especificado.
-        void setSpriteIndex(int index, Point2i spriteIndex);
+        void setSpriteIndex(size_t index, Point2i spriteIndex);
         //! Define indice do sprite do objeto especificado.
-        void setSpriteIndex(int index, int spriteIndexX, int spriteIndexY);
+        void setSpriteIndex(size_t index, int spriteIndexX, int spriteIndexY);
         
         //! Define se o objeto no indice especificado é colisivel.
-        void setCollidable(int index, bool collidable);
+        void setCollidable(size_t index, bool collidable);
         
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
@@ -102,21 +102,21 @@ namespace Adventure{
          \return Indice do sprite.
          \throw std::runtime_exception
          */
-        virtual Point2i getSpriteIndex(int index) const;
+        virtual Point2i getSpriteIndex(size_t index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo x.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexX(int index) const;
+        virtual int getSpriteIndexX(size_t index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo y.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexY(int index) const;
+        virtual int getSpriteIndexY(size_t index) const;
         
         //! Retorna se o objeto do indice informado é colissivel.
         /*! Retorna se o objeto do indice informado é colissivel.
@@ -124,7 +124,7 @@ namespace Adventure{
          \return Retorna se o objeto no indice informado é colissivel.
          \throw std::runtime_exception
          */
-        bool getIsCollidable(int index) const;
+        bool getIsCollidable(size_t index) const;
         
         //! Renderiza objeto no mapa.
         /*! Renderiza objeto no mapa, na posição especificada com o tamanho delimitado.

@@ -97,10 +97,10 @@ namespace Adventure{
             
             //! Retorna o tamanho do tile.
             /*! return Tamanho do tile em . */
-            virtual Vector2i getTileSize();
+            virtual Vector2i getTileSize() const;
             
             //! Retorna o numero de tiles.
-            virtual Vector2i getTileNumber();
+            virtual Vector2i getTileNumber() const;
             
             //Initialize manually the map data
             //! Inicializa manualmente um mapa.
@@ -141,7 +141,7 @@ namespace Adventure{
             virtual void addTile(int x, int y, int16_t value);
             
             //! Retorna a imagem do tilesheet.
-            virtual Core::Image* getImage();
+            virtual Core::Image* getImage() const;
         };
 }
 #endif /* defined(__Action_Adventure_Game_Engine__TileManager__) */

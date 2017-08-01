@@ -29,8 +29,8 @@ void Player::updateByKeyboard(Directions direction, float deltaTime){
         destiny.x=((int)direction-4) + /*if is right, force 1 and not 0 */ ( 1 * (direction == Directions::RIGHT) );
     else
         destiny.y-=((int)direction-2)+ /*if is up, force 1 and not 0 */ ( 1 * (direction == Directions::UP) );
-    destiny.x*=(this->pixelsPerCall*deltaTime);//*Core::Game::getDeltaTimef());
-    destiny.y*=(this->pixelsPerCall*deltaTime);
+    destiny.x*=(static_cast<int>(this->pixelsPerCall*deltaTime));//*Core::Game::getDeltaTimef());
+    destiny.y*=(static_cast<int>(this->pixelsPerCall*deltaTime));
     walkTo(destiny);
     
 }

@@ -33,13 +33,13 @@ namespace Adventure{
         //! Ponteiro para qual tela deve ser efetuada a chamada de render pela classe Text.
         static sf::RenderWindow* window;
         //! Indice de qual texto está sendo renderizado.
-        int speechIndex;
+		size_t speechIndex;
         //! Indice de qual parte do texto está sendo renderizado.
-        int speechScreenIndex;
+		size_t speechScreenIndex;
         //! Indice da pergunta.
-        int questionIndex;
+        size_t questionIndex;
         //! Indice da opção marcada na pergunta.
-        int optionIndex;
+		size_t optionIndex;
         //! Tamanho da borda da caixa de dialogo contendo o texto da conversa.
         int speechInnerBorder;
         //! Tamanho da borda da caixa de dialogo contendo o texto da opção.
@@ -133,7 +133,7 @@ namespace Adventure{
 		std::vector<Question>::iterator getQuestion(int id) const;
         
         //! Retorna, dentro de um vetor de opções, o tamanho da maior opção.
-        int returnWidestOptionSize(vector<Option> options);
+        int getWidestOptionSize(std::vector<Option> options) const;
         
     public:
         //! Remove construtor padrão.
@@ -288,7 +288,7 @@ namespace Adventure{
          \param isEnd definindo se após este texto deve-se terminar o dialogo.
          \return Retorna se foi possivel adicionar o novo texto. Caso a id do texto ja exista é retornado (false).
          */
-        bool addSpeech(int id, string speech, bool isEnd);
+        bool addSpeech(int id, const std::string& speech, bool isEnd);
         //! Remove texto com a id especificado.
         /*! Remove texto com a id especificado.
          \param id Id do texto que ser;a removido.
@@ -386,7 +386,6 @@ namespace Adventure{
         
         //! Retorna a cor da fonte da opção.
         Color getOptionColor() const;
-
     };
 }
 #endif /* defined(__Action_Adventure_Game_Engine__Dialog__) */

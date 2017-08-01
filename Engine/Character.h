@@ -29,8 +29,8 @@ using sf::Point2f;
 using sf::Point2i;
 using Adventure::Sprite;
 using Core::Node;
+
 namespace Adventure{
-    
             //! Classe que define um protótipo para personagens, NPC's e inimigos.
             class Character{
                 
@@ -71,7 +71,7 @@ namespace Adventure{
                 bool autoMovement;
             protected:
                 //! Iterator que representa propriedade associada a chave.
-				std::map<std::string, std::string>::const_iterator findProperty(const std::string& key);
+				std::map<std::string, std::string>::const_iterator findProperty(const std::string& key) const;
                 //! Mapa de propriedades do personagem.
 				std::map<std::string, std::string>* properties;
                 //! Returns the iterator that represents the item id and the quantity of that item
@@ -84,7 +84,7 @@ namespace Adventure{
                 int pixelsPerCall;
                 
                 //! Retorna se os dois pontos são adjacentes
-                virtual bool isAdjacent(const Point2i& p1, const Point2i& p2);
+                virtual bool isAdjacent(const Point2i& p1, const Point2i& p2) const;
                 
                 //! Retorna a direção com base no movimento
                 virtual Directions getDirectionFromMovement(const Vector2f& movement);
@@ -175,7 +175,7 @@ namespace Adventure{
         
                 //Manage sprite position
                 //! Retorna a posição do personagem no mapa.
-                virtual Point2f getPosition();
+                virtual Point2f getPosition() const;
                 //! Adiciona valores a posição atual, util para movimentação com teclado/joystick.
                 virtual void addToPosition(const Vector2i& addPosition);
                 //! Altera a posição do personagem/
@@ -197,21 +197,21 @@ namespace Adventure{
                  \param path Caminho do sprite a ser adicionado.
                  \param tileWidth Largura do tile do sprite.
                  \param tileHeight Altura do tile do sprite.
-                 \return Retorna indice do sprite ou -1 caso o sprite não tenha sido adicionado
+                 \return Retorna indice do sprite ou std::numeric_limits<size_t>::max() caso o sprite não tenha sido adicionado
                  */
-                virtual int addSprite(const std::string& path, int tileWidth, int tileHeight);
+                virtual size_t addSprite(const std::string& path, int tileWidth, int tileHeight);
                 //! Adiciona novo Sprite.
                 /*! Adiciona novo sprite a lista de sprites.
                  \param path Caminho do sprite a ser adicionado.
                  \param tileSize Altura e Largura do tile do sprite.
                  \return Retorna indice do sprite ou -1 caso o sprite não tenha sido adicionado
                  */
-                virtual int addSprite(const std::string& path, Vector2i tileSize);
+                virtual size_t addSprite(const std::string& path, Vector2i tileSize);
                 //Just disables the sprite, i need to maintain the index if not i mess with it
                 //! Remove Sprite-Sheet no indice informado populando o indice com nullptr.
                 virtual void disableSprite(int index);
                 //! Retorna o indice do Sprite-Sheet atual.
-                virtual int getIndex();
+                virtual int getIndex() const;
                 //! Retorna Sprite-Sheet atual.
                 virtual Sprite* getSprite() const;
                 
@@ -242,22 +242,22 @@ namespace Adventure{
                 /*!
                  \throw std::exception
                  */
-                virtual void addItem(size_t id, int quantity);
+                virtual void addItem(int id, int quantity);
                 //! Atualiza um quantidade de um item existente.
                 /*!
                  \return Retorna se o item foi atualizada. Caso o item não exista é retornado false.
                  */
-                virtual bool updateItem(size_t id, int quantity);
+                virtual bool updateItem(int id, int quantity);
                 //! Retorna a quantidade de itens da id associada.
                 /*! Retorna a quantidade de itens dentro do personagem com a id associada.
                  \throw std::exception
                  */
-                virtual int getItemQuantity(size_t id) const;
+                virtual int getItemQuantity(int id) const;
                 //! Remove o item.
                 /*!
                  \return Retorna se o item foi removido com sucesso. Caso o item não exista é retornado (false).
                  */
-                virtual bool removeItem(size_t id);
+                virtual bool removeItem(int id);
                 
                 //! retorna se esta ocorrendo uma animação automatica.
                 virtual bool getAutoMovement() const;

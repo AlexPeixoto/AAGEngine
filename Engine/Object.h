@@ -105,9 +105,9 @@ namespace Adventure{
         */
         virtual void setTileIndex(Point2i tileIndex);
         //! Retorna o caminho do Sprite do objeto.
-        virtual string getPath() const;
+        virtual std::string getPath() const;
         //! Retorna o nome do objeto.
-        virtual string getName() const;
+        virtual std::string getName() const;
         //! Retorna a posição do objeto no mapa.
         virtual Point2i getPosition() const;
         //! Retorna o tamanho do tile do objeto.
