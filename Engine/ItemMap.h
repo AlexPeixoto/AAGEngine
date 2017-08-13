@@ -31,6 +31,8 @@ namespace Adventure{
             int id; /*!< Id do item. */
             Point2i position; /*!< Posição do item. */
             Point2i spriteIndex; /*!< Indice do sprite do item. */
+			ItemFake() = default;
+			ItemFake(int id, Point2i position, Point2i spriteIndex) : id(id), position(position), spriteIndex(spriteIndex) {}
         } ItemFake;
         
     protected:
@@ -58,7 +60,7 @@ namespace Adventure{
          */
         virtual void addItem(int id, Point2i position);
         //! Remove o item com o indice correspondente.
-        virtual void removeItem(int index);
+        virtual void removeItem(size_t index);
         
         //! Altera o indice do Sprite-Sheet do item.
         /*! Altera o indice do Sprite-Sheet do item.
@@ -66,7 +68,7 @@ namespace Adventure{
          \param spriteIndex Novo indice do Sprite-Sheet.
          \throw std::runtime_exception
          */
-        virtual void setSpriteIndex(int index, Point2i spriteIndex);
+        virtual void setSpriteIndex(size_t index, Point2i spriteIndex);
         //! Altera o indice do Sprite-Sheet do item.
         /*! Altera o indice do Sprite-Sheet do item.
          \param index Indice do item no vetor que se deseja alterar a posição dentro do Sprite-Sheet.
@@ -74,7 +76,7 @@ namespace Adventure{
          \param spriteIndexY Novo indice do Sprite-Sheet no eixo y.
          \throw std::runtime_exception
          */
-        virtual void setSpriteIndex(int index, int spriteIndexX, int spriteIndexY);
+        virtual void setSpriteIndex(size_t index, int spriteIndexX, int spriteIndexY);
         
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
@@ -82,21 +84,21 @@ namespace Adventure{
          \return Indice do sprite.
          \throw std::runtime_exception
          */
-        virtual Point2i getSpriteIndex(int index) const;
+        virtual Point2i getSpriteIndex(size_t index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo x.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexX(int index) const;
+        virtual int getSpriteIndexX(size_t index) const;
         //! Retorna o indice do Sprite.
         /*! Retorna o indice do Sprite.
          \param index Sprite que se deseja retornar o indice dentro do Sprite-sheet.
          \return Indice do sprite no eixo y.
          \throw std::runtime_exception
          */
-        virtual int getSpriteIndexY(int index) const;
+        virtual int getSpriteIndexY(size_t index) const;
 
         //! Renderiza item no mapa.
         /*! Renderiza item no mapa, na posição especificada com o tamanho delimitado.

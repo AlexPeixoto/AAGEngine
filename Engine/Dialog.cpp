@@ -30,17 +30,15 @@ Dialog::~Dialog() {
 	textControl = nullptr;
 }
 
-std::vector<Dialog::Question>::iterator Dialog::getQuestion(int id) const {
-	std::vector<Question>::iterator i;
-	//If it finds an id it breaks the loop
-	for (i = questions.begin(); i != questions.end() && (*i).id != id; ++i);
-
-	return i;
+std::vector<Dialog::Question>::iterator Dialog::getQuestion(int id) {
+	return std::find_if(questions.begin(), questions.end(), [&](Question q) { return q.id == id; });
 }
 
 bool Dialog::addQuestion(int id, const std::string& title, std::function<void(int, int, int, Dialog*)> func) {
-	if (getQuestion(id) != questions.end())
+	//If it returns end it means that it does not exists
+	if (getQuestion(id) == questions.end()) {
 		return false;
+	}
 	questions.push_back({ id, title, func, {}, -1 });
 	return true;
 }
@@ -149,7 +147,7 @@ void Dialog::renderSpeech() {
 	textControl->renderScreen(dialogBoxPosition.x + speechInnerBorder, dialogBoxPosition.y + speechInnerBorder, speechScreenIndex);
 }
 bool Dialog::gotoSpeech(int id) {
-	for (int x = 0; x < speeches.size(); x++) {
+	for (size_t x = 0; x < speeches.size(); ++x) {
 		if (speeches.at(x).id == id) {
 			speechIndex = x;
 			textControl->setText(speeches.at(speechIndex).speech);
@@ -248,7 +246,7 @@ void Dialog::renderQuestion() {
 
 	//Calculate what options i need to render
 	// Calculated using the height so i round down.
-	int initOption = (optionIndex / (optionsPerScreen - 1)*(optionsPerScreen - 1));
+	size_t initOption = (optionIndex / (optionsPerScreen - 1)*(optionsPerScreen - 1));
 	//The initial position is
 	//questionBoxPosition.y <= the position i set to the questio box +
 	//textControl->returnHeight(questions.at(questionIndex).title <= the height of the text +
@@ -256,8 +254,8 @@ void Dialog::renderQuestion() {
 	int y = questionBoxPosition.y + textControl->getHeight(questions.at(questionIndex).title) + optionInnerBorder * 2;
 
 	//optionsPerScreen-1 because it is (zero indexed)
-	for (size_t option = initOption; option < initOption + (optionsPerScreen - 1) && option < options.size(); option++) {
-		if (optionIndex == option)
+	for (size_t option = initOption; option < static_cast<size_t>(initOption + (optionsPerScreen - 1)) && option < options.size(); option++) {
+		if (optionIndex == option) {
 			if (optionShape != nullptr) {
 				//The index option -
 				//(Integer) option divided by number of screens
@@ -274,6 +272,7 @@ void Dialog::renderQuestion() {
 					optionShape->setSize(questionBoxSize.x - 4 - optionInnerBorder * 2, textHeight + optionInnerBorder);
 				optionShape->render();
 			}
+		}
 		textControl->setColor(optionColor);
 		textControl->renderSimpleText(questionBoxPosition.x + optionInnerBorder, y, options.at(option).text);
 		y += textHeight + optionInnerBorder * 2;

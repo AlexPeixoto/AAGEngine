@@ -122,7 +122,7 @@ namespace Adventure{
         virtual Vector2f getMovement() const;
         
         //! Retorna o movimento da câmera.
-        virtual Vector2f* getMovementPointer() const;
+        virtual Vector2f* getMovementPointer();
         
         //! Retorna ponteiro para o gerenciador de camadas de tiles no mapa.
         virtual TileLayer* getTileLayer() const;
@@ -135,7 +135,7 @@ namespace Adventure{
         //! Retorna o ponteiro para o gerenciador de objetos no mapa.
         virtual ObjectMap* getObjectMap() const;
         //! Retorna o ponteiro para o gerenciador de warp no mapa.
-        virtual WarpMap* getWarptMap() const;
+        virtual WarpMap* getWarpMap() const;
     };
 }
 

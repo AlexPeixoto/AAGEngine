@@ -105,14 +105,14 @@ namespace Adventure{
         virtual void addSlidebar(const std::string& slideBarPath, const std::string& slideElementPath, int minValue, int maxValue, int increaseValue, int valuePerPixel, Point2i position, std::function<void (int value)> callback);
 
         //! Adiciona uma nova lista de itens selecionaveis.
-        virtual void addSelectable(int numberOfItens, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Selectable*)> callback);
+        virtual void addSelectable(int numberOfItens, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (size_t, Selectable*)> callback);
         //! Adiciona uma nova lista de itens selecionaveis.
         virtual void addSelectable(Selectable* selectable);
         
         //! Adiciona um novo dropdown.
         virtual void addDropdown(Dropdown* dropdown);
         //! Adiciona um novo dropdown.
-        virtual void addDropdown(int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (int, Dropdown*)> callback);
+        virtual void addDropdown(int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (size_t, Dropdown*)> callback);
         
         //! Remove elemento utilizando o vetor de elements.
         /*! Os indices são mantidos e o ponteiro vira nullptr. */

@@ -55,18 +55,18 @@ namespace Adventure{
         bool openMenu;
         
         //! Opção selecionada dentro do menu de opções.
-        int optionIndex;
+		size_t optionIndex;
         //! Opção que foi selecionada.
-        int selectedOptionIndex;
+        size_t selectedOptionIndex;
         
         //! Função chamada quando uma opção é selecionada.
-		std::function<void (int, Dropdown*)> callback;
+		std::function<void (size_t, Dropdown*)> callback;
         
     public:
         //! Costrutor padrão deletado.
         Dropdown() = delete;
         //! Construtor que recebe o ponteiro do TextControl do Menu.
-        Dropdown(TextControl* textControl, int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (int, Dropdown*)> callback);
+        Dropdown(TextControl* textControl, int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (size_t, Dropdown*)> callback);
         //! Remove os shapes
         ~Dropdown();
         
@@ -88,13 +88,13 @@ namespace Adventure{
 
         
         //! Define o callback para quando uma opção for selecionada.
-        virtual void setSelectedCallback(std::function<void (int, Dropdown*)> callback);
+        virtual void setSelectedCallback(std::function<void (size_t, Dropdown*)> callback);
         
         //! Retorna o tamanho do dropdown, sem o tamanho do texto.
         virtual Vector2i getSize();
         
         //! Retorna lista de opções.
-        virtual std::vector<std::string> getOptions() const;
+        virtual const std::vector<std::string>& getOptions() const;
         
         //! Retorna se omenu está aberto.
         virtual bool getOpenMenu();
@@ -130,7 +130,7 @@ namespace Adventure{
         virtual int getOptionSpacing() const;
         
         //! Remove a opção no indice especificado, atualiza os indices.
-        virtual bool removeOption(int index);
+        virtual bool removeOption(size_t index);
     };
 }
 

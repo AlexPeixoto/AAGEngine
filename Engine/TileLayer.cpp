@@ -40,7 +40,7 @@ bool TileLayer::isEnd(int x, int y, int width, int height) const {
 	return false;
 }
 bool TileLayer::isEnd(Core::Collision::BoundingBox b) const {
-	return isEnd(b.position.x, b.position.y, b.size.x, b.size.y);
+	return isEnd(static_cast<int>(b.position.x), static_cast<int>(b.position.y), static_cast<int>(b.size.x), static_cast<int>(b.size.y));
 
 }
 void TileLayer::render(Point2i position, Vector2i size, int index) {

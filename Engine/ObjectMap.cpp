@@ -69,7 +69,7 @@ ObjectMap::~ObjectMap() {
 bool ObjectMap::collided(Core::Collision::BoundingBox b, Vector2f movement) {
 	return collidedWith(b, movement) >= 0;
 }
-int ObjectMap::collidedWith(Core::Collision::BoundingBox b, Vector2f movement) {
+size_t ObjectMap::collidedWith(Core::Collision::BoundingBox b, Vector2f movement) {
 	for (size_t x = 0; x < objectList->size(); ++x) {
 		ObjectFake* object = objectList->at(x);
 		if (!object->collidable)

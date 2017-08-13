@@ -269,7 +269,7 @@ void TextControl::splitInScreens(int width, int height)
 		}
 	}
 }
-void TextControl::renderScreen(int x, int y, int screen)
+void TextControl::renderScreen(int x, int y, size_t screen)
 {
 	if (screen <= this->screen.size())
 	{
@@ -291,7 +291,7 @@ void TextControl::renderScreen(int x, int y, int screen)
 		}
 	}
 }
-void TextControl::renderScreen(Point2i position, int screen) {
+void TextControl::renderScreen(Point2i position, size_t screen) {
 	renderScreen(position.x, position.y, screen);
 }
 void TextControl::renderSimpleText(int x, int y, const std::string& text) {

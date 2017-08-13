@@ -36,9 +36,9 @@ Color Information::getColor() const{
 Vector2f Information::getScale() const{
     return scale;
 }
-string Information::getText() const{
+std::string Information::getText() const{
     return text;
-}\
+}
 Point2i Information::getPosition() const{
     return position;
 }

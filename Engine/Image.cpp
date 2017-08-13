@@ -117,7 +117,7 @@ void Image::setRotation(float rotation) {
 }
 void Image::setOrigin(Point2i origin) {
 	this->origin = origin;
-	sprite->setOrigin(origin.x, origin.y);
+	sprite->setOrigin(static_cast<float>(origin.x), static_cast<float>(origin.y));
 }
 Point2i Image::getOrigin() const {
 	return origin;
@@ -129,7 +129,7 @@ void Image::render() {
 	if (reloading || Image::window == nullptr) {
 		return;
 	}
-	sprite->setPosition(framePos.x, framePos.y);
+	sprite->setPosition(static_cast<float>(framePos.x), static_cast<float>(framePos.y));
 	sprite->setScale(frameSize.x, frameSize.y);
 	window->draw(*sprite);
 }
@@ -141,8 +141,8 @@ void Image::renderSub(float x, float y, float width, float height) {
 		return;
 	}
 	this->sprite->setScale(this->frameSize.x, this->frameSize.y);
-	this->sprite->setTextureRect(sf::IntRect(x, y, width, height));
-	this->sprite->setPosition(this->framePos.x, this->framePos.y);
+	this->sprite->setTextureRect(sf::IntRect(static_cast<int>(x), static_cast<int>(y), static_cast<int>(width), static_cast<int>(height)));
+	this->sprite->setPosition(static_cast<float>(this->framePos.x), static_cast<float>(this->framePos.y));
 	Image::window->draw(*this->sprite);
 }
 sf::Sprite* Image::getSfSprite() {

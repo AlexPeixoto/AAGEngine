@@ -10,14 +10,14 @@
 
 using namespace Adventure;
 
-Dropdown::Dropdown(TextControl* textControl, int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, function<void(int, Dropdown*)> callback) {
+Dropdown::Dropdown(TextControl* textControl, int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void(size_t, Dropdown*)> callback) {
 	this->position = position;
 	this->textControl = textControl;
 	this->callback = callback;
 	this->optionsPerScreen = optionsPerScreen;
 	this->boxBorder = boxBorder;
 	this->optionSpacing = optionSpacing;
-	size.x = optionsPerScreen*maxTextHeight + optionSpacing * 2;
+	size.x = optionsPerScreen * maxTextHeight + optionSpacing * 2;
 	size.y = maxTextWidth + optionSpacing + optionSpacing * 2;
 	maxTextHeight = textControl->getHeight("QWERTYUIOPASDFGHJKLZXCVBNM1234567890");
 	menuShape = nullptr;
@@ -45,7 +45,7 @@ void Dropdown::render() {
 
 		// Same algorithm as the used on the Dialog class.
 // same as optionIndex-(optionIndex%optionsPerScreen)
-		int initOption = ((optionIndex / optionsPerScreen)*optionsPerScreen);
+		size_t initOption = ((optionIndex / optionsPerScreen)*optionsPerScreen);
 		// Position and add the size of the shape of the option on the menu. add the box border so i jump the border for the first option.
 		int y = position.y + menuShape->getSize().y + optionSpacing * 2;
 
@@ -56,13 +56,14 @@ void Dropdown::render() {
 
 
 		//optionsPerScreen-1 because it is (zero indexed)
-		for (int option = initOption; option < initOption + optionsPerScreen && option < options.size(); option++) {
-			if (optionIndex == option)
+		for (size_t option = initOption; option < initOption + optionsPerScreen && option < options.size(); ++option) {
+			if (optionIndex == option) {
 				if (optionShape != nullptr) {
 					optionShape->setSize(maxTextWidth + optionSpacing * 2, maxTextHeight + boxBorder + optionSpacing);
 					optionShape->setPosition(position.x, y + optionSpacing);
 					optionShape->render();
 				}
+			}
 			textControl->setColor(menuOptionColor);
 			textControl->renderSimpleText(position.x, y, options.at(option));
 			y += optionShape->getSize().y;
@@ -100,7 +101,7 @@ void Dropdown::selectOption() {
 	}
 }
 
-void Dropdown::setSelectedCallback(function<void(int, Dropdown*)> callback) {
+void Dropdown::setSelectedCallback(std::function<void(size_t, Dropdown*)> callback) {
 	this->callback = callback;
 }
 void Dropdown::setMenuOptionColor(Color color) {
@@ -117,7 +118,7 @@ void Dropdown::setOptionSpacing(int optionSpacing) {
 	this->optionSpacing = optionSpacing;
 	calculateMenuShapeSize();
 }
-vector<string> Dropdown::getOptions() const {
+const std::vector<std::string>& Dropdown::getOptions() const {
 	return options;
 }
 bool Dropdown::getOpenMenu() {
@@ -155,7 +156,7 @@ void Dropdown::calculateMenuShapeSize() {
 		menuShape->setSize(size);
 
 }
-void Dropdown::addOption(string option) {
+void Dropdown::addOption(const std::string& option) {
 	options.push_back(option);
 	calculateMenuShapeSize();
 }
@@ -180,7 +181,7 @@ std::string Dropdown::getOption(int index) const{
 int Dropdown::getOptionSpacing() const {
 	return optionSpacing;
 }
-bool Dropdown::removeOption(int index) {
+bool Dropdown::removeOption(size_t index) {
 	if (index < options.size()) {
 		options.erase(options.begin() + index);
 		if (index == selectedOptionIndex) {

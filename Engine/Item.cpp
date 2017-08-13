@@ -9,19 +9,20 @@
 #include "Item.h"
 using namespace Adventure;
 
-Item::Item(int id, string path, string name, int tileWidth, int tileHeight, bool load) : path(path), name(name) {
+Item::Item(int id, const std::string& path, const std::string& name, int tileWidth, int tileHeight, bool load) : path(path), name(name) {
 	setTileSize(tileWidth, tileHeight);
 	itemSprite = nullptr;
-	properties = new map<string, string>();
-	if (load)
+	properties = new std::map<std::string, std::string>();
+	if (load) {
 		loadSprite();
+	}
 
 }
-Item::Item(int id, string path, string name, Vector2i tileSize, bool load) {
+Item::Item(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool load) {
 	Item::Item(id, path, name, tileSize.x, tileSize.y, load);
 }
 Item::Item() {
-	properties = new map<string, string>();
+	properties = new std::map<std::string, std::string>();
 	itemSprite = nullptr;
 }
 Item::~Item() {
@@ -36,13 +37,15 @@ Item::~Item() {
 }
 
 void Item::render() {
-	if (this->itemSprite == nullptr)
-		if (!loadSprite())
-			cerr << "Error loading the sprite" << endl;
+	if (this->itemSprite == nullptr) {
+		if (!loadSprite()) {
+			std::cerr << "Error loading the sprite" << std::endl;
+		}
+	}
 	itemSprite->render();
 }
 
-Sprite* Item::returnSprite() const {
+Sprite* Item::getSprite() const {
 	return itemSprite;
 }
 bool Item::loadSprite() {
@@ -53,10 +56,10 @@ bool Item::loadSprite() {
 		return true;
 	return false;
 }
-void Item::setName(string name) {
+void Item::setName(const std::string& name) {
 	this->name = name;
 }
-void Item::setPath(string path, bool load) {
+void Item::setPath(const std::string& path, bool load) {
 	this->path = path;
 	if (load) {
 		if (itemSprite != nullptr) {
@@ -111,30 +114,30 @@ void Item::updateTileIndex() {
 	}
 }
 
-string Item::getName() const {
+std::string Item::getName() const {
 	return name;
 }
-string Item::getPath() const {
+std::string Item::getPath() const {
 	return path;
 }
 Point2i Item::getPosition() {
 	return position;
 }
-Vector2i Item::getTileSize() {
+Vector2i Item::getTileSize() const {
 	return tileSize;
 }
-int Item::getRow() {
+int Item::getRow() const {
 	return tileIndex.y;
 }
-int Item::getColumn() {
+int Item::getColumn() const {
 	return tileIndex.x;
 }
-Point2i Item::getTileIndex() {
+Point2i Item::getTileIndex() const {
 	return tileIndex;
 }
 void Item::addProperty(const std::string& key, const std::string& value) {
 	if (properties == nullptr) {
-		properties = new map<std::string, std::string>();
+		properties = new std::map<std::string, std::string>();
 	}
 	properties->insert(make_pair(key, value));
 
@@ -147,7 +150,7 @@ bool Item::updateProperty(const std::string& key, const std::string& value) {
 		properties->at(key) = value;
 		return true;
 	}
-	catch (const std::out_of_range& oor) {
+	catch (...) {
 		return false;
 	}
 }
