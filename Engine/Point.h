@@ -41,16 +41,16 @@ namespace sf{
     template <typename U>
     inline Point2<T>::Point2(const Point2<U>& point)
     {
-        Vector2<T>::x=static_cast<U>(point.x);
-        Vector2<T>::y=static_cast<U>(point.y);
+        Vector2<T>::x=static_cast<T>(point.x);
+        Vector2<T>::y=static_cast<T>(point.y);
     }
     
     template <typename T>
     template <typename U>
     inline Point2<T>::Point2(const Vector2<U>& point)
     {
-        Vector2<T>::x=static_cast<U>(point.x);
-        Vector2<T>::y=static_cast<U>(point.y);
+        Vector2<T>::x=static_cast<T>(point.x);
+        Vector2<T>::y=static_cast<T>(point.y);
     }
 
     

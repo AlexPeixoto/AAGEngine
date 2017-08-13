@@ -36,8 +36,8 @@ void Sprite::resetLoopTo(int index) {
 	this->loopTo = index;
 }
 void Sprite::setTileSize(float width, float height) {
-	tileSize.x = width;
-	tileSize.y = height;
+	tileSize.x = static_cast<int>(width);
+	tileSize.y = static_cast<int>(height);
 }
 //To prevent some calculations store the limits when i load the image
 void Sprite::next() {
@@ -80,12 +80,14 @@ void Sprite::setRow(int row) {
 void Sprite::changeSprite(const std::string& path, int tileWidth, int tileHeight) {
 	this->tileSize.x = tileWidth;
 	this->tileSize.y = tileHeight;
-	setTileSize(tileWidth, tileHeight);
+	setTileSize(static_cast<float>(tileWidth), static_cast<float>(tileHeight));
 	this->changeImage(path);
 }
 void Sprite::render() {
-	if (reloading)return;
-	this->renderSub((index.x - 1)*tileSize.x, (index.y - 1)*tileSize.y, tileSize.x, tileSize.y);
+	if (reloading) {
+		return;
+	}
+	this->renderSub(static_cast<float>((index.x - 1)*tileSize.x), static_cast<float>((index.y - 1)*tileSize.y), static_cast<float>(tileSize.x), static_cast<float>(tileSize.y));
 }
 Point2i Sprite::getSpriteIndex() const {
 	Point2i position;

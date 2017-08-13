@@ -8,7 +8,6 @@
 
 #include "BackgroundMusic.h"
 
-
 using namespace Adventure;
 
 Music* BackgroundMusic::playing = nullptr;

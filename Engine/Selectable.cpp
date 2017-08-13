@@ -10,7 +10,7 @@
 
 using namespace Adventure;
 
-Selectable::Selectable(int numberOfItemsPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void(int, Selectable*)> callback) : numberOfItemsPerScreen(numberOfItemsPerScreen), spacing(spacing), selectedItem(selectedItem), itemSize(itemSize), callback(callback) {
+Selectable::Selectable(int numberOfItemsPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void(size_t, Selectable*)> callback) : numberOfItemsPerScreen(numberOfItemsPerScreen), spacing(spacing), selectedItem(selectedItem), itemSize(itemSize), callback(callback) {
 	selectedItemIndex = 0;
 	this->position = position;
 	this->selectedItem->setSize(itemSize.x + spacing * 2, itemSize.y + spacing * 2);
@@ -23,7 +23,7 @@ void Selectable::render() {
 	if (selectedItem != nullptr) {
 		selectedItem->render();
 	}
-	int initItem = ((selectedItemIndex / numberOfItemsPerScreen)*numberOfItemsPerScreen);
+	int initItem = static_cast<int>((selectedItemIndex / numberOfItemsPerScreen)*numberOfItemsPerScreen);
 	int x = position.x + spacing * 2;
 
 	for (int item = initItem; item < initItem + numberOfItemsPerScreen && item < items.size(); ++item) {
@@ -43,7 +43,7 @@ void Selectable::selectOption() {
 	callback(selectedItemIndex, this);
 }
 void Selectable::selectByMouse(Point2i clickedPosition) {
-	int initItem = ((selectedItemIndex / numberOfItemsPerScreen)*numberOfItemsPerScreen);
+	size_t initItem = ((selectedItemIndex / numberOfItemsPerScreen)*numberOfItemsPerScreen);
 	int x = position.x + spacing * 2;
 
 	for (size_t item = initItem; item < initItem + numberOfItemsPerScreen && item < items.size(); item++) {

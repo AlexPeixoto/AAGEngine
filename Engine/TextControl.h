@@ -173,7 +173,7 @@ namespace Core{
              \param y Posição y do texto na tela.
              \param screen Indice do texto a ser renderizado na tela.
              */
-			virtual void renderScreen(int x, int y, int screen);
+			virtual void renderScreen(int x, int y, size_t screen);
             
             //! Renderiza o texto na posição position.x, position.y.
             /*! Renderiza o texto na posição position.x, position.y. <br />
@@ -181,7 +181,7 @@ namespace Core{
              \param position Posição x e y do texto na tela.
              \param screen Indice do texto a ser renderizado na tela.
              */
-            virtual void renderScreen(Point2i position, int screen);
+            virtual void renderScreen(Point2i position, size_t screen);
             
             //! Renderiza uma linha de texto na posição x, y especificada.
             /*! Renderiza uma linha de texto na posição x, y especificada.<br />

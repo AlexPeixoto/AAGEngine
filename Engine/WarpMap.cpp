@@ -78,7 +78,7 @@ std::vector<WarpMap::WarpFake*>* WarpMap::getWarpList() const {
 Core::Collision::BoundingBox WarpMap::getBoundingBox(WarpFake* w) const {
 	Core::Collision::BoundingBox b;
 	Warp* _w = WarpManager::getWarp(w->id);
-	b.position = Point2f(static_cast<int>(w->position.x), static_cast<int>(w->position.y));
+	b.position = Point2f(static_cast<float>(w->position.x), static_cast<float>(w->position.y));
 	b.size = (Vector2f)_w->getSize();
 	return b;
 }

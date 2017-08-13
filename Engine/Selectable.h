@@ -36,11 +36,11 @@ namespace Adventure{
          */
         Vector2i itemSize;
         //! Função chamada quando um item é selecionado.
-        std::function<void (int, Selectable*)> callback;
+        std::function<void (size_t, Selectable*)> callback;
     public:
         Selectable() = delete;
         //! Inicializa o selectable.
-        Selectable(int numberOfItemsPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Selectable*)> callback);
+        Selectable(int numberOfItemsPerScreen, int spacing, BackgroundShape* selectedItem, Vector2i itemSize, Point2i position, std::function<void (size_t, Selectable*)> callback);
         
         //! Renderiza itens.
         virtual void render();

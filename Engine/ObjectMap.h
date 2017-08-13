@@ -67,7 +67,7 @@ namespace Adventure{
          \param movement Movimento que esta ocorrendo em relação ao BoundingBox.
          \return Indice do objeto no vetor com o qual ocorreu a colisão. Retorna -1 caso nenhuma colisão tenha ocorrido.
          */
-        int collidedWith(Core::Collision::BoundingBox b, Vector2f movement);
+        size_t collidedWith(Core::Collision::BoundingBox b, Vector2f movement);
         
         //! Adiciona novo objeto,
         /*!

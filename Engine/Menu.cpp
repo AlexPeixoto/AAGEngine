@@ -93,7 +93,7 @@ void Menu::addDropdown(Adventure::Dropdown *dropdown){
     dropdowns.emplace_back(dropdown);
     elements.emplace_back(new Element({TYPES::DROPDOWN, (int)dropdowns.size()-1}));
 }
-void Menu::addDropdown(int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (int, Dropdown*)> callback){
+void Menu::addDropdown(int optionsPerScreen, int boxBorder, int optionSpacing, Point2i position, std::function<void (size_t, Dropdown*)> callback){
     dropdowns.emplace_back(new Dropdown(textControl, optionsPerScreen, boxBorder, optionSpacing, position, callback));
     elements.emplace_back(new Element({TYPES::DROPDOWN, (int)dropdowns.size()-1}));
 }
@@ -101,7 +101,7 @@ void Menu::addSelectable(Selectable* selectable){
     selectables.emplace_back(selectable);
     elements.emplace_back(new Element({TYPES::SELECTABLE, (int)selectables.size()-1}));
 }
-void Menu::addSelectable(int numberOfItens, int spacing, Core::BackgroundShape *selectedItem, Vector2i itemSize, Point2i position, std::function<void (int, Adventure::Selectable *)> callback){
+void Menu::addSelectable(int numberOfItens, int spacing, Core::BackgroundShape *selectedItem, Vector2i itemSize, Point2i position, std::function<void (size_t, Adventure::Selectable *)> callback){
     selectables.emplace_back(new Selectable(numberOfItens, spacing, selectedItem, itemSize, position, callback));
     elements.emplace_back(new Element({TYPES::SELECTABLE, (int)selectables.size()-1}));
 }

@@ -130,7 +130,7 @@ namespace Adventure{
         bool optionBoxByLargest;
         
         //! Retorna iterator para a opção com o id especificado.
-		std::vector<Question>::iterator getQuestion(int id) const;
+		std::vector<Question>::iterator getQuestion(int id);
         
         //! Retorna, dentro de um vetor de opções, o tamanho da maior opção.
         int getWidestOptionSize(std::vector<Option> options) const;

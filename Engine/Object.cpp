@@ -186,7 +186,7 @@ bool Object::updateItem(int id, int quantity) {
 		items->at(id) = quantity;
 		return true;
 	}
-	catch (const std::out_of_range& oor) {
+	catch (...) {
 		return false;
 	}
 }

@@ -61,7 +61,7 @@ namespace Adventure{
          \return Retorna se foi possivel abrir o arquivo.
          */
 
-        static bool loadFromFile(std::string&& path);
+        static bool loadFromFile(const std::string& path);
         //! Descarrega todos os objetos carregados.
         /*! Descarrega todos os objetos carregados tornando os ponteiros retornados invalidos. */
         static void unloadData();
