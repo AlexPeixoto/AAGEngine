@@ -10,11 +10,10 @@
 
 using namespace Adventure;
 
-InformationImage::InformationImage(TextControl* textControl, string path, string text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor) : textControl(textControl), text(text), imagePosition(imagePosition), textPosition(textPosition), imageScale(imageScale), textScale(textScale), textColor(textColor){
+InformationImage::InformationImage(TextControl* textControl, cobst string& path, const string& text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor) : textControl(textControl), text(text), imagePosition(imagePosition), textPosition(textPosition), imageScale(imageScale), textScale(textScale), textColor(textColor){
     this->image = new Image(path);
     image->setPosition(imagePosition);
     image->setScale(imageScale);
-    
 }
 
 void InformationImage::render(){
@@ -24,24 +23,24 @@ void InformationImage::render(){
     image->render();
 }
 
-void InformationImage::setImagePath(string path){
+void InformationImage::setImagePath(const std::string& path){
     image->changeImage(path);
 }
-void InformationImage::setText(string text){
+void InformationImage::setText(const std::string& text){
     this->text=text;
 }
-void InformationImage::setImagePosition(Point2i imagePosition){
+void InformationImage::setImagePosition(const Point2i& imagePosition){
     image->setPosition(imagePosition);
     this->imagePosition=imagePosition;
 }
-void InformationImage::setTextPosition(Point2i textPosition){
+void InformationImage::setTextPosition(const Point2i& textPosition){
     this->textPosition=textPosition;
 }
-void InformationImage::setImageScale(Vector2f imageScale){
+void InformationImage::setImageScale(const Vector2f& imageScale){
     this->imageScale=imageScale;
     image->setScale(imageScale);
 }
-void InformationImage::setTextScale(Vector2f textScale){
+void InformationImage::setTextScale(const Vector2f& textScale){
     this->textScale=textScale;
 }
 void InformationImage::setTextColor(Color textColor){
@@ -50,24 +49,24 @@ void InformationImage::setTextColor(Color textColor){
 string InformationImage::getImagePath() const{
     return image->getPath();
 }
-Image* InformationImage::getImage(){
+Image* InformationImage::getImage() const{
     return image;
 }
-string InformationImage::getText(){
+string InformationImage::getText() const{
     return text;
 }
-Point2i InformationImage::getImagePosition(){
+Point2i InformationImage::getImagePosition() const{
     return imagePosition;
 }
-Point2i InformationImage::getTextPosition(){
+Point2i InformationImage::getTextPosition() const{
     return textPosition;
 }
-Color InformationImage::getTextColor(){
+Color InformationImage::getTextColor() const{
     return textColor;
 }
-Vector2f InformationImage::getTextScale(){
+Vector2f InformationImage::getTextScale() const{
     return textScale;
 }
-Vector2f InformationImage::getImageScale(){
+Vector2f InformationImage::getImageScale() const{
     return imageScale;
 }

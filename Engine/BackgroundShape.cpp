@@ -41,7 +41,7 @@ int BackgroundShape::getBorderSize(){
     return shape.getOutlineThickness();
 }
 
-void BackgroundShape::loadTexture(string path){
+void BackgroundShape::loadTexture(const string& path){
     if(texture!=nullptr){
         delete texture;
     }

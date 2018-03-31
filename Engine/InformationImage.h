@@ -38,12 +38,12 @@ namespace Adventure{
         
     public:
         InformationImage() = delete;
-        InformationImage(TextControl* textControl, std::string path, std::string text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
+        InformationImage(TextControl* textControl, const std::string& path, const std::string& text, Point2i imagePosition, Point2i textPosition, Vector2f imageScale, Vector2f textScale, Color textColor);
         
         virtual void render();
         
-        virtual void setImagePath(std::string&& path);
-        virtual void setText(std::string&& text);
+        virtual void setImagePath(const std::string& path);
+        virtual void setText(const std::string& text);
         virtual void setImagePosition(const Point2i& imagePosition);
         virtual void setTextPosition(const Point2i& textPosition);
         virtual void setImageScale(const Vector2f& imageScale);

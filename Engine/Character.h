@@ -71,7 +71,7 @@ namespace Adventure{
                 bool autoMovement;
             protected:
                 //! Iterator que representa propriedade associada a chave.
-				std::map<std::string, std::string>::const_iterator findProperty(const std::string& key);
+				std::map<std::string, std::string>::const_iterator findProperty(const std::string& key) const;
                 //! Mapa de propriedades do personagem.
 				std::map<std::string, std::string>* properties;
                 //! Returns the iterator that represents the item id and the quantity of that item
@@ -84,7 +84,7 @@ namespace Adventure{
                 int pixelsPerCall;
                 
                 //! Retorna se os dois pontos são adjacentes
-                virtual bool isAdjacent(const Point2i& p1, const Point2i& p2);
+                virtual bool isAdjacent(const Point2i& p1, const Point2i& p2) const;
                 
                 //! Retorna a direção com base no movimento
                 virtual Directions getDirectionFromMovement(const Vector2f& movement);

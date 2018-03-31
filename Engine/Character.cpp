@@ -279,8 +279,8 @@ Sprite* Character::getSprite() const{
     return this->spriteList->at(index);
 }
 
-map<string, string>::const_iterator Character::findProperty(const std::string& key){
-    return properties->find(key);
+std::map<std::string, std::string>::const_iterator Character::findProperty(const std::string& key) const{
+    return this->properties->find(key);
 }
 void Character::addProperty(const std::string& key, const std::string& value){
     if(properties==nullptr)

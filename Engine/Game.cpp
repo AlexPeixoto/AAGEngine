@@ -26,7 +26,7 @@ Game::Game(std::function<void(int, char**)> init, int argc, char** argv){
     init(argc, argv);
     initRenderFunc=initProcessFunc=false;
 }
-Game::Game(int width, int height, int framerate, string title, int argc, char** argv){
+Game::Game(int width, int height, int framerate, const std::string& title, int argc, char** argv){
     sf::ContextSettings set;
     set.depthBits=24;
     set.stencilBits=0;
