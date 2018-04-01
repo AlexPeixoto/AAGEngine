@@ -8,9 +8,7 @@
 
 #ifndef __Action_Adventure_Game_Engine__Game__
 #define __Action_Adventure_Game_Engine__Game__
-#ifdef _WIN32
 #include <functional>
-#endif
 #include <iostream>
 #include <SFML/System/Vector2.hpp>
 #include "InputControl.h"
