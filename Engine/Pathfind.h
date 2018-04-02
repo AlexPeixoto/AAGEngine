@@ -8,9 +8,7 @@
 
 #ifndef __Action_Adventure_Game_Engine__Pathfind__
 #define __Action_Adventure_Game_Engine__Pathfind__
-#ifdef _WIN32
 #include <functional>
-#endif
 #include <iostream>
 #include <cmath>
 #include "Point.h"

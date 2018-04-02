@@ -7,6 +7,7 @@
 //
 
 #include "ItemManager.h"
+#include <memory>
 
 using namespace Adventure;
 
@@ -16,7 +17,7 @@ std::string ItemManager::relativePath = "";
 ItemManager::~ItemManager() {
 	if (itemList != nullptr) {
 #ifndef _WIN32
-		for_each(itemList->begin(), itemList->end(), default_delete<Item>());
+		for_each(itemList->begin(), itemList->end(), std::default_delete<Item>());
 #else
 		for_each(itemList->begin(), itemList->end(),
 			[](Item* i) {
@@ -81,16 +82,20 @@ bool ItemManager::loadFromFile(const std::string& path) {
 	else {
 		loadPath = path;
 	}
+	FILE* f;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
-#endif
-
-	FILE* f;
-
 	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
 		throw std::runtime_error("[Item Manager] Could not open: " + loadPath);
 		return false;
 	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error("[Item Manager] Could not open: " + loadPath);
+		return false;
+	}
+#endif
 	Item* i = nullptr;;
 	int size = 0;
 	int id = -1;

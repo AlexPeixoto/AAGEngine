@@ -7,6 +7,7 @@
 //
 
 #include "ObjectMap.h"
+#include <memory>
 
 using namespace Adventure;
 using Core::Collision;
@@ -32,14 +33,19 @@ ObjectMap::ObjectMap(const std::string& path) {
 	}
 	else
 		loadPath = path;
+	FILE* f;
+	const std::string throwMessage = "[Object Map] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
+	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
+		throw std::runtime_error(throwMessage);
+	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
 #endif
-
-	FILE* f;
-	if (!fopen_s(&f, loadPath.c_str(), "rb"))
-		throw std::runtime_error("[Object Map] Impossible to load file: " + loadPath);
-
 	fread(&size, sizeof(int), 1, f);
 
 	for (int x = 0; x < size; ++x) {
@@ -55,7 +61,7 @@ ObjectMap::ObjectMap(const std::string& path) {
 ObjectMap::~ObjectMap() {
 	if (objectList != nullptr) {
 #ifndef _WIN32
-		for_each(objectList->begin(), objectList->end(), default_delete<ObjectFake>());
+		for_each(objectList->begin(), objectList->end(), std::default_delete<ObjectFake>());
 #else
 		for_each(objectList->begin(), objectList->end(),
 			[](ObjectFake* of) {

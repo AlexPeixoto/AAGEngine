@@ -19,8 +19,7 @@ Object::Object(int id, const std::string& path, const std::string& name, int til
 		loadSprite();
 
 }
-Object::Object(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool randomize, bool load) {
-	Object::Object(id, path, name, tileSize.x, tileSize.y, randomize, load);
+Object::Object(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool randomize, bool load) : Object::Object(id, path, name, tileSize.x, tileSize.y, randomize, load) {
 }
 Object::Object() {
 	properties = new std::map<std::string, std::string>();

@@ -74,10 +74,10 @@ void TextControl::setWindow(RenderWindow *window) {
 	TextControl::window = window;
 }
 void TextControl::setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-	textRender->setColor(sf::Color(r, g, b, a));
+	textRender->setFillColor(sf::Color(r, g, b, a));
 }
 void TextControl::setColor(Color color) {
-	textRender->setColor(color);
+	textRender->setFillColor(color);
 }
 void TextControl::setScale(float scale) {
 	fontScale.x = fontScale.y = scale;

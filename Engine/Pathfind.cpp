@@ -9,7 +9,6 @@
 #include "Pathfind.h"
 #include <map>
 
-
 using Core::Pathfind;
 using Core::Node;
 

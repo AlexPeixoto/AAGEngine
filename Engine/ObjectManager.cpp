@@ -7,6 +7,7 @@
 //
 
 #include "ObjectManager.h"
+#include <memory>
 
 using namespace Adventure;
 
@@ -16,7 +17,7 @@ std::string ObjectManager::relativePath = "";
 ObjectManager::~ObjectManager() {
 	if (objectList != nullptr) {
 #ifndef _WIN32
-		std::for_each(objectList->begin(), objectList->end(), default_delete<Object>());
+		std::for_each(objectList->begin(), objectList->end(), std::default_delete<Object>());
 #else
 		std::for_each(objectList->begin(), objectList->end(),
 			[](Object* o) {
@@ -74,15 +75,19 @@ bool ObjectManager::loadFromFile(const std::string& path) {
 	}
 	else
 		loadPath = path;
+	FILE* f;
+	const std::string throwMessage = "[Object Manager] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
-#endif
-
-	FILE* f;
 	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
-		throw std::runtime_error("[Object Manager] Could not open: " + loadPath);
-		return false;
+		throw std::runtime_error(throwMessage);
 	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
+#endif
 	Object* o = nullptr;
 	bool skipLater = false;
 	int size = 0;

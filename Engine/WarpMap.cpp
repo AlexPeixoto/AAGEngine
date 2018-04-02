@@ -32,14 +32,20 @@ WarpMap::WarpMap(const std::string& path) {
 	else {
 		loadPath = path;
 	}
+	FILE* f;
+	const std::string throwMessage = "[Warp Map] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
+	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
+		throw std::runtime_error(throwMessage);
+	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
 #endif
 
-	FILE* f;
-	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
-		throw std::runtime_error("[Warp Map] Impossible to load file: " + path);
-	}
 	fread(&size, sizeof(int), 1, f);
 	for (int x = 0; x < size; x++) {
 		WarpFake *w = new WarpFake;

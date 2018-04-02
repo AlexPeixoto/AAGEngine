@@ -46,11 +46,12 @@ namespace Adventure{
                 throw std::runtime_error("[LevelManager] There is already a changeLevel call running");
             if(level==nullptr)
                 throw std::runtime_error("[LevelManager] There is not a level to change");
-            thread th([=](){
+            std::thread th([=](){
                 LevelManager::changeTo=-1;
                 loading=true;
                 //Wait for all render calls stops (if it takes more than 100 millisenconds the game should have slowdowns, the acceptable is 1/30 of a second, 33 Milliseconds).
-                this_thread::sleep_for(chrono::milliseconds(100));
+                //Needs to be fixed, mutex maybe?
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 delete level;
                 level=nullptr;
                 level=new T(params);

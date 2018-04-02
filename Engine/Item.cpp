@@ -18,8 +18,7 @@ Item::Item(int id, const std::string& path, const std::string& name, int tileWid
 	}
 
 }
-Item::Item(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool load) {
-	Item::Item(id, path, name, tileSize.x, tileSize.y, load);
+Item::Item(int id, const std::string& path, const std::string& name, Vector2i tileSize, bool load) : Item::Item(id, path, name, tileSize.x, tileSize.y, load) {	
 }
 Item::Item() {
 	properties = new std::map<std::string, std::string>();

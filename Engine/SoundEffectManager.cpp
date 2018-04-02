@@ -7,6 +7,7 @@
 //
 
 #include "SoundEffectManager.h"
+#include <memory>
 
 using namespace Adventure;
 
@@ -17,7 +18,7 @@ std::string SoundEffectManager::relativeInstancePath = "";
 SoundEffectManager::~SoundEffectManager() {
 	if (sfxList != nullptr) {
 #ifndef _WIN32
-		for_each(sfxList->begin(), sfxList->end(), default_delete<SoundEffect>());
+		for_each(sfxList->begin(), sfxList->end(), std::default_delete<SoundEffect>());
 #else
 		std::for_each(sfxList->begin(), sfxList->end(),
 			[](SoundEffect* se) {
@@ -102,15 +103,19 @@ bool SoundEffectManager::loadFromFile(const std::string& path) {
 	else {
 		loadPath = path;
 	}
+	FILE* f;
+	const std::string throwMessage = "[Sound Effect Manager] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
-#endif
-
-	FILE* f;
 	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
-		throw std::runtime_error("[Sound Effect Manager] Could not open: " + loadPath);
-		return false;
+		throw std::runtime_error(throwMessage);
 	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
+#endif
 	//read the number of sounds
 	int sSize = 0;
 	fread(&sSize, sizeof(int), 1, f);

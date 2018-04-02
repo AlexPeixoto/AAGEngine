@@ -7,6 +7,7 @@
 //
 
 #include "SoundMap.h"
+#include <memory>
 
 using namespace Adventure;
 
@@ -31,13 +32,20 @@ SoundMap::SoundMap(const std::string& path) : SoundMap() {
 	else {
 		loadPath = path;
 	}
+	FILE* f;
+	const std::string throwMessage = "[Sound Map] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
+	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
+		throw std::runtime_error(throwMessage);
+	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
 #endif
 
-	FILE* f;
-	if (!fopen_s(&f, loadPath.c_str(), "rb"))
-		throw std::runtime_error("[Item Map] Impossible to load file: " + loadPath);
 	int soundsMapSize = -1;
 	fread(&soundsMapSize, sizeof(int), 1, f);
 	for (int x = 0; x < soundsMapSize; x++) {
@@ -58,7 +66,7 @@ SoundMap::SoundMap(const std::string& path) : SoundMap() {
 SoundMap::~SoundMap() {
 	if (sounds != nullptr) {
 #ifndef _WIN32
-		for_each(sounds->begin(), sounds->end(), default_delete<SoundMapStructure>());
+		for_each(sounds->begin(), sounds->end(), std::default_delete<SoundMapStructure>());
 #else
 		for_each(sounds->begin(), sounds->end(),
 			[](SoundMapStructure* sms) {

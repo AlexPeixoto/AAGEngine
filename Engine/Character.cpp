@@ -7,6 +7,7 @@
 //
 
 #include "Character.h"
+#include <memory>
 
 using namespace Adventure;
 

@@ -42,14 +42,19 @@ CollisionMap::CollisionMap(const std::string& path) {
 	else {
 		loadPath = path;
 	}
+	FILE* f;
+	const std::string throwMessage = "[Collision Map] Could not open: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
-#endif
-
-	FILE* f;
 	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
-		throw std::runtime_error("[Collision Map] Could not open: " + loadPath);
+		throw std::runtime_error(throwMessage);
 	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
+#endif
 	collisionStructure = new CollisionStructure;
 	fread(collisionStructure, sizeof(CollisionStructure), 1, f);
 	collisionData = new int16_t[collisionStructure->tileBlock.x*collisionStructure->tileBlock.y];

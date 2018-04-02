@@ -7,6 +7,7 @@
 //
 
 #include "WarpManager.h"
+#include <memory>
 
 using namespace Adventure;
 std::vector<Warp*> *WarpManager::warpList=new std::vector<Warp*>();
@@ -15,7 +16,7 @@ std::string WarpManager::relativePath="";
 WarpManager::~WarpManager(){
     if(warpList!=nullptr){
 #ifndef _WIN32
-		for_each(warpList->begin(), warpList->end(), default_delete<Warp>());
+		for_each(warpList->begin(), warpList->end(), std::default_delete<Warp>());
 #else
 		for_each(warpList->begin(), warpList->end(),
 			[](Warp* w){
@@ -62,15 +63,20 @@ bool WarpManager::loadFromFile(const std::string& path){
 	else {
 		loadPath = path;
 	}
+    FILE* f;
+	const std::string throwMessage = "[Warp Manager] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
+	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
+		throw std::runtime_error(throwMessage);
+	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
 #endif
-    
-	FILE* f;
-    if(!fopen_s(&f, loadPath.c_str(), "rb")){
-        throw std::runtime_error("[Warp Manager] Could not open: " + loadPath);
-        return false;
-    }
+
     int id=-1;
     int size=0;
     bool skipLater=false;

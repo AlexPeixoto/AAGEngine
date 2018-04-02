@@ -7,6 +7,7 @@
 //
 
 #include "TileLayer.h"
+#include <memory>
 using namespace Adventure;
 
 TileLayer::TileLayer() {
@@ -19,7 +20,7 @@ TileLayer::TileLayer(const std::string& path) {
 TileLayer::~TileLayer() {
 	if (tileList != nullptr) {
 #ifndef _WIN32
-		for_each(tileList->begin(), tileList->end(), default_delete<TileMap>());
+		for_each(tileList->begin(), tileList->end(), std::default_delete<TileMap>());
 #else
 		for_each(tileList->begin(), tileList->end(),
 			[](TileMap* tm) {

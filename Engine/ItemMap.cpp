@@ -7,6 +7,7 @@
 //
 
 #include "ItemMap.h"
+#include <memory>
 
 using namespace Adventure;
 using Core::Collision;
@@ -33,14 +34,19 @@ ItemMap::ItemMap(const std::string& path) {
 	else {
 		loadPath = path;
 	}
+	FILE* f;
+	const std::string throwMessage = "[Item Map] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
-#endif
-
-	FILE* f;
 	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
-		throw std::runtime_error("[Item Map] Impossible to load file: " + loadPath);
+		throw std::runtime_error(throwMessage);
 	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
+#endif
 	fread(&size, sizeof(int), 1, f);
 	for (int x = 0; x < size; x++) {
 		ItemFake *i = new ItemFake;
@@ -54,7 +60,7 @@ ItemMap::ItemMap(const std::string& path) {
 ItemMap::~ItemMap() {
 	if (itemList != nullptr) {
 #ifndef _WIN32
-		for_each(itemList->begin(), itemList->end(), default_delete<ItemFake>());
+		for_each(itemList->begin(), itemList->end(), std::default_delete<ItemFake>());
 #else
 		for_each(itemList->begin(), itemList->end(),
 			[](ItemFake* itf) {

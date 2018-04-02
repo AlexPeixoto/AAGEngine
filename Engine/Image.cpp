@@ -55,7 +55,7 @@ void Image::changeImage(const std::string& path) {
 	sprite = nullptr;
 	texture = nullptr;
 
-	Image::Image(path.c_str());
+	Image(path.c_str());
 }
 int Image::getHeight() const {
 	return textureSize.y;

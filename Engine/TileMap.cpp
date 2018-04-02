@@ -11,6 +11,7 @@
  */
 
 #include "TileMap.h"
+#include <cstring>
 
 using namespace Adventure;
 
@@ -43,17 +44,22 @@ void TileMap::loadTiles()
 void TileMap::initializeData(Vector2<int> tileBlock, Vector2<int> tileSize, const std::string& path) {
 
 	delete tileHeader;
+	delete tileData;
+	delete tileImage;
+
+	tileData = (int16_t*)malloc(sizeof(int16_t)*tileHeader->tileBlock.x*tileHeader->tileBlock.y);
+	tileImage = new Core::Image(path);
 	tileHeader = new TileStructure;
+
 	tileHeader->tileBlock = tileBlock;
 	tileHeader->tileSize = tileSize;
-	strcpy_s(tileHeader->filename, path.c_str());
+	#ifdef _WIN32
+		strcpy_s(tileHeader->filename, path.c_str());
+	#else
+		strcpy(tileHeader->filename, path.c_str());
+	#endif
 
-	delete tileData;
-	tileData = (int16_t*)malloc(sizeof(int16_t)*tileHeader->tileBlock.x*tileHeader->tileBlock.y);
-	memset(&tileData, sizeof(int16_t), tileHeader->tileBlock.x*tileHeader->tileBlock.y);
-
-	delete tileImage;
-	tileImage = new Core::Image(path);
+	std::memset(&tileData, 0, sizeof(tileData));	
 }
 void TileMap::initializeData(int tileBlockX, int tileBlockY, int tileSizeX, int tileSizeY, const std::string& path) {
 	Vector2i tileBlock, tileSize;
@@ -67,10 +73,10 @@ void TileMap::addTile(int x, int y, int16_t value) {
 	tileData[y*tileHeader->tileBlock.x + x] = value;
 }
 void TileMap::clearDataStructure() {
-	memset(&tileHeader, sizeof(tileHeader), 0);
+	std::memset(&tileHeader, sizeof(tileHeader), 0);
 }
 void TileMap::clearData() {
-	memset(&tileData, sizeof(int16_t), tileHeader->tileBlock.x*tileHeader->tileBlock.y);
+	std::memset(&tileData, sizeof(int16_t), tileHeader->tileBlock.x*tileHeader->tileBlock.y);
 }
 void TileMap::clear() {
 	clearData();
@@ -89,14 +95,20 @@ void TileMap::loadLevel(const std::string& path)
 	}
 	else
 		loadPath = path;
+	FILE* f;
+	const std::string throwMessage = "[Tile Map] Impossible to load file: " + loadPath;
 #ifdef _WIN32
 	std::replace(loadPath.begin(), loadPath.end(), '/', '\\');
+	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
+		throw std::runtime_error(throwMessage);
+	}
+#else
+	f = fopen(loadPath.c_str(), "rb");
+	if (!f) {
+		throw std::runtime_error(throwMessage);
+	}
 #endif
 
-	FILE* f;
-	if (!fopen_s(&f, loadPath.c_str(), "rb")) {
-		throw std::runtime_error("[Tile Map] Impossible to load file: " + loadPath);
-	}
 	tileHeader = new TileStructure;
 	fread(&(tileHeader->tileBlock), sizeof(int), 2, f);
 	fread(&(tileHeader->tileSize), sizeof(int), 2, f);
